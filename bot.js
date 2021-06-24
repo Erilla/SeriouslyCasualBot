@@ -6,7 +6,6 @@ const sqlite = require('sqlite');
 const Config = require('./config');
 const Security = require('./security')
 
-const test = Security.encryptWithAES("ODU3NTMzMzU0ODgyNjI5NjYy.YNQ-LA.LEzsbRUtUlO4Y5DAsX0cHXZJEEo");
 const token = Security.decryptWithAES(Config.botToken);
 
 const client = new commando.Client({
