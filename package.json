@@ -1,0 +1,17 @@
+{
+	"name": "discord.js-boilerplate",
+	"version": "1.0.0",
+	"description": "A boilerplate for Discord.js-commando.",
+	"main": "bot.js",
+	"scripts": {
+		"test": "node bot"
+	},
+	"author": "jasonhaxstuff",
+	"license": "GPL-3.0",
+	"dependencies": {
+		"discord.js": "^11.3.2",
+		"discord.js-commando": "^0.10.0",
+		"python": "0.0.4",
+		"sqlite": "^2.9.2"
+	}
+}
