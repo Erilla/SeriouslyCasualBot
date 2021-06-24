@@ -1,14 +1,16 @@
 {
-	"name": "discord.js-boilerplate",
+	"name": "seriously-casual-bot",
 	"version": "1.0.0",
-	"description": "A boilerplate for Discord.js-commando.",
+	"description": "The Seriously Casual Discord bot",
 	"main": "bot.js",
 	"scripts": {
+		"start": "node bot",
 		"test": "node bot"
 	},
-	"author": "jasonhaxstuff",
+	"author": "binded",
 	"license": "GPL-3.0",
 	"dependencies": {
+		"crypto-js": "^4.0.0",
 		"discord.js": "^11.3.2",
 		"discord.js-commando": "^0.10.0",
 		"python": "0.0.4",

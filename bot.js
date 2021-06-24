@@ -3,11 +3,15 @@ const commando = require('discord.js-commando');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
 const sqlite = require('sqlite');
-const token = 'ODU3NTMzMzU0ODgyNjI5NjYy.YNQ-LA.swpA7l0xZ6_LJdp8PZTvWl9yIms'; // TODO: Config
+const Config = require('./config');
+const Security = require('./security')
+
+const test = Security.encryptWithAES("ODU3NTMzMzU0ODgyNjI5NjYy.YNQ-LA.LEzsbRUtUlO4Y5DAsX0cHXZJEEo");
+const token = Security.decryptWithAES(Config.botToken);
 
 const client = new commando.Client({
-  owner: '90997305578106880',
-  commandPrefix: '!'
+  owner: Config.owners,
+  commandPrefix: Config.prefix
 });
 
 client
