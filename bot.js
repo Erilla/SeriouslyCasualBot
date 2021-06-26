@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
+const Discord = require("discord.js");
 const commando = require('discord.js-commando');
 const path = require('path');
 const oneLine = require('common-tags').oneLine;
 const sqlite = require('sqlite');
 const Config = require('./config');
 const Security = require('./security')
+const disbut = require('discord-buttons');
 
 const token = Security.decryptWithAES(Config.botToken);
 
@@ -59,8 +61,12 @@ client.setProvider(
 
 client.registry
   .registerGroup('math', 'Math')
+  .registerGroup('guild-info', 'GuildInfo')
+  .registerGroup('variables', 'Variables')
   .registerDefaults()
   .registerTypesIn(path.join(__dirname, 'types'))
   .registerCommandsIn(path.join(__dirname, 'commands'));
 
 client.login(token);
+
+disbut(client);
