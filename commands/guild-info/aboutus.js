@@ -85,13 +85,11 @@ const updateAboutUsPost = async(msg) => {
 
     if (!aboutUsPost) return msg.reply("About Us Post does not currently exist.");
 
-    let applicationChannelUrl = await variables.get(Constants.variables.APPLICATION_CHANNEL_URL)
-
     let messageObject = {
         embed: embed
     };
 
-    const buttonRow = getButton(applicationChannelUrl);
+    const buttonRow = getButton();
 
     messageObject.component = buttonRow;
 
