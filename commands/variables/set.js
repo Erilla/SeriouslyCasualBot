@@ -1,9 +1,8 @@
 const commando = require('discord.js-commando');
 const Keyv = require('keyv');
+const Constants = require('../../constants');
 
 const keyv = new Keyv('sqlite://../../database.sqlite3');
-
-const APPLICATION_CHANNEL_URL = 'APPLICATION_CHANNEL_URL'
 
 const urlRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
 
@@ -12,14 +11,17 @@ const setVariable = async (msg, variable, value) => {
 
   switch (variable.toLowerCase()) {
     case "appchannelurl":
-      variableKey = APPLICATION_CHANNEL_URL;
+      variableKey = Constants.APPLICATION_CHANNEL_URL;
       if (!urlRegex.test(value)) return msg.reply(`Invalid value for variable (${variable})`);
+      break;
+    case "guildinfochannelid":
+      variableKey = Constants.GUILDINFO_CHANNEL_ID;
       break;
     default:
       return msg.reply(`Invalid variable (${variable}).`)
   }
 
-  await keyv.set(APPLICATION_CHANNEL_URL, value);
+  await keyv.set(variableKey, value);
   return msg.channel.send(`Variable ${variable} set to "${value}".`);
 }
 
@@ -30,7 +32,7 @@ module.exports = class SetCommand extends commando.Command {
         group: 'variables',
         memberName: 'set',
         description: 'Command to set variables.',
-        examples: ['set [AppChannelUrl] <value>'],
+        examples: ['set [AppChannelUrl/GuildInfoChannelId] <value>'],
         clientPermissions: ['ADMINISTRATOR'],
         args: [
         {

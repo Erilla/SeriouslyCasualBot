@@ -1,6 +1,6 @@
 const commando = require('discord.js-commando');
 
-const variableList = ["AppChannelUrl"]
+const variableList = ["AppChannelUrl", "GuildInfoChannelId"]
 
 class VariableArgumentType extends commando.ArgumentType {
   constructor(client) {

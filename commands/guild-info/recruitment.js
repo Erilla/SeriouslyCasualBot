@@ -49,9 +49,12 @@ const getButton = (applicationChannelUrl) => {
   return buttonRow;
 }
 
-
 const createRecruitmentPost = async(msg) => {
   const embed = getEmbed();
+
+  var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
+
+  if (recruitmentPost) return msg.reply("Recruitment post already exists.");
 
   let applicationChannelUrl = await keyv.get(Constants.APPLICATION_CHANNEL_URL)
 
@@ -69,7 +72,14 @@ const createRecruitmentPost = async(msg) => {
   {
     msg.reply("Application Channel Url not set, so no button will appear for recruitment.");
   }
-  var postedMessage = await msg.channel.send('', messageObject);
+
+  var guildInfoChannelId = await keyv.get(Constants.GUILDINFO_CHANNEL_ID);
+
+  if (!guildInfoChannelId) guildInfoChannelId = msg.channel.id;
+
+  var postedMessage = await msg.client.channels.fetch(guildInfoChannelId)
+    .then(channel => channel.send('', messageObject))
+    .catch(console.error);
 
   await keyv.set(Constants.GUILDINFO_RECRUITMENT_POST, {
     channelId: postedMessage.channel.id,
@@ -84,7 +94,7 @@ const updateRecruitmentPost = async(msg) => {
 
   var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
 
-  if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist");
+  if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist.");
 
   let applicationChannelUrl = await keyv.get(Constants.APPLICATION_CHANNEL_URL)
 
@@ -114,7 +124,7 @@ const updateRecruitmentPost = async(msg) => {
 const deleteRecruitmentPost = async(msg) => {
   var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
 
-  if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist");
+  if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist.");
 
   msg.client.channels.fetch(recruitmentPost.channelId)
     .then(channel => channel.messages.fetch(recruitmentPost.postId)
@@ -169,5 +179,7 @@ module.exports = class RecruitmentCommand extends commando.Command {
         await deleteRecruitmentPost(msg);
         break;
     }
+
+    await msg.delete();
   }
 };
