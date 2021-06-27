@@ -60,9 +60,9 @@ client.setProvider(
 ).catch(console.error);
 
 client.registry
-  .registerGroup('math', 'Math')
   .registerGroup('guild-info', 'GuildInfo')
   .registerGroup('variables', 'Variables')
+  .registerGroup('cache', 'Cache')
   .registerDefaults()
   .registerTypesIn(path.join(__dirname, 'types'))
   .registerCommandsIn(path.join(__dirname, 'commands'));
