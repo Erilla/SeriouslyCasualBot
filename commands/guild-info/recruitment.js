@@ -15,8 +15,8 @@ const getEmbed = () => new discord.MessageEmbed()
       value : `
         - You have to be mature, friendly and skilled. 
         - You have to actively attend raids every week, be reliable and on time.
-        - We expect you to come prepared for raids, and to know your class as well as tactics. 
-        - You have to be able to take feedback.
+        - We expect you to come fully prepared for raids by researching your class and raid tactics. 
+        - You have to be able to take feedback and act upon them.
       `
     },
     { 
@@ -174,7 +174,5 @@ module.exports = class RecruitmentCommand extends commando.Command {
         await deleteRecruitmentPost(msg);
         break;
     }
-
-    await msg.delete();
   }
 };

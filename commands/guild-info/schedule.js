@@ -132,7 +132,5 @@ module.exports = class ScheduleCommand extends commando.Command {
         await deleteSchedulePost(msg);
         break;
     }
-
-    await msg.delete();
   }
 };

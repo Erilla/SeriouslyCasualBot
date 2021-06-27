@@ -16,6 +16,7 @@ const getEmbed = () => new discord.MessageEmbed()
 
         Ny'alotha, the Waking City
         The Eternal Palace
+        Crucible of Storms
         Battle of Dazar'alor
         Uldir
         
@@ -33,6 +34,7 @@ const getEmbed = () => new discord.MessageEmbed()
 
         12/12M
           8/8M
+          2/2H
           9/9M
           8/8M
         
@@ -50,6 +52,7 @@ const getEmbed = () => new discord.MessageEmbed()
 
         **CE**
         **CE**
+        <:PepeHands:575986802108792842>
         **CE**
         **CE**
         
@@ -161,7 +164,5 @@ module.exports = class AchievementsCommand extends commando.Command {
         await deleteAchievementsPost(msg);
         break;
     }
-
-    await msg.delete();
   }
 };

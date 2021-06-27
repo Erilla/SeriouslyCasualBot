@@ -153,7 +153,5 @@ module.exports = class AboutUsCommand extends commando.Command {
         await deleteAboutUsPost(msg);
         break;
     }
-
-    await msg.delete();
   }
 };
