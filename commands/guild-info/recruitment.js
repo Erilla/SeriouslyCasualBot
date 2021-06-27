@@ -84,7 +84,7 @@ const updateRecruitmentPost = async(msg) => {
 
   var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
 
-  if (!recruitmentPost) return msg.reply("Recruitment Post does currently not exist");
+  if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist");
 
   let applicationChannelUrl = await keyv.get(Constants.APPLICATION_CHANNEL_URL)
 
@@ -106,6 +106,22 @@ const updateRecruitmentPost = async(msg) => {
   msg.client.channels.fetch(recruitmentPost.channelId)
     .then(channel => channel.messages.fetch(recruitmentPost.postId)
       .then(message => message.edit('', messageObject))
+      .catch(console.error)
+    )
+    .catch(console.error);
+};
+
+const deleteRecruitmentPost = async(msg) => {
+  var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
+
+  if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist");
+
+  msg.client.channels.fetch(recruitmentPost.channelId)
+    .then(channel => channel.messages.fetch(recruitmentPost.postId)
+      .then(async message => {
+        message.delete();
+        await keyv.delete(Constants.GUILDINFO_RECRUITMENT_POST);
+      })
       .catch(console.error)
     )
     .catch(console.error);
@@ -150,6 +166,7 @@ module.exports = class RecruitmentCommand extends commando.Command {
         await updateRecruitmentPost(msg);
         break;
       case 'delete':
+        await deleteRecruitmentPost(msg);
         break;
     }
   }
