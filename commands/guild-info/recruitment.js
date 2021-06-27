@@ -33,7 +33,7 @@ const getEmbed = () => new discord.MessageEmbed()
     },
     { 
       name: '\u200b',  
-      value : 'Contact @Abradix#7061, @Eclipse#2819, <@105035733558890496> or @Warzania#9808 if you have any questions.'
+      value : 'Contact <@101060314950283264>, <@230118286229110784>, <@105035733558890496> or <@205969498908524544> if you have any questions.'
     },
   )
   .setColor("GREEN");
