@@ -61,7 +61,6 @@ const getEmbed = () => new discord.MessageEmbed()
         inline: true
     }
   )
-  .setFooter("Times are in Server Time (GMT+1)")
   .setColor("GREEN");
 
 const createAchievementsPost = async(msg) => {

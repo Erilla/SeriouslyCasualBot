@@ -8,7 +8,7 @@ const cache = new Keyv('sqlite://../../database.sqlite3', { namespace: "cache" }
 const variables = new Keyv('sqlite://../../database.sqlite3', { namespace: "variables" });
 
 const getEmbed = () => new discord.MessageEmbed()
-  .setTitle("<:Alliance:756691748679581806> About Us")
+  .setTitle("<:alliance:615534209712521227> About Us")
   .setDescription(`**<SeriouslyCasual>** is an Alliance Mythic raiding guild on **Silvermoon-EU**.
   
     The guild was founded on Darksorrow-EU back in 2013 and transferred onto Silvermoon-EU in 2019.
