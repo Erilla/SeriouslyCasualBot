@@ -4,7 +4,8 @@ const { MessageButton, MessageActionRow } = require('discord-buttons');
 const Keyv = require('keyv');
 const Constants = require('../../constants');
 
-const keyv = new Keyv('sqlite://../../database.sqlite3');
+const cache = new Keyv('sqlite://../../database.sqlite3', { namespace: "cache" });
+const variables = new Keyv('sqlite://../../database.sqlite3', { namespace: "variables" });
 
 const getEmbed = () => new discord.MessageEmbed()
   .setTitle("📝 Recruitment")
@@ -52,11 +53,11 @@ const getButton = (applicationChannelUrl) => {
 const createRecruitmentPost = async(msg) => {
   const embed = getEmbed();
 
-  var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
+  var recruitmentPost = await cache.get(Constants.cache.GUILDINFO_RECRUITMENT_POST);
 
   if (recruitmentPost) return msg.reply("Recruitment post already exists.");
 
-  let applicationChannelUrl = await keyv.get(Constants.APPLICATION_CHANNEL_URL)
+  let applicationChannelUrl = await variables.get(Constants.variables.APPLICATION_CHANNEL_URL)
 
   let messageObject = {
     embed: embed
@@ -73,7 +74,7 @@ const createRecruitmentPost = async(msg) => {
     msg.reply("Application Channel Url not set, so no button will appear for recruitment.");
   }
 
-  var guildInfoChannelId = await keyv.get(Constants.GUILDINFO_CHANNEL_ID);
+  var guildInfoChannelId = await variables.get(Constants.variables.GUILDINFO_CHANNEL_ID);
 
   if (!guildInfoChannelId) guildInfoChannelId = msg.channel.id;
 
@@ -81,7 +82,7 @@ const createRecruitmentPost = async(msg) => {
     .then(channel => channel.send('', messageObject))
     .catch(console.error);
 
-  await keyv.set(Constants.GUILDINFO_RECRUITMENT_POST, {
+  await cache.set(Constants.cache.GUILDINFO_RECRUITMENT_POST, {
     channelId: postedMessage.channel.id,
     postId: postedMessage.id
   });
@@ -92,11 +93,11 @@ const createRecruitmentPost = async(msg) => {
 const updateRecruitmentPost = async(msg) => {
   const embed = getEmbed();
 
-  var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
+  var recruitmentPost = await cache.get(Constants.cache.GUILDINFO_RECRUITMENT_POST);
 
   if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist.");
 
-  let applicationChannelUrl = await keyv.get(Constants.APPLICATION_CHANNEL_URL)
+  let applicationChannelUrl = await variables.get(Constants.variables.APPLICATION_CHANNEL_URL)
 
   let messageObject = {
     embed: embed
@@ -122,7 +123,7 @@ const updateRecruitmentPost = async(msg) => {
 };
 
 const deleteRecruitmentPost = async(msg) => {
-  var recruitmentPost = await keyv.get(Constants.GUILDINFO_RECRUITMENT_POST);
+  var recruitmentPost = await cache.get(Constants.cache.GUILDINFO_RECRUITMENT_POST);
 
   if (!recruitmentPost) return msg.reply("Recruitment Post does not currently exist.");
 
@@ -130,7 +131,7 @@ const deleteRecruitmentPost = async(msg) => {
     .then(channel => channel.messages.fetch(recruitmentPost.postId)
       .then(async message => {
         message.delete();
-        await keyv.delete(Constants.GUILDINFO_RECRUITMENT_POST);
+        await cache.delete(Constants.cache.GUILDINFO_RECRUITMENT_POST);
       })
       .catch(console.error)
     )

@@ -2,23 +2,23 @@ const commando = require('discord.js-commando');
 const Keyv = require('keyv');
 const Constants = require('../../constants');
 
-const keyv = new Keyv('sqlite://../../database.sqlite3');
+const variables = new Keyv('sqlite://../../database.sqlite3', { namespace: "variables" });
 
 const deleteVariable = async (msg, variable, value) => {
   var variableKey;
 
   switch (variable.toLowerCase()) {
     case "appchannelurl":
-      variableKey = Constants.APPLICATION_CHANNEL_URL;
+      variableKey = Constants.variables.APPLICATION_CHANNEL_URL;
       break;
     case "guildinfochannelid":
-      variableKey = Constants.GUILDINFO_CHANNEL_ID;
+      variableKey = Constants.variables.GUILDINFO_CHANNEL_ID;
       break;
     default:
       return msg.reply(`Invalid variable (${variable}).`)
   }
 
-  await keyv.delete(variableKey);
+  await variables.delete(variableKey);
   return msg.channel.send(`Variable ${variable} deleted.`);
 }
 
