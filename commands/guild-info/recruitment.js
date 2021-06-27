@@ -14,9 +14,9 @@ const getEmbed = () => new discord.MessageEmbed()
       name: 'What we expect from you',  
       value : `
         - You have to be mature, friendly and skilled. 
-        - You have to actively attend the raids every week, being reliable and stable, as well as on time. 
+        - You have to actively attend raids every week, be reliable and on time.
         - We expect you to come prepared for raids, and to know your class as well as tactics. 
-        - You also have to be able to take criticism.
+        - You have to be able to take feedback.
       `
     },
     { 
@@ -156,12 +156,6 @@ module.exports = class RecruitmentCommand extends commando.Command {
 					prompt: 'What action do you want to do?',
 					type: 'string',
           oneOf: ['create', 'update', 'delete']
-				},
-        {
-					key: 'variable',
-					prompt: 'What variable do you want to modify?',
-					type: 'string',
-          default: ''
 				}
 			],
     });
