@@ -12,6 +12,7 @@ const getEmbed = () => new discord.MessageEmbed()
     { 
         name: `Raid`,  
         value : `\u200b
+        Sanctum of Domination
         Castle Nathria
 
         Ny'alotha, the Waking City
@@ -30,6 +31,7 @@ const getEmbed = () => new discord.MessageEmbed()
     { 
         name: `\u200b`,  
         value : `\u200b
+         4/10M
         10/10M
 
         12/12M
@@ -48,6 +50,7 @@ const getEmbed = () => new discord.MessageEmbed()
     { 
         name: `\u200b`,  
         value : `\u200b
+        
         **CE**
 
         **CE**
