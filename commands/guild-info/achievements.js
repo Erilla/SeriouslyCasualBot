@@ -31,7 +31,7 @@ const getEmbed = () => new discord.MessageEmbed()
     { 
         name: `\u200b`,  
         value : `\u200b
-         4/10M
+         5/10M
         10/10M
 
         12/12M
