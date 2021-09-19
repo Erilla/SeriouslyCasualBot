@@ -53,25 +53,6 @@ client
 			${enabled ? 'enabled' : 'disabled'}
 			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
 		`);
-  })
-  .on('message', (msg) => {
-    const wipeFestId = '354726853459836938';
-    const listenChannel = '507252876356354069';
-    const postChannel = '875695733016244234';
-
-    if (msg.channel.id === listenChannel && msg.author.id === wipeFestId) {
-      var command = msg.content.match('!wipefest listen[^`]*');
-
-      if (command && command.length === 1) {
-        msg.client.channels.fetch(postChannel)
-        .then(channel => channel.send(command[0]))
-        .catch(console.error);
-
-        msg.client.channels.fetch(listenChannel)
-        .then(channel => channel.send(`Posting command '${command[0]}'`))
-        .catch(console.error);
-      }
-    }
   });
 
 client.setProvider(
