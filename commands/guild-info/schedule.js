@@ -14,7 +14,9 @@ const getEmbed = () => new discord.MessageEmbed()
         Day`,  
         value : `\u200b
         Wednesday
-        Sunday`,
+        Sunday
+        
+        Thursday (Optional Heroic)`,
         inline: true
     },
     { 
@@ -27,6 +29,8 @@ const getEmbed = () => new discord.MessageEmbed()
         Time`,  
         value : `\u200b
         20:00 - 23:00
+        20:00 - 23:00
+        
         20:00 - 23:00`,
         inline: true
     }
