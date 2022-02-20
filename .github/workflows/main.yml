@@ -16,6 +16,7 @@ jobs:
   FTP-Deploy-Action:
     name: FTP-Deploy-Action
     runs-on: ubuntu-latest
+    environment: Prod
     steps:
     - uses: actions/checkout@master
 
