@@ -50,4 +50,3 @@ jobs:
         LOCAL_DIR: ./
         METHOD: sftp
         PORT: 23
-        ARGS: --delete
