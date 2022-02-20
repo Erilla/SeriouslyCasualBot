@@ -2,5 +2,6 @@
 	"clientId": "CLIENTID (BOT ID)",
 	"guildId": "GUILDID (SERVER ID)",
 	"token": "TOKEN (BOT TOKEN)",
-    "guildInfoChannelId": "GUILDINFO CHANNELID"
+    "guildInfoChannelId": "GUILDINFO CHANNELID",
+    "applicationChannelUrl": "APPLICATION CHANNEL URL"
 }

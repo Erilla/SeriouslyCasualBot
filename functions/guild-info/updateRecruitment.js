@@ -1,4 +1,4 @@
-const { guildInfoChannelId } = require('../../config.json');
+const { guildInfoChannelId, applicationChannelUrl } = require('../../config.json');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const recruitmentContent = require('../../data/recruitment.json');
 
@@ -18,7 +18,7 @@ function updateRecruitment(interaction) {
 			new MessageButton()
 				.setLabel('Apply Here')
 				.setStyle('LINK')
-				.setURL(recruitmentContent.applicationChannelUrl),
+				.setURL(applicationChannelUrl),
 		);
 
 	const channel = interaction.client.channels.cache.get(guildInfoChannelId);
