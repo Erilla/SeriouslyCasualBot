@@ -14,9 +14,7 @@ const getEmbed = () => new discord.MessageEmbed()
         Day`,  
         value : `\u200b
         Wednesday
-        Sunday
-        
-        Thursday (Optional Heroic)`,
+        Sunday`,
         inline: true
     },
     { 
@@ -29,13 +27,11 @@ const getEmbed = () => new discord.MessageEmbed()
         Time`,  
         value : `\u200b
         20:00 - 23:00
-        20:00 - 23:00
-        
         20:00 - 23:00`,
         inline: true
     }
   )
-  .setFooter("Times are in Server Time (GMT+1)")
+  .setFooter("Server Time (GMT+1)")
   .setColor("GREEN");
 
 const createSchedulePost = async(msg) => {

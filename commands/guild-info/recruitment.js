@@ -11,29 +11,46 @@ const getEmbed = () => new discord.MessageEmbed()
   .setTitle("📝 Recruitment")
   .addFields(
     { 
-      name: 'What we expect from you',  
-      value : `
-        - You have to be mature, friendly and skilled. 
-        - You have to actively attend raids every week, be reliable and on time.
-        - We expect you to come fully prepared for raids by researching your class and raid tactics. 
-        - You have to be able to take feedback and act upon them.
-        - Have some Mythic raiding experience
-      `
+      name: '\u200b',  
+      value : 'A SeriouslyCasual player is one that knows the ins and outs of their class, can consistently perform up to a mythic raiding standard, and enjoys a relaxed social environment. If that sounds like you, then we’d love to hear from you!'
     },
     { 
-      name: 'What do we offer',  
+      name: '\u200b',  
+      value : `\u200b`
+    },
+    { 
+      name: 'What We Want From You',  
       value : `
-        - A 2 raid days a week schedule with the goal to get Cutting Edge each tier
-        - A stable core team with numerous years of mythic experience
-        - A fun and friendly atmosphere
+        - Know everything there is to know about your class at any given time. This includes rotations, use of defensives, consumables, legendaries, specs, enchants, and the like.
+        - Be proactive and prepared for every raid encounter. This means researching boss fights.
+        - Be mature and friendly. Bonus points if you’re funny.
+        - Attend at least 90% of our scheduled raids within any given tier.
+        - Be ready to receive criticism (where its warranted, of course).
       `
     },
     { 
       name: '\u200b',  
-      value : 'We are always recruiting players who share a similar approach to raiding as we do.'
+      value : `\u200b`
+    },
+    { 
+      name: 'What We Can Give You',  
+      value : `
+        - A stable mythic raiding guild with over 9 years of raiding at World of Warcraft’s highest levels.
+        - A platform where you can constantly learn and grow as a player.
+        - A great social environment with an active Discord for WoW and even other gaming interests!
+        - Memes. So many memes.
+      `
     },
     { 
       name: '\u200b',  
+      value : `If you're an exceptional player and your class isn't listed, we still encourage you to apply. Exceptional players will always be considered regardless of class or spec.`
+    },
+    { 
+      name: '\u200b',  
+      value : `\u200b`
+    },
+    { 
+      name: 'Need to know more? Contact these guys!',  
       value : 'Contact <@101060314950283264>, <@230118286229110784>, <@105035733558890496> or <@205969498908524544> if you have any questions.'
     },
   )

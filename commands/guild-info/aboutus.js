@@ -9,11 +9,11 @@ const variables = new Keyv('sqlite://../../database.sqlite3', { namespace: "vari
 
 const getEmbed = () => new discord.MessageEmbed()
   .setTitle("<:alliance:615534209712521227> About Us")
-  .setDescription(`**<SeriouslyCasual>** is an Alliance Mythic raiding guild on **Silvermoon-EU**.
+  .setDescription(`**<SeriouslyCasual>** is a two-day Alliance mythic raiding guild. We were founded in 2013 and continue to progress every raid tier at Silvermoon-EU. 
   
-    The guild was founded on Darksorrow-EU back in 2013 and transferred onto Silvermoon-EU in 2019.
+  Our aim is to obtain every Cutting Edge achievement there is while respecting the fact this game is NOT someone’s second job.
 
-    We are a two-day raiding guild that aims to achieve cutting edge each raiding tier and as such, any applicants must be aware of these goals.
+  If you’re a fan of banter, memes, and high-end progression, then welcome to your new home.
   `)
   .setColor("GREEN");
 
