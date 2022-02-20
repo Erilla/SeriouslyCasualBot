@@ -2,6 +2,7 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
+const { deployCommands } = require('./deploy-commands');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
@@ -15,6 +16,8 @@ for (const file of commandFiles) {
 	// With the key as the command name and the value as the exported module
 	client.commands.set(command.data.name, command);
 }
+
+deployCommands();
 
 // When the client is ready, run this code (only once)
 client.once('ready', c => {

@@ -7,27 +7,31 @@ const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 const commandPermissions = [];
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	commands.push(command.data.toJSON());
-	commandPermissions.push({ name: command.data.name, permissions: command.permissions });
-}
-
 const rest = new REST({ version: '9' }).setToken(token);
 
-rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-	.then((response) => {
-		console.log('Successfully registered application commands.');
-		response.forEach(registeredCommand => {
-			const permissions = commandPermissions.find(p => p.name === registeredCommand.name).permissions;
-			applyPermissions(registeredCommand.id, permissions);
-		});
+function deployCommands() {
+	for (const file of commandFiles) {
+		const command = require(`./commands/${file}`);
+		commands.push(command.data.toJSON());
+		commandPermissions.push({ name: command.data.name, permissions: command.permissions });
+	}
 
-	})
-	.catch(console.error);
+	rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+		.then((response) => {
+			console.log('Successfully registered application commands.');
+			response.forEach(registeredCommand => {
+				const permissions = commandPermissions.find(p => p.name === registeredCommand.name).permissions;
+				applyPermissions(registeredCommand.id, permissions);
+			});
+
+		})
+		.catch(console.error);
+}
 
 function applyPermissions(commandId, permissions) {
 	rest.put(Routes.applicationCommandPermissions(clientId, guildId, commandId), { body: { permissions: permissions } })
 		.then(() => console.log(`Successfully applied permission to ${commandId}`))
 		.catch(console.error);
 }
+
+exports.deployCommands = deployCommands;
