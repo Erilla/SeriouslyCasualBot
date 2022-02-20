@@ -3,5 +3,7 @@
 	"guildId": "GUILDID (SERVER ID)",
 	"token": "TOKEN (BOT TOKEN)",
     "guildInfoChannelId": "GUILDINFO CHANNELID",
-    "applicationChannelUrl": "APPLICATION CHANNEL URL"
+    "applicationChannelUrl": "APPLICATION CHANNEL URL",
+	"adminRoleId": "ADMIN ROLE ID"
+
 }

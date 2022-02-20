@@ -4,13 +4,16 @@ const { updateAboutUs } = require('../functions/guild-info/updateAboutUs');
 const { updateSchedule } = require('../functions/guild-info/updateSchedule');
 const { updateRecruitment } = require('../functions/guild-info/updateRecruitment');
 const { updateAchievements } = require('../functions/guild-info/updateAchievements');
-const { guildInfoChannelId } = require('../config.json');
+const { guildInfoChannelId, adminRoleId } = require('../config.json');
 const wait = require('util').promisify(setTimeout);
 
+const command = new SlashCommandBuilder()
+	.setName('guildinfo')
+	.setDescription('Update for Guild information sections')
+	.setDefaultPermission(false);
+
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('guildinfo')
-		.setDescription('Update for Guild information sections'),
+	data: command,
 	async execute(interaction) {
 		if (!interaction.isCommand()) return;
 
@@ -27,4 +30,11 @@ module.exports = {
 			await interaction.deleteReply();
 		}
 	},
+	permissions: [
+		{
+			id: adminRoleId,
+			type: 1,
+			permission: true,
+		},
+	],
 };

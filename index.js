@@ -4,7 +4,7 @@ const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -24,12 +24,12 @@ client.once('ready', c => {
 client.on('interactionCreate', async interaction => {
 	console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`);
 
-	const command = client.commands.get(interaction.commandName);
+	const executedCommand = client.commands.get(interaction.commandName);
 
-	if (!command) return;
+	if (!executedCommand) return;
 
 	try {
-		await command.execute(interaction);
+		await executedCommand.execute(interaction);
 	}
 	catch (error) {
 		console.error(error);
