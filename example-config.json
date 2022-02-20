@@ -4,6 +4,8 @@
 	"token": "${TOKEN}",
     "guildInfoChannelId": "${GUILD_INFO_CHANNEL_ID}",
     "applicationChannelUrl": "${APPLICATION_CHANNEL_URL}",
-	"adminRoleId": "${ADMIN_ROLE_ID}"
-
+	"adminRoleId": "${ADMIN_ROLE_ID}",
+	"applicationsCategoryId": "${APPLICATION_CATEGORY_ID}",
+	"applicationsViewerChannelId": "${APPLICATION_VIEWER_CHANNEL_ID}",
+	"applicationCloneDelay": 2000
 }
