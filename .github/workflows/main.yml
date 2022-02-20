@@ -18,6 +18,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+
+    - name: replace_envs
+      # uses: franzbischoff/replace_envs@7d7bb985ee9f2406b8d92bf45c53688430666b84
+      uses: franzbischoff/replace_envs@v1
+      env:
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        GUILD_ID: ${{ secrets.GUILD_ID }}
+        TOKEN: ${{ secrets.TOKEN }}
+        GUILD_INFO_CHANNEL_ID: ${{ secrets.GUILD_INFO_CHANNEL_ID }}
+        APPLICATION_CHANNEL_URL: ${{ secrets.APPLICATION_CHANNEL_URL }}
+        ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
+      with:
+        # Origin file
+        from_file: 'example-config.json'
+        # Destination file
+        to_file: 'config.json'
+        # Commit changes?
+        commit: false
         
     - name: List output files
       run: ls
