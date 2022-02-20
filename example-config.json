@@ -1,9 +1,9 @@
 {
-	"clientId": "CLIENTID (BOT ID)",
-	"guildId": "GUILDID (SERVER ID)",
-	"token": "TOKEN (BOT TOKEN)",
-    "guildInfoChannelId": "GUILDINFO CHANNELID",
-    "applicationChannelUrl": "APPLICATION CHANNEL URL",
-	"adminRoleId": "ADMIN ROLE ID"
+	"clientId": "${CLIENT_ID}",
+	"guildId": "${GUILD_ID}",
+	"token": "${TOKEN}",
+    "guildInfoChannelId": "${GUILD_INFO_CHANNEL_ID}",
+    "applicationChannelUrl": "${APPLICATION_CHANNEL_URL}",
+	"adminRoleId": "${ADMIN_ROLE_ID}"
 
 }
