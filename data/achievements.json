@@ -1,0 +1,99 @@
+{
+    "title": "🏆 Current Progress & Past Achievements",
+    "achievements": [{
+        "raid": "Sanctum of Domination",
+        "progress": "10/10M",
+        "result": "**CE** WR 1463",
+        "expansion": 5
+    },
+    {
+        "raid": "Castle Nathria",
+        "progress": "10/10M",
+        "result": "**CE** WR 2030",
+        "expansion": 5
+    },
+    {
+        "raid": "Ny'alotha, the Waking City",
+        "progress": "12/12M",
+        "result": "**CE** WR 1173",
+        "expansion": 4
+    },
+    {
+        "raid": "The Eternal Palace",
+        "progress": "8/8M",
+        "result": "**CE** WR 1079",
+        "expansion": 4
+    },
+    {
+        "raid": "Crucible of Storms",
+        "progress": "2/2H",
+        "result": "<:PepeHands:575986802108792842>",
+        "expansion": 4
+    },
+    {
+        "raid": "Battle of Dazar'alor",
+        "progress": "9/9M",
+        "result": "**CE** WR 1478",
+        "expansion": 4
+    },
+    {
+        "raid": "Uldir",
+        "progress": "8/8M",
+        "result": "**CE** WR 1530",
+        "expansion": 4
+    },
+    {
+        "raid": "Antorus, the Burning Throne",
+        "progress": "11/11M",
+        "result": "**CE** WR 1237",
+        "expansion": 3
+    },
+    {
+        "raid": "Tomb of Sargeras",
+        "progress": "8/9M",
+        "result": "WR 975",
+        "expansion": 3
+    },
+    {
+        "raid": "The Nighthold",
+        "progress": "10/10M",
+        "result": "**CE** WR 1301",
+        "expansion": 3
+    },
+    {
+        "raid": "Trial of Valor",
+        "progress": "3/3M",
+        "result": "**CE** WR 1216",
+        "expansion": 3
+    },
+    {
+        "raid": "The Emerald Nightmare",
+        "progress": "7/7M",
+        "result": "**CE** WR 818",
+        "expansion": 3
+    },
+    {
+        "raid": "Hellfire Citadel",
+        "progress": "13/13M",
+        "result": "**CE** WR 1170",
+        "expansion": 2
+    },
+    {
+        "raid": "Blackrock Foundry",
+        "progress": "8/10M",
+        "result": "WR 1132",
+        "expansion": 2
+    },
+    {
+        "raid": "Highmaul",
+        "progress": "7/7M",
+        "result": "**CE** WR 1252",
+        "expansion": 2
+    },
+    {
+        "raid": "Siege of Orgrimmar (10 man)",
+        "progress": "14/14HC",
+        "result": "**CE** WR 1997",
+        "expansion": 1
+    }]
+}
