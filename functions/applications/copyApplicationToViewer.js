@@ -57,6 +57,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 		.send(applicationMessages[0])
 		.then(async message => {
 			console.log(`Created message for ${viewerChannel.name}: ${message.id}`);
+			await message.suppressEmbeds(true);
 			await message
 				.startThread({
 					name: `${newChannel.name} discussion`,
@@ -64,9 +65,14 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 				.then(thread => {
 					if (applicationMessages.length > 1) {
 						applicationMessages.slice(1).forEach(applicationMessage => {
-							thread.send(applicationMessage);
+							thread
+								.send(applicationMessage)
+								.then(async threadMessage => {
+									await threadMessage.suppressEmbeds(true);
+								});
 						});
 					}
+
 					openApplications.set(newChannel.id, thread.id);
 				})
 				.catch(console.error);

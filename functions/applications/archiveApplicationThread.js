@@ -7,7 +7,7 @@ openApplications.on('error', err => console.error('Keyv connection error:', err)
 async function archiveApplicationThread(deletedChannel) {
 	console.log('Archiving application thread...');
 	const threadId = await openApplications.get(deletedChannel.id);
-	if (threadId.length) {
+	if (threadId && threadId.length) {
 		deletedChannel.guild.channels
 			.fetch(applicationsViewerChannelId)
 			.then(applicationViewerChannel => {
