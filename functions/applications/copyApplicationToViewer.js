@@ -1,5 +1,9 @@
-const { applicationsViewerChannelId, applicationCloneDelay } = require('../../config.json');
+const { applicationsViewerChannelId, applicationCloneDelay, databaseString } = require('../../config.json');
 const wait = require('util').promisify(setTimeout);
+const Keyv = require('keyv');
+
+const openApplications = new Keyv(databaseString);
+openApplications.on('error', err => console.error('Keyv connection error:', err));
 
 async function copyApplicationToViewer(newChannel) {
 	console.log('Copying new application to viewer...');
@@ -63,6 +67,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 							thread.send(applicationMessage);
 						});
 					}
+					openApplications.set(newChannel.id, thread.id);
 				})
 				.catch(console.error);
 		})
