@@ -8,21 +8,35 @@ async function archiveApplicationThread(deletedChannel) {
 	console.log('Archiving application thread...');
 	const threadId = await openApplications.get(deletedChannel.id);
 	if (threadId && threadId.length) {
+		console.log(`ThreadId ${threadId} found, continuing to archive...`);
+
 		deletedChannel.guild.channels
 			.fetch(applicationsViewerChannelId)
 			.then(applicationViewerChannel => {
+				console.log(`Channel ${applicationViewerChannel.id} found, continuing to archive...`);
+
 				applicationViewerChannel.threads
 					.fetch(threadId)
 					.then(async thread => {
 						if (thread) {
-							await thread.send('Application closed - Archiving Thread');
+							console.log(`Thread ${thread.id} found, continuing to archive...`);
+
 							await thread.setArchived(true);
+							await thread.send('Application closed - Archiving Thread');
+						}
+						else {
+							await thread.send('Thread not found, stopping...');
 						}
 					});
 			});
+
+		console.log('Removing link between channel and thread...');
+
 		openApplications.delete(deletedChannel.id);
 	}
-	console.log('Archive application thread completed.');
+	else {
+		console.log('No ThreadId found, stopping...');
+	}
 }
 
 exports.archiveApplicationThread = archiveApplicationThread;

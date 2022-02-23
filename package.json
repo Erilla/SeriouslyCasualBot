@@ -4,6 +4,7 @@
     "@discordjs/rest": "^0.3.0",
     "@keyv/sqlite": "^3.0.0",
     "discord-api-types": "^0.27.2",
+    "discord-logs": "^2.0.1",
     "discord.js": "^13.6.0",
     "keyv": "^4.1.1",
     "nodaemon": "^0.0.5"
