@@ -8,6 +8,11 @@ openApplications.on('error', err => console.error('Keyv connection error:', err)
 async function copyApplicationToViewer(newChannel) {
 	console.log('Copying new application to viewer...');
 
+	if (await openApplications.get(newChannel.id)) {
+		console.log(`${newChannel.name} already linked.`);
+		return;
+	}
+
 	await wait(applicationCloneDelay);
 
 	console.log(`Wait ${applicationCloneDelay} complete, continuing...`);
