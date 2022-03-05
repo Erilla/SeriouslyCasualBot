@@ -31,12 +31,11 @@ async function copyApplicationToViewer(newChannel) {
 				.then(async viewerChannel => {
 					console.log(`Found viewer channel ${viewerChannel.id}...`);
 
-					await postApplicationMessages(newChannel, viewerChannel, applicationMessages);
-
-					console.log('Messaged posted.');
+					return await postApplicationMessages(newChannel, viewerChannel, applicationMessages);
 				})
 				.catch(console.error);
-		});
+		})
+		.catch(console.error);
 }
 
 async function retrieveApplication(newChannel) {
@@ -99,7 +98,8 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 								.send(applicationMessage)
 								.then(async threadMessage => {
 									await threadMessage.suppressEmbeds(true);
-								});
+								})
+								.catch(console.error);
 						});
 
 						console.log('Thread messages done.');
@@ -108,6 +108,8 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					console.log('Setting link between new channel id and thread id.');
 
 					openApplications.set(newChannel.id, thread.id);
+
+					return thread.id;
 				})
 				.catch(console.error);
 		})

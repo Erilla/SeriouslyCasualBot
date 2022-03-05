@@ -21,14 +21,16 @@ async function archiveApplicationThread(deletedChannel) {
 						if (thread) {
 							console.log(`Thread ${thread.id} found, continuing to archive...`);
 
-							await thread.setArchived(true);
 							await thread.send('Application closed - Archiving Thread');
+							await thread.setArchived(true, 'Application closed - Archiving Thread');
 						}
 						else {
 							await thread.send('Thread not found, stopping...');
 						}
-					});
-			});
+					})
+					.catch(console.error);
+			})
+			.catch(console.error);
 
 		console.log('Removing link between channel and thread...');
 
