@@ -16,9 +16,15 @@ async function keepApplicationThreadAlive(applicationChannel, threadId) {
 				.fetch(threadId)
 				.then(async thread => {
 					if (thread) {
-						console.log(`${new Date().toLocaleString()}: Thread ${thread.id} found...`);
+						console.log(`${new Date().toLocaleString()}: Thread ${thread.name} found...`);
+						if (thread.archived) {
+							console.log(`${new Date().toLocaleString()}: Thread ${thread.name} is archived, sending message to keep alive`);
 
-						await thread.send(`${new Date().toLocaleString()}: <@&${adminRoleId}> Application still open - Keeping thread alive`);
+							await thread.send(`<@&${adminRoleId}> Application still open - Keeping thread alive`);
+						}
+						else {
+							console.log(`${new Date().toLocaleString()}: Thread ${thread.name} is active, skipping`);
+						}
 					}
 					else {
 						console.log(`${new Date().toLocaleString()}: Thread not found, stopping...`);
