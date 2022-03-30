@@ -1,6 +1,11 @@
 {
     "title": "🏆 Current Progress & Past Achievements",
     "achievements": [{
+        "raid": "Sepulcher of the First Ones",
+        "progress": "2/10M",
+        "result": "",
+        "expansion": 5
+    },{
         "raid": "Sanctum of Domination",
         "progress": "10/10M",
         "result": "**CE** WR 1463",
