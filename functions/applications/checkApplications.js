@@ -10,7 +10,7 @@ openApplications.on('error', err => console.error('Keyv connection error:', err)
 async function checkApplications(client) {
 	console.log(`${new Date().toLocaleString()}: Setting up Check Applications...`);
 
-	const checkminutes = 0.5, checkthe_interval = checkminutes * 60 * 1000;
+	const checkminutes = 5, checkthe_interval = checkminutes * 60 * 1000;
 	setInterval(async () => {
 		console.log(`${new Date().toLocaleString()}: Checking Applications...`);
 
