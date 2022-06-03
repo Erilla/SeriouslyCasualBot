@@ -4,13 +4,13 @@ const { copyApplicationToViewer } = require('./copyApplicationToViewer');
 const { archiveApplicationThreads } = require('./archiveApplicationThreads');
 const { keepApplicationThreadAlive } = require('./keepApplicationThreadAlive');
 
-const openApplications = new Keyv(databaseString);
+const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
 openApplications.on('error', err => console.error('Keyv connection error:', err));
 
 async function checkApplications(client) {
-	console.log(`${new Date().toLocaleString()}: Setting up Check Applications...`);
-
 	const checkminutes = 5, checkthe_interval = checkminutes * 60 * 1000;
+	console.log(`${new Date().toLocaleString()}: Setting up Check Applications (every ${checkminutes} minutes)...`);
+
 	setInterval(async () => {
 		console.log(`${new Date().toLocaleString()}: Checking Applications...`);
 

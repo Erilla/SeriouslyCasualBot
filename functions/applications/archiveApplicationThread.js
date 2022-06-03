@@ -1,7 +1,7 @@
 const { applicationsViewerChannelId, databaseString } = require('../../config.json');
 const Keyv = require('keyv');
 
-const openApplications = new Keyv(databaseString);
+const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
 openApplications.on('error', err => console.error('Keyv connection error:', err));
 
 async function archiveApplicationThread(deletedChannel) {

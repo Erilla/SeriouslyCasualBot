@@ -2,7 +2,7 @@ const { applicationsViewerChannelId, applicationCloneDelay, databaseString } = r
 const wait = require('util').promisify(setTimeout);
 const Keyv = require('keyv');
 
-const openApplications = new Keyv(databaseString);
+const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
 openApplications.on('error', err => console.error('Keyv connection error:', err));
 
 async function copyApplicationToViewer(newChannel) {
@@ -108,6 +108,15 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					console.log('Setting link between new channel id and thread id.');
 
 					openApplications.set(newChannel.id, thread.id);
+
+					// Ryan
+					thread.members.add('105035733558890496');
+
+					// Warz
+					thread.members.add('205969498908524544');
+
+					// Bing
+					thread.members.add('230118286229110784');
 
 					return thread.id;
 				})
