@@ -87,14 +87,14 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 				.startThread({
 					name: `${newChannel.name} discussion`,
 				})
-				.then(thread => {
+				.then(async thread => {
 					console.log(`Thread created: ${thread.id}`);
 
 					if (applicationMessages.length > 1) {
 						console.log('Posting additional application messages into thread...');
 
-						applicationMessages.slice(1).forEach(applicationMessage => {
-							thread
+						await applicationMessages.slice(1).forEach(async applicationMessage => {
+							await thread
 								.send(applicationMessage)
 								.then(async threadMessage => {
 									await threadMessage.suppressEmbeds(true);
@@ -107,16 +107,16 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 
 					console.log('Setting link between new channel id and thread id.');
 
-					openApplications.set(newChannel.id, thread.id);
+					await openApplications.set(newChannel.id, thread.id);
 
 					// Ryan
-					thread.members.add('105035733558890496');
+					await thread.members.add('105035733558890496');
 
 					// Warz
-					thread.members.add('205969498908524544');
+					await thread.members.add('205969498908524544');
 
 					// Bing
-					thread.members.add('230118286229110784');
+					await thread.members.add('230118286229110784');
 
 					return thread.id;
 				})
