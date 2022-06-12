@@ -13,7 +13,12 @@ module.exports = {
 
 		console.log(`${new Date().toLocaleString()}: Setting up Update Achievements (every ${checkminutes} minutes)...`);
 		setInterval(async () => {
-			updateAchievements({ client });
+			try {
+				updateAchievements({ client });
+			}
+			catch {
+				console.log(`${new Date().toLocaleString()}: Failed to update achievements.`);
+			}
 		}, checkthe_interval);
 	},
 };
