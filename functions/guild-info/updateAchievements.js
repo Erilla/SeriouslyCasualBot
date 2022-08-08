@@ -32,8 +32,8 @@ async function updateAchievements(interaction) {
 			if (raidStaticDataResponse?.response?.status && raidStaticDataResponse?.response?.status === 500) {
 				complete = true;
 			}
-			else {
-				raidStaticDataResponse.raids.sort((a, b) => {
+			else if (raidStaticDataResponse?.raids) {
+				raidStaticDataResponse?.raids?.sort((a, b) => {
 					if (a.ends.eu === null) return 1;
 					return (a.ends.eu > b.ends.eu) ? 1 : -1;
 				});
@@ -74,6 +74,10 @@ async function updateAchievements(interaction) {
 					}
 				}
 			}
+			else {
+				throw 'No raids found';
+			}
+
 		}
 
 		expansion++;
