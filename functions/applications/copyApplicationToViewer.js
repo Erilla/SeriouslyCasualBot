@@ -118,6 +118,9 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					// Bing
 					await thread.members.add('230118286229110784');
 
+					// Mart
+					await thread.members.add('135853920286146560');
+
 					return thread.id;
 				})
 				.catch(console.error);
