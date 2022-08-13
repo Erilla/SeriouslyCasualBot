@@ -1,28 +1,28 @@
 const { guildInfoChannelId } = require('../../config.json');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
 const aboutUsContent = require('../../data/aboutus.json');
 
 function updateAboutUs(interaction) {
 	console.log('Updating About Us...');
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(aboutUsContent.title)
 		.setDescription(aboutUsContent.content)
-		.setColor('GREEN');
-	const row = new MessageActionRow()
+		.setColor(Colors.Green);
+	const row = new ActionRowBuilder()
 		.addComponents(
-			new MessageButton()
+			new ButtonBuilder()
 				.setLabel('RaiderIO')
-				.setStyle('LINK')
+				.setStyle(ButtonStyle.Link)
 				.setURL(aboutUsContent.raiderioUrl)
 				.setEmoji(aboutUsContent.raiderioIcon),
-			new MessageButton()
+			new ButtonBuilder()
 				.setLabel('WoWProgress')
-				.setStyle('LINK')
+				.setStyle(ButtonStyle.Link)
 				.setURL(aboutUsContent.wowProgressUrl)
 				.setEmoji(aboutUsContent.wowProgrsesIcon),
-			new MessageButton()
+			new ButtonBuilder()
 				.setLabel('Warcraft Logs')
-				.setStyle('LINK')
+				.setStyle(ButtonStyle.Link)
 				.setURL(aboutUsContent.warcraftLogsUrl)
 				.setEmoji(aboutUsContent.warcraftLogsIcon),
 		);

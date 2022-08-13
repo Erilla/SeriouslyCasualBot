@@ -1,5 +1,5 @@
 const { guildInfoChannelId } = require('../../config.json');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, Colors } = require('discord.js');
 const scheduleContent = require('../../data/schedule.json');
 
 function updateSchedule(interaction) {
@@ -11,7 +11,7 @@ function updateSchedule(interaction) {
 	};
 	buildSchedule(content);
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(scheduleContent.title)
 		.addFields({
 			name: 'Day',
@@ -29,7 +29,7 @@ function updateSchedule(interaction) {
 			inline: true,
 		})
 		.setFooter({ text: scheduleContent.timeZone })
-		.setColor('GREEN');
+		.setColor(Colors.Green);
 
 	const channel = interaction.client.channels.cache.get(guildInfoChannelId);
 	channel.send({ embeds: [embed] });

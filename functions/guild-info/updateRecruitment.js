@@ -1,5 +1,5 @@
 const { guildInfoChannelId, applicationChannelUrl } = require('../../config.json');
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require('discord.js');
 const recruitmentContent = require('../../data/recruitment.json');
 
 function updateRecruitment(interaction) {
@@ -8,16 +8,16 @@ function updateRecruitment(interaction) {
 	const contentBody = [];
 	buildRecruitmentBody(contentBody);
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(recruitmentContent.title)
 		.addFields(contentBody)
-		.setColor('GREEN');
+		.setColor(Colors.Green);
 
-	const row = new MessageActionRow()
+	const row = new ActionRowBuilder()
 		.addComponents(
-			new MessageButton()
+			new ButtonBuilder()
 				.setLabel('Apply Here')
-				.setStyle('LINK')
+				.setStyle(ButtonStyle.Link)
 				.setURL(applicationChannelUrl),
 		);
 

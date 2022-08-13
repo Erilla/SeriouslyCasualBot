@@ -1,5 +1,5 @@
 const { guildInfoChannelId, databaseString } = require('../../config.json');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder, Colors } = require('discord.js');
 const achievementsContent = require('../../data/achievements.json');
 const { getRaidRankings, getRaidStaticData } = require('../../services/raiderioService');
 const Keyv = require('keyv');
@@ -139,7 +139,7 @@ function buildAchievement(raidName, progress, worldRanking) {
 
 async function postAchievements(interaction) {
 
-	const embed = new MessageEmbed()
+	const embed = new EmbedBuilder()
 		.setTitle(achievementsContent.title)
 		.addFields({
 			name: 'Raid',
@@ -156,7 +156,7 @@ async function postAchievements(interaction) {
 			value: `${worldRankingstring}`,
 			inline: true,
 		})
-		.setColor('GREEN');
+		.setColor(Colors.Green);
 
 	const channel = interaction.client.channels.cache.get(guildInfoChannelId);
 	const achievementsPostId = await guildinfoData.get('achievementsPostId');
