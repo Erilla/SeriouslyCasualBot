@@ -26,11 +26,11 @@ async function checkApplications(client) {
 						channels.forEach(async channel => {
 							if (channel.id === applicationsCategoryId) {
 								const trackedCategoryChannel = channel;
-								console.log(`${new Date().toLocaleString()}: Channels in tracked category: ${trackedCategoryChannel.children.size}`);
+								console.log(`${new Date().toLocaleString()}: Channels in tracked category: ${trackedCategoryChannel.children.cache.size}`);
 
-								if (trackedCategoryChannel.children.size) {
+								if (trackedCategoryChannel.children.cache.size) {
 									// eslint-disable-next-line max-nested-callbacks
-									trackedCategoryChannel.children.forEach(async trackedChannel => {
+									trackedCategoryChannel.children.cache.forEach(async trackedChannel => {
 										const trackedChannelThreadId = await openApplications.get(trackedChannel.id);
 										if (typeof trackedChannelThreadId === 'undefined') {
 											await copyApplicationToViewer(trackedChannel);
