@@ -28,6 +28,8 @@ async function updateAchievements(interaction) {
 		else {
 			console.log(`Getting Static Data for Expansion ${expansion}...`);
 
+			let error = 0;
+
 			const raidStaticDataResponse = await getRaidStaticData(expansion);
 			if (raidStaticDataResponse?.response?.status && raidStaticDataResponse?.response?.status === 500) {
 				complete = true;
@@ -50,34 +52,42 @@ async function updateAchievements(interaction) {
 
 					let raidRanking;
 
-					if (raidRankingsResponse.raidRankings.length > 2) {
-						let encountersDefeated = 0;
+					if (raidRankingsResponse && raidRankingsResponse.raidRankings) {
+						if (raidRankingsResponse.raidRankings.length > 2) {
+							let encountersDefeated = 0;
 
-						for (const tempRaidRanking of raidRankingsResponse.raidRankings) {
-							if (encountersDefeated < tempRaidRanking.encountersDefeated.length) {
-								encountersDefeated = tempRaidRanking.encountersDefeated.length;
-								raidRanking = tempRaidRanking;
+							for (const tempRaidRanking of raidRankingsResponse.raidRankings) {
+								if (encountersDefeated < tempRaidRanking.encountersDefeated.length) {
+									encountersDefeated = tempRaidRanking.encountersDefeated.length;
+									raidRanking = tempRaidRanking;
+								}
 							}
+						}
+						else {
+							raidRanking = raidRankingsResponse.raidRankings[0];
+						}
+
+						const killedBosses = getKilledNumberBosses(raidRanking);
+						const isCuttingEdge = checkIsCuttingEdge(raid, tierEndDate, raidRanking);
+						const worldRanking = getRaidWorldRanking(tierEndDate, raidRanking, isCuttingEdge);
+						const progress = buildProgress(killedBosses, totalBosses);
+
+						if (killedBosses) {
+							buildAchievement(raidName, progress, worldRanking, isCuttingEdge);
 						}
 					}
 					else {
-						raidRanking = raidRankingsResponse.raidRankings[0];
-					}
-
-					const killedBosses = getKilledNumberBosses(raidRanking);
-					const isCuttingEdge = checkIsCuttingEdge(raid, tierEndDate, raidRanking);
-					const worldRanking = getRaidWorldRanking(tierEndDate, raidRanking, isCuttingEdge);
-					const progress = buildProgress(killedBosses, totalBosses);
-
-					if (killedBosses) {
-						buildAchievement(raidName, progress, worldRanking, isCuttingEdge);
+						error = 1;
 					}
 				}
 			}
 			else {
-				throw 'No raids found';
+				error = 1;
 			}
 
+			if (error) {
+				throw 'Error has occurred';
+			}
 		}
 
 		expansion++;
