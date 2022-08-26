@@ -2,5 +2,5 @@
     "title": "📆 Raid Schedule",
     "raidDays": ["Wednesday", "Sunday"],
     "raidTimes": ["20:00 - 23:00"],
-    "timeZone": "Server Time (GMT +1)"
+    "timeZone": "Server Time (CEST +1)"
 }
