@@ -28,6 +28,7 @@ jobs:
         ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
         APPLICATION_CATEGORY_ID: ${{ secrets.APPLICATION_CATEGORY_ID }}
         APPLICATION_VIEWER_CHANNEL_ID: ${{ secrets.APPLICATION_VIEWER_CHANNEL_ID }}
+        TRIAL_REVIEW_CHANNEL_ID: ${{ secrets.TRIAL_REVIEW_CHANNEL_ID }}
 
       with:
         # Origin file
