@@ -1,6 +1,7 @@
 const { trialReviewChannelId, databaseString } = require('../../config.json');
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { generateTrialReviewContent } = require('./generateTrialReviewContent');
+const { generateTrialLogsContent } = require('./generateTrialLogsContent');
 const { changeTrialInfo } = require('./changeTrialInfo');
 const Keyv = require('keyv');
 
@@ -40,9 +41,11 @@ async function createTrialReviewThread(client, trial) {
 
 			trial.trialReviewId = message.id;
 
-			await changeTrialInfo(client, thread.id, trial);
+			const trialLogsContent = await generateTrialLogsContent(trial);
+			const trialLogsMessage = await thread.send(trialLogsContent);
+			trial.trialLogsId = trialLogsMessage.id;
 
-			// thread.send('Logs:');
+			await changeTrialInfo(client, thread.id, trial);
 		})
 		.catch(console.error);
 

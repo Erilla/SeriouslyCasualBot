@@ -3,6 +3,7 @@ const { createTrialInfoModal } = require('../functions/trial-review/trialInfoMod
 const { getCurrentTrials } = require('../functions/trial-review/getCurrentTrials');
 const { removeTrial } = require('../functions/trial-review/removeTrial');
 const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo');
+const { updateTrialLogs } = require('../functions/trial-review/updateTrialLogs');
 
 const command = new SlashCommandBuilder()
 	.setName('trials')
@@ -40,6 +41,10 @@ const command = new SlashCommandBuilder()
 			.addStringOption(option =>
 				option.setName('start_date')
 					.setDescription('The start date of the trial (in YYYY-MM-DD)')))
+	.addSubcommand(subcommand =>
+		subcommand
+			.setName('update_trial_logs')
+			.setDescription('Updates all messages with trial logs'))
 	;
 
 module.exports = {
@@ -88,6 +93,15 @@ module.exports = {
 
 			await interaction.reply({
 				content: `Successfully updated Trial with thread Id ${threadId}`,
+				ephemeral: true,
+			});
+		}
+		else if (interaction.options.getSubcommand() === 'update_trial_logs') {
+
+			await updateTrialLogs(interaction.client);
+
+			await interaction.reply({
+				content: 'Trial Logs updated',
 				ephemeral: true,
 			});
 		}
