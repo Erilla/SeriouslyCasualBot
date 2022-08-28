@@ -19,6 +19,12 @@ async function createTrialReviewThread(client, trial) {
 	const row = new ActionRowBuilder()
 		.addComponents(
 			new ButtonBuilder()
+				.setCustomId('updateTrialInfo')
+				.setLabel('Update')
+				.setStyle(ButtonStyle.Primary),
+		)
+		.addComponents(
+			new ButtonBuilder()
 				.setCustomId('closeTrial')
 				.setLabel('Close')
 				.setStyle(ButtonStyle.Danger),

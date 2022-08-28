@@ -1,4 +1,9 @@
 const { removeTrial } = require('../functions/trial-review/removeTrial');
+const { updateTrialInfoModal } = require('../functions/trial-review/trialInfoModal');
+const { createTrialReviewThread } = require('../functions/trial-review/createTrialReviewThread');
+const { dateInputValidator } = require('../functions/trial-review/dateInputValidator');
+const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo');
+const wait = require('util').promisify(setTimeout);
 
 module.exports = {
 	name: 'interactionCreate',
@@ -27,11 +32,59 @@ module.exports = {
 				await interaction.message.thread.setArchived(true);
 
 				return interaction.update({
-					content: `**TRIAL ENDED**\n${interaction.message}`,
+					content: `:red_square: **TRIAL ENDED** :red_square:\n${interaction.message}`,
 					components: [],
 					ephemeral: true,
 				});
 
+			}
+			else if (interaction.customId === 'updateTrialInfo') {
+				await updateTrialInfoModal(interaction);
+			}
+		}
+		else if (interaction.isModalSubmit()) {
+			if (interaction.customId === 'addNewTrialInfoModal') {
+				const characterName = interaction.fields.getTextInputValue('characterNameInput');
+				const role = interaction.fields.getTextInputValue('roleInput');
+				const startDate = interaction.fields.getTextInputValue('startDateInput');
+
+				if (dateInputValidator(startDate)) {
+					await createTrialReviewThread(interaction.client, { characterName, role, startDate: new Date(startDate) });
+
+					await interaction.reply({
+						content: 'Successfully created Trial Thread',
+					});
+					await wait(1000);
+					await interaction.deleteReply();
+				}
+				else {
+					await interaction.reply({
+						content: 'Invalid Date',
+					});
+					await wait(1000);
+					await interaction.deleteReply();
+				}
+			}
+			else if (interaction.customId === 'updateTrialInfoModal') {
+				const threadId = interaction.message.thread.id;
+				const characterName = interaction.fields.getTextInputValue('characterNameInput');
+				const role = interaction.fields.getTextInputValue('roleInput');
+				const startDate = interaction.fields.getTextInputValue('startDateInput');
+
+				const trial = {
+					characterName,
+					role,
+					startDate,
+				};
+
+				await changeTrialInfo(interaction.client, threadId, trial);
+
+				await interaction.reply({
+					content: `Successfully updated Trial with thread Id ${threadId}`,
+				});
+
+				await wait(1000);
+				await interaction.deleteReply();
 			}
 		}
 
