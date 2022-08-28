@@ -1,5 +1,6 @@
 const { checkApplications } = require('../functions/applications/checkApplications');
 const { updateAchievements } = require('../functions/guild-info/updateAchievements');
+const { updateTrialLogs } = require('../functions/trial-review/updateTrialLogs');
 
 module.exports = {
 	name: 'ready',
@@ -9,9 +10,9 @@ module.exports = {
 
 		checkApplications(client);
 
-		const checkminutes = 30, checkthe_interval = checkminutes * 60 * 1000;
+		const updateAchievementsMinutes = 30, updateAchievementsInterval = updateAchievementsMinutes * 60 * 1000;
 
-		console.log(`${new Date().toLocaleString()}: Setting up Update Achievements (every ${checkminutes} minutes)...`);
+		console.log(`${new Date().toLocaleString()}: Setting up Update Achievements (every ${updateAchievementsMinutes} minutes)...`);
 		setInterval(async () => {
 			try {
 				updateAchievements({ client });
@@ -19,6 +20,18 @@ module.exports = {
 			catch {
 				console.log(`${new Date().toLocaleString()}: Failed to update achievements.`);
 			}
-		}, checkthe_interval);
+		}, updateAchievementsInterval);
+
+		const updateTrialLogsMessageMinutes = 60, updateTrialLogsMessageMInterval = updateTrialLogsMessageMinutes * 60 * 1000;
+
+		console.log(`${new Date().toLocaleString()}: Setting up Update Trial Logs Messages (every ${updateTrialLogsMessageMinutes} minutes)...`);
+		setInterval(async () => {
+			try {
+				updateTrialLogs(client);
+			}
+			catch {
+				console.log(`${new Date().toLocaleString()}: Failed to update Trial Logs Messages.`);
+			}
+		}, updateTrialLogsMessageMInterval);
 	},
 };
