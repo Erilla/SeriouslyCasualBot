@@ -10,7 +10,7 @@ async function updateTrialLogs(client) {
 
 	// eslint-disable-next-line no-unused-vars
 	for await (const [key, value] of trials.iterator()) {
-		updateTrialLogsContent(client, value);
+		await updateTrialLogsContent(client, value);
 	}
 }
 
