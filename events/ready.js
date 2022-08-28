@@ -1,11 +1,14 @@
 const { checkApplications } = require('../functions/applications/checkApplications');
 const { updateAchievements } = require('../functions/guild-info/updateAchievements');
+const { getTrialLogs } = require('../functions/trial-review/getTrialLogs');
 
 module.exports = {
 	name: 'ready',
 	once: true,
-	execute(client) {
+	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
+
+		console.log(await getTrialLogs('Ryan'));
 
 		checkApplications(client);
 
