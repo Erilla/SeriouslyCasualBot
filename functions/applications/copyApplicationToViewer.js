@@ -1,6 +1,7 @@
 const { applicationsViewerChannelId, applicationCloneDelay, databaseString } = require('../../config.json');
 const wait = require('util').promisify(setTimeout);
 const Keyv = require('keyv');
+const { addOverlordsToThread } = require('../addOverlordsToThread');
 
 const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
 openApplications.on('error', err => console.error('Keyv connection error:', err));
@@ -109,17 +110,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 
 					await openApplications.set(newChannel.id, thread.id);
 
-					// Ryan
-					await thread.members.add('105035733558890496');
-
-					// Warz
-					await thread.members.add('205969498908524544');
-
-					// Bing
-					await thread.members.add('230118286229110784');
-
-					// Mart
-					await thread.members.add('135853920286146560');
+					await addOverlordsToThread(thread);
 
 					return thread.id;
 				})

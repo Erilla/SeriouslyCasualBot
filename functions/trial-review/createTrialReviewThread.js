@@ -4,6 +4,7 @@ const { generateTrialReviewContent } = require('./generateTrialReviewContent');
 const { generateTrialLogsContent } = require('./generateTrialLogsContent');
 const { changeTrialInfo } = require('./changeTrialInfo');
 const Keyv = require('keyv');
+const { addOverlordsToThread } = require('../addOverlordsToThread');
 
 const trials = new Keyv(databaseString, { namespace: 'trials' });
 trials.on('error', err => console.error('Keyv connection error:', err));
@@ -46,6 +47,8 @@ async function createTrialReviewThread(client, trial) {
 			trial.trialLogsId = trialLogsMessage.id;
 
 			await changeTrialInfo(client, thread.id, trial);
+
+			await addOverlordsToThread(thread);
 		})
 		.catch(console.error);
 
