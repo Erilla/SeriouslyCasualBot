@@ -1,5 +1,6 @@
 const { checkApplications } = require('../functions/applications/checkApplications');
 const { updateAchievements } = require('../functions/guild-info/updateAchievements');
+const { checkForReviewAlerts } = require('../functions/trial-review/checkForReviewAlerts');
 const { keepTrialThreadsAlive } = require('../functions/trial-review/keepTrialThreadsAlive');
 const { updateTrialLogs } = require('../functions/trial-review/updateTrialLogs');
 
@@ -48,5 +49,18 @@ module.exports = {
 				console.log(`${new Date().toLocaleString()}: Failed to Keep Trial Threads Alive.`);
 			}
 		}, keepTrialThreadsAliveMInterval);
+
+		const checkForReviewAlertsMinutes = 3, checkForReviewAlertsMInterval = checkForReviewAlertsMinutes * 60 * 1000;
+
+		console.log(`${new Date().toLocaleString()}: Setting up Check For Review Alerts (every ${checkForReviewAlertsMinutes} minutes)...`);
+		setInterval(async () => {
+			try {
+				console.log(`${new Date().toLocaleString()}: Checking for Review Alerts...`);
+				checkForReviewAlerts(client);
+			}
+			catch {
+				console.log(`${new Date().toLocaleString()}: Failed to Check For Review Alerts.`);
+			}
+		}, checkForReviewAlertsMInterval);
 	},
 };
