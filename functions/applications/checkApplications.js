@@ -1,8 +1,6 @@
 const { databaseString, applicationsCategoryId } = require('../../config.json');
 const Keyv = require('keyv');
 const { copyApplicationToViewer } = require('./copyApplicationToViewer');
-const { archiveApplicationThreads } = require('./archiveApplicationThreads');
-const { keepApplicationThreadAlive } = require('./keepApplicationThreadAlive');
 
 const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
 openApplications.on('error', err => console.error('Keyv connection error:', err));
@@ -35,13 +33,9 @@ async function checkApplications(client) {
 										if (typeof trackedChannelThreadId === 'undefined') {
 											await copyApplicationToViewer(trackedChannel);
 										}
-										else {
-											await keepApplicationThreadAlive(trackedChannel, trackedChannelThreadId);
-										}
 									});
 								}
 								else {
-									await archiveApplicationThreads(trackedCategoryChannel);
 									await openApplications.clear();
 								}
 

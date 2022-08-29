@@ -1,4 +1,5 @@
 const { checkApplications } = require('../functions/applications/checkApplications');
+const { keepApplicationThreadsAlive } = require('../functions/applications/keepApplicationThreadsAlive');
 const { updateAchievements } = require('../functions/guild-info/updateAchievements');
 const { checkForReviewAlerts } = require('../functions/trial-review/checkForReviewAlerts');
 const { keepTrialThreadsAlive } = require('../functions/trial-review/keepTrialThreadsAlive');
@@ -11,6 +12,18 @@ module.exports = {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 
 		checkApplications(client);
+
+		const keepApplicationThreadsAliveMinutes = 3, keepApplicationThreadsAliveInterval = keepApplicationThreadsAliveMinutes * 60 * 1000;
+
+		console.log(`${new Date().toLocaleString()}: Keeping Application Threads Alive (every ${keepApplicationThreadsAliveMinutes} minutes)...`);
+		setInterval(async () => {
+			try {
+				keepApplicationThreadsAlive(client);
+			}
+			catch {
+				console.log(`${new Date().toLocaleString()}: Failed to keep application threads alive.`);
+			}
+		}, keepApplicationThreadsAliveInterval);
 
 		const updateAchievementsMinutes = 30, updateAchievementsInterval = updateAchievementsMinutes * 60 * 1000;
 

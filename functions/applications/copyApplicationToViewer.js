@@ -2,9 +2,13 @@ const { applicationsViewerChannelId, applicationCloneDelay, databaseString } = r
 const wait = require('util').promisify(setTimeout);
 const Keyv = require('keyv');
 const { addOverlordsToThread } = require('../addOverlordsToThread');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
 openApplications.on('error', err => console.error('Keyv connection error:', err));
+
+const openApplicationThreads = new Keyv(databaseString, { namespace: 'openApplicationThreads' });
+openApplicationThreads.on('error', err => console.error('Keyv connection error:', err));
 
 async function copyApplicationToViewer(newChannel) {
 	console.log('Copying new application to viewer...');
@@ -76,8 +80,22 @@ function sliceApplicationMessages(applicationMessages, application) {
 async function postApplicationMessages(newChannel, viewerChannel, applicationMessages) {
 	console.log('Posting application to viewer channel...');
 
+	const row = new ActionRowBuilder()
+		.addComponents(
+			new ButtonBuilder()
+				.setCustomId('acceptedApplicant')
+				.setLabel('Accepted')
+				.setStyle(ButtonStyle.Success),
+		)
+		.addComponents(
+			new ButtonBuilder()
+				.setCustomId('rejectedApplicant')
+				.setLabel('Rejected')
+				.setStyle(ButtonStyle.Danger),
+		);
+
 	viewerChannel
-		.send(applicationMessages[0])
+		.send({ content:applicationMessages[0], components: [row], embeds: [] })
 		.then(async message => {
 			console.log(`Created message for ${viewerChannel.name}: ${message.id}`);
 
@@ -90,6 +108,8 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 				})
 				.then(async thread => {
 					console.log(`Thread created: ${thread.id}`);
+
+					await openApplicationThreads.set(thread.id);
 
 					if (applicationMessages.length > 1) {
 						console.log('Posting additional application messages into thread...');

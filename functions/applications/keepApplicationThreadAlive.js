@@ -1,38 +1,33 @@
 const { applicationsViewerChannelId, databaseString } = require('../../config.json');
 const Keyv = require('keyv');
 
-const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
-openApplications.on('error', err => console.error('Keyv connection error:', err));
+const openApplicationThreads = new Keyv(databaseString, { namespace: 'openApplicationThreads' });
+openApplicationThreads.on('error', err => console.error('Keyv connection error:', err));
 
 const adminRoleId = '255630010088423425';
 
-async function keepApplicationThreadAlive(applicationChannel, threadId) {
-	console.log(`${new Date().toLocaleString()}: Keeping application thread alive for ${applicationChannel.name}...`);
+async function keepApplicationThreadAlive(client, threadId) {
 
-	applicationChannel.guild.channels
-		.fetch(applicationsViewerChannelId)
-		.then(applicationViewerChannel => {
-			applicationViewerChannel.threads
-				.fetch(threadId)
-				.then(async thread => {
-					if (thread) {
-						console.log(`${new Date().toLocaleString()}: Thread ${thread.name} found...`);
-						if (thread.archived) {
-							console.log(`${new Date().toLocaleString()}: Thread ${thread.name} is archived, sending message to keep alive`);
+	const applicationViewerChannel = await client.channels.fetch(applicationsViewerChannelId);
+	const thread =
+		await applicationViewerChannel.threads
+			.fetch(threadId)
+			.catch(console.error);
 
-							await thread.send(`<@&${adminRoleId}> Application still open - Keeping thread alive`);
-						}
-						else {
-							console.log(`${new Date().toLocaleString()}: Thread ${thread.name} is active, skipping`);
-						}
-					}
-					else {
-						console.log(`${new Date().toLocaleString()}: Thread not found, stopping...`);
-					}
+	if (thread) {
+		if (thread.archived) {
+			thread.setArchived(false)
+				.then(newThread => {
+					console.log(`Keeping Thread Id ${newThread.id} alive`);
 				})
 				.catch(console.error);
-		})
-		.catch(console.error);
+			await thread.send(`<@&${adminRoleId}> Application still open - Keeping thread alive`);
+		}
+	}
+	else {
+		await openApplicationThreads.delete(threadId);
+		console.log(`Could not find Thread ${threadId}`);
+	}
 }
 
 exports.keepApplicationThreadAlive = keepApplicationThreadAlive;

@@ -1,9 +1,24 @@
 const { removeTrial } = require('../functions/trial-review/removeTrial');
-const { updateTrialInfoModal } = require('../functions/trial-review/trialInfoModal');
+const { updateTrialInfoModal, createTrialInfoModal } = require('../functions/trial-review/trialInfoModal');
 const { createTrialReviewThread } = require('../functions/trial-review/createTrialReviewThread');
 const { dateInputValidator } = require('../functions/trial-review/dateInputValidator');
 const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo');
+const { archiveApplicationThread } = require('../functions/applications/archiveApplicationThread');
 const wait = require('util').promisify(setTimeout);
+
+const adminRoleIds = ['255630010088423425', '170611904752910336'];
+
+function checkPermissions(member) {
+	const roles = member.roles.cache;
+
+	let found = false;
+
+	adminRoleIds.forEach(adminRoleId => {
+		found = !!roles.get(adminRoleId);
+	});
+
+	return found;
+}
 
 module.exports = {
 	name: 'interactionCreate',
@@ -41,6 +56,28 @@ module.exports = {
 			else if (interaction.customId === 'updateTrialInfo') {
 				await updateTrialInfoModal(interaction);
 			}
+			else if (interaction.customId === 'acceptedApplicant') {
+				if (checkPermissions(interaction.member)) {
+					await createTrialInfoModal(interaction);
+				}
+				else {
+					await interaction.reply({
+						content: 'Insufficent permissions',
+						ephemeral: true,
+					});
+				}
+			}
+			else if (interaction.customId === 'rejectedApplicant') {
+				if (checkPermissions(interaction.member)) {
+					await archiveApplicationThread(interaction.client, interaction.message.thread.id);
+				}
+				else {
+					await interaction.reply({
+						content: 'Insufficent permissions',
+						ephemeral: true,
+					});
+				}
+			}
 		}
 		else if (interaction.isModalSubmit()) {
 			if (interaction.customId === 'addNewTrialInfoModal') {
@@ -50,6 +87,10 @@ module.exports = {
 
 				if (dateInputValidator(startDate)) {
 					await createTrialReviewThread(interaction.client, { characterName, role, startDate: new Date(startDate) });
+
+					if (interaction.message?.thread?.id) {
+						await archiveApplicationThread(interaction.client, interaction.message.thread.id);
+					}
 
 					await interaction.reply({
 						content: 'Successfully created Trial Thread',

@@ -55,9 +55,11 @@ async function showTrialInfoModal(interaction, modal) {
 
 		const trial = await trials.get(threadId);
 
-		characterNameInput.setValue(trial.characterName);
-		roleInput.setValue(trial.role);
-		startDateInput.setValue(formatDate(trial.startDate));
+		if (trial) {
+			characterNameInput.setValue(trial.characterName);
+			roleInput.setValue(trial.role);
+			startDateInput.setValue(formatDate(trial.startDate));
+		}
 	}
 
 	const firstActionRow = new ActionRowBuilder().addComponents(characterNameInput);

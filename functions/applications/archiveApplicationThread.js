@@ -1,43 +1,30 @@
 const { applicationsViewerChannelId, databaseString } = require('../../config.json');
 const Keyv = require('keyv');
 
-const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
-openApplications.on('error', err => console.error('Keyv connection error:', err));
+const openApplicationThreads = new Keyv(databaseString, { namespace: 'openApplicationThreads' });
+openApplicationThreads.on('error', err => console.error('Keyv connection error:', err));
 
-async function archiveApplicationThread(deletedChannel) {
-	console.log('Archiving application thread...');
-	const threadId = await openApplications.get(deletedChannel.id);
-	if (threadId && threadId.length) {
-		console.log(`ThreadId ${threadId} found, continuing to archive...`);
+async function archiveApplicationThread(client, threadId) {
+	console.log(`Archiving application thread ${threadId}...`);
 
-		deletedChannel.guild.channels
-			.fetch(applicationsViewerChannelId)
-			.then(applicationViewerChannel => {
-				console.log(`Channel ${applicationViewerChannel.id} found, continuing to archive...`);
+	const applicationViewerChannel = await client.channels.fetch(applicationsViewerChannelId);
+	const thread = await applicationViewerChannel.threads.fetch(threadId);
+	if (thread) {
 
-				applicationViewerChannel.threads
-					.fetch(threadId)
-					.then(async thread => {
-						if (thread) {
-							console.log(`Thread ${thread.id} found, continuing to archive...`);
+		const initialMessage = await thread.fetchStarterMessage();
+		await initialMessage.edit({ content: initialMessage.content, components: [] });
 
-							await thread.send('Application closed - Archiving Thread');
-							await thread.setArchived(true, 'Application closed - Archiving Thread');
-						}
-						else {
-							await thread.send('Thread not found, stopping...');
-						}
-					})
-					.catch(console.error);
+		await thread.send('Application closed - Archiving Thread');
+		thread.setArchived(true)
+			.then(newThread => {
+				console.log(`Application Thread ${newThread.id} archived`);
 			})
 			.catch(console.error);
 
-		console.log('Removing link between channel and thread...');
-
-		openApplications.delete(deletedChannel.id);
+		await openApplicationThreads.delete(threadId);
 	}
 	else {
-		console.log('No ThreadId found, stopping...');
+		console.log(`Could not find Thread ${threadId}`);
 	}
 }
 
