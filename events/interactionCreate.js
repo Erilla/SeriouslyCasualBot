@@ -16,7 +16,9 @@ function checkPermissions(member) {
 	let found = false;
 
 	adminRoleIds.forEach(adminRoleId => {
-		found = !!roles.get(adminRoleId);
+		if (roles.get(adminRoleId)) {
+			found = true;
+		}
 	});
 
 	return found;
