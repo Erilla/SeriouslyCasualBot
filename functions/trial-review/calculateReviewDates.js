@@ -3,6 +3,8 @@ function calculateReviewDates(startDate) {
 	const weeksUntilFinalReview = 4;
 
 	startDate = new Date(startDate);
+	startDate.setHours(22);
+	startDate.setMinutes(0);
 	const firstReviewDate = new Date(startDate);
 	firstReviewDate.setDate(firstReviewDate.getDate() + weeksUntilFirstReview * 7);
 	const finalReviewDate = new Date(startDate);

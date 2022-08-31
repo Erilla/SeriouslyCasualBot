@@ -22,9 +22,11 @@ async function checkForReviewAlerts(client) {
 
 		for (let index = 0; index < trialAlert.length; index++) {
 			const alert = trialAlert[index];
-			if (alert.date < new Date() && !alert.alerted) {
+
+			if (new Date(alert.date) < new Date() && !alert.alerted) {
 				await alertTrialReview(client, key, alert.name);
 				alert.alerted = true;
+				trialAlert[index] = alert;
 				await trialAlerts.set(key, trialAlert);
 			}
 		}
