@@ -3,6 +3,7 @@ const wait = require('util').promisify(setTimeout);
 const Keyv = require('keyv');
 const { addOverlordsToThread } = require('../addOverlordsToThread');
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { createVotingThreadMessage } = require('./createVotingThreadMessage');
 
 const openApplications = new Keyv(databaseString, { namespace: 'openApplications' });
 openApplications.on('error', err => console.error('Keyv connection error:', err));
@@ -131,7 +132,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					await openApplications.set(newChannel.id, thread.id);
 
 					await addOverlordsToThread(thread);
-
+					await createVotingThreadMessage(newChannel.client, thread.id);
 					return thread.id;
 				})
 				.catch(console.error);

@@ -47,7 +47,7 @@ async function getTrialLogs(characterName) {
 				s.players = s.players.filter(p => p.name === characterName && p.presence === 1);
 				return s.players.length ? s.code : null;
 			}).filter(code => code !== null);
-			return reportCodes;
+			return reportCodes.reverse();
 		});
 }
 

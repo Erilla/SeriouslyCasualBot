@@ -4,7 +4,7 @@ const Keyv = require('keyv');
 const openApplicationThreads = new Keyv(databaseString, { namespace: 'openApplicationThreads' });
 openApplicationThreads.on('error', err => console.error('Keyv connection error:', err));
 
-async function archiveApplicationThread(client, threadId) {
+async function archiveApplicationThread(client, threadId, reason) {
 	console.log(`Archiving application thread ${threadId}...`);
 
 	const applicationViewerChannel = await client.channels.fetch(applicationsViewerChannelId);
@@ -14,7 +14,7 @@ async function archiveApplicationThread(client, threadId) {
 		const initialMessage = await thread.fetchStarterMessage();
 		await initialMessage.edit({ content: initialMessage.content, components: [] });
 
-		await thread.send('Application closed - Archiving Thread');
+		await thread.send(`Application closed - Archiving Thread. Outcome: ${reason}`);
 		thread.setArchived(true)
 			.then(newThread => {
 				console.log(`Application Thread ${newThread.id} archived`);

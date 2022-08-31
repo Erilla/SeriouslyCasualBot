@@ -4,6 +4,8 @@ const { createTrialReviewThread } = require('../functions/trial-review/createTri
 const { dateInputValidator } = require('../functions/trial-review/dateInputValidator');
 const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo');
 const { archiveApplicationThread } = require('../functions/applications/archiveApplicationThread');
+const { voteForApplicant, voteNeutralApplicant, voteAgainstApplicant } = require('../functions/applications/voteApplicant');
+const { generateVotingMessage } = require('../functions/applications/generateVotingMessage');
 const wait = require('util').promisify(setTimeout);
 
 const adminRoleIds = ['255630010088423425', '170611904752910336'];
@@ -69,7 +71,7 @@ module.exports = {
 			}
 			else if (interaction.customId === 'rejectedApplicant') {
 				if (checkPermissions(interaction.member)) {
-					await archiveApplicationThread(interaction.client, interaction.message.thread.id);
+					await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Rejected');
 				}
 				else {
 					await interaction.reply({
@@ -77,6 +79,24 @@ module.exports = {
 						ephemeral: true,
 					});
 				}
+			}
+			else if (interaction.customId === 'voteFor') {
+				await voteForApplicant(interaction.user.id, interaction.channelId);
+				await interaction.update({
+					content: await generateVotingMessage(interaction.channelId),
+				});
+			}
+			else if (interaction.customId === 'voteNeutral') {
+				await voteNeutralApplicant(interaction.user.id, interaction.channelId);
+				await interaction.update({
+					content: await generateVotingMessage(interaction.channelId),
+				});
+			}
+			else if (interaction.customId === 'voteAgainst') {
+				await voteAgainstApplicant(interaction.user.id, interaction.channelId);
+				await interaction.update({
+					content: await generateVotingMessage(interaction.channelId),
+				});
 			}
 		}
 		else if (interaction.isModalSubmit()) {
@@ -89,7 +109,7 @@ module.exports = {
 					await createTrialReviewThread(interaction.client, { characterName, role, startDate: new Date(startDate) });
 
 					if (interaction.message?.thread?.id) {
-						await archiveApplicationThread(interaction.client, interaction.message.thread.id);
+						await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Accepted');
 					}
 
 					await interaction.reply({
