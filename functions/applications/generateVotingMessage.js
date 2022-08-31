@@ -29,9 +29,9 @@ const generateVotingMessage = async (threadId) => {
 			incompletedChar: '⬛',
 		});
 
-	const forBar = bar.update(votes.forVotes.length);
-	const neutralBar = bar.update(votes.neutralVotes.length);
-	const againstBar = bar.update(votes.againstVotes.length);
+	const forBar = bar.update(total ? votes.forVotes.length / total : 0);
+	const neutralBar = bar.update(total ? votes.neutralVotes.length / total : 0);
+	const againstBar = bar.update(total ? votes.againstVotes.length / total : 0);
 
 	content += '```';
 	content += `Total Votes: ${total}\n`;
