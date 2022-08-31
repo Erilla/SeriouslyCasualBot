@@ -6,9 +6,7 @@ const openApplications = new Keyv(databaseString, { namespace: 'openApplications
 openApplications.on('error', err => console.error('Keyv connection error:', err));
 
 async function checkApplications(client) {
-	await openApplications.clear();
-
-	const checkminutes = 0.1, checkthe_interval = checkminutes * 60 * 1000;
+	const checkminutes = 5, checkthe_interval = checkminutes * 60 * 1000;
 	console.log(`${new Date().toLocaleString()}: Setting up Check Applications (every ${checkminutes} minutes)...`);
 
 	setInterval(async () => {
