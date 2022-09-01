@@ -36,6 +36,11 @@ async function createVotingThreadMessage(client, threadId) {
 					.setCustomId('voteAgainst')
 					.setLabel('Against')
 					.setStyle(ButtonStyle.Danger),
+				new ButtonBuilder()
+					.setCustomId('voteKekWAgainst')
+					.setLabel(' ')
+					.setStyle(ButtonStyle.Danger)
+					.setEmoji('777828455735230474'),
 			);
 
 		const messageEmbed = await generateVotingMessage(threadId);

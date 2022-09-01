@@ -32,6 +32,16 @@ const voteAgainstApplicant = async (userId, threadId) => {
 	await saveVotes(threadId, votes);
 };
 
+const voteKekwAgainstApplicant = async (userId, threadId) => {
+	await voteAgainstApplicant(userId, threadId);
+	const votes = await applicationVotes.get(threadId);
+	if (!votes.kekNo) {
+		votes.kekNo = [];
+	}
+	votes.kekNo.push(userId);
+	await saveVotes(threadId, votes);
+};
+
 const checkIfAlreadyVoted = (userId, votes) => {
 	if (votes.forVotes.some(voter => voter === userId)) {
 		return 1;
@@ -58,6 +68,10 @@ const removeVoter = (alreadyVoted, userId, votes) => {
 		break;
 	case 3:
 		votes.againstVotes = votes.againstVotes.filter(voter => voter !== userId);
+		if (!votes.kekNo) {
+			votes.kekNo = [];
+		}
+		votes.kekNo = votes.kekNo.filter(voter => voter != userId);
 		break;
 	}
 
@@ -71,3 +85,4 @@ const saveVotes = async (threadId, votes) => {
 exports.voteForApplicant = voteForApplicant;
 exports.voteNeutralApplicant = voteNeutralApplicant;
 exports.voteAgainstApplicant = voteAgainstApplicant;
+exports.voteKekwAgainstApplicant = voteKekwAgainstApplicant;

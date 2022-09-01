@@ -29,6 +29,16 @@ const generateVotersContent = (votes) => {
 	return content;
 };
 
+const generateKekWs = (number) => {
+	let content = '';
+
+	for (let index = 0; index < number; index++) {
+		content += '<:KEKW:777828455735230474>';
+	}
+
+	return content;
+};
+
 const generateVotingMessage = async (threadId) => {
 	let votes = await applicationVotes.get(threadId);
 
@@ -37,10 +47,15 @@ const generateVotingMessage = async (threadId) => {
 			forVotes: [],
 			neutralVotes: [],
 			againstVotes: [],
+			kekNo: [],
 		};
 	}
 
 	const votersContent = generateVotersContent(votes);
+	if (!votes.kekNo) {
+		votes.kekNo = [];
+	}
+	const kekWs = generateKekWs(votes.kekNo.length);
 
 	const total = votes.forVotes.length + votes.neutralVotes.length + votes.againstVotes.length;
 
@@ -48,7 +63,7 @@ const generateVotingMessage = async (threadId) => {
 		':bar',
 		{
 			total: 50,
-			width: 15,
+			width: 10,
 			completedChar: '⬜',
 			incompletedChar: '⬛',
 		});
@@ -64,7 +79,7 @@ const generateVotingMessage = async (threadId) => {
 		.addFields(
 			{ name: 'For', value: `${forBar} (${votes.forVotes.length})\n ${votersContent.for}` },
 			{ name: 'Neutral', value: `${neutralBar} (${votes.neutralVotes.length})\n ${votersContent.neutral}` },
-			{ name: 'Against', value: `${againstBar} (${votes.againstVotes.length})\n ${votersContent.against}` },
+			{ name: `Against ${kekWs}`, value: `${againstBar} (${votes.againstVotes.length})\n ${votersContent.against}` },
 		)
 		.setTimestamp();
 

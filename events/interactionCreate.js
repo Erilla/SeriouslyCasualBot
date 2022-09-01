@@ -4,7 +4,7 @@ const { createTrialReviewThread } = require('../functions/trial-review/createTri
 const { dateInputValidator } = require('../functions/trial-review/dateInputValidator');
 const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo');
 const { archiveApplicationThread } = require('../functions/applications/archiveApplicationThread');
-const { voteForApplicant, voteNeutralApplicant, voteAgainstApplicant } = require('../functions/applications/voteApplicant');
+const { voteForApplicant, voteNeutralApplicant, voteAgainstApplicant, voteKekwAgainstApplicant } = require('../functions/applications/voteApplicant');
 const { generateVotingMessage } = require('../functions/applications/generateVotingMessage');
 const wait = require('util').promisify(setTimeout);
 
@@ -92,6 +92,10 @@ module.exports = {
 			}
 			else if (interaction.customId === 'voteAgainst') {
 				await voteAgainstApplicant(interaction.user.id, interaction.channelId);
+				await interaction.update(await generateVotingMessage(interaction.channelId));
+			}
+			else if (interaction.customId === 'voteKekWAgainst') {
+				await voteKekwAgainstApplicant(interaction.user.id, interaction.channelId);
 				await interaction.update(await generateVotingMessage(interaction.channelId));
 			}
 		}
