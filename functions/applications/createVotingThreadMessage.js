@@ -38,9 +38,9 @@ async function createVotingThreadMessage(client, threadId) {
 					.setStyle(ButtonStyle.Danger),
 			);
 
-		const messageContent = await generateVotingMessage(threadId);
+		const messageEmbed = await generateVotingMessage(threadId);
 
-		const message = await thread.send({ content: messageContent, components: [row] });
+		const message = await thread.send({ ...messageEmbed, components: [row] });
 		await applicationVotes.set(threadId,
 			{
 				messageId: message.id,

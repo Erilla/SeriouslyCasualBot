@@ -63,7 +63,7 @@ module.exports = {
 			}
 		}, keepTrialThreadsAliveMInterval);
 
-		const checkForReviewAlertsMinutes = 0.1, checkForReviewAlertsMInterval = checkForReviewAlertsMinutes * 60 * 1000;
+		const checkForReviewAlertsMinutes = 3, checkForReviewAlertsMInterval = checkForReviewAlertsMinutes * 60 * 1000;
 
 		console.log(`${new Date().toLocaleString()}: Setting up Check For Review Alerts (every ${checkForReviewAlertsMinutes} minutes)...`);
 		setInterval(async () => {

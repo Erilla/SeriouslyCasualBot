@@ -84,21 +84,15 @@ module.exports = {
 			}
 			else if (interaction.customId === 'voteFor') {
 				await voteForApplicant(interaction.user.id, interaction.channelId);
-				await interaction.update({
-					content: await generateVotingMessage(interaction.channelId),
-				});
+				await interaction.update(await generateVotingMessage(interaction.channelId));
 			}
 			else if (interaction.customId === 'voteNeutral') {
 				await voteNeutralApplicant(interaction.user.id, interaction.channelId);
-				await interaction.update({
-					content: await generateVotingMessage(interaction.channelId),
-				});
+				await interaction.update(await generateVotingMessage(interaction.channelId));
 			}
 			else if (interaction.customId === 'voteAgainst') {
 				await voteAgainstApplicant(interaction.user.id, interaction.channelId);
-				await interaction.update({
-					content: await generateVotingMessage(interaction.channelId),
-				});
+				await interaction.update(await generateVotingMessage(interaction.channelId));
 			}
 		}
 		else if (interaction.isModalSubmit()) {
