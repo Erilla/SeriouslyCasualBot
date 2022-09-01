@@ -4,6 +4,7 @@ const { getCurrentTrials } = require('../functions/trial-review/getCurrentTrials
 const { removeTrial } = require('../functions/trial-review/removeTrial');
 const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo');
 const { updateTrialLogs } = require('../functions/trial-review/updateTrialLogs');
+const { updateTrailReviewMessages } = require('../functions/trial-review/updateTrailReviewMessages');
 
 const command = new SlashCommandBuilder()
 	.setName('trials')
@@ -45,6 +46,10 @@ const command = new SlashCommandBuilder()
 		subcommand
 			.setName('update_trial_logs')
 			.setDescription('Updates all messages with trial logs'))
+	.addSubcommand(subcommand =>
+		subcommand
+			.setName('update_trial_review_messages')
+			.setDescription('Updates all trial review messages'))
 	;
 
 module.exports = {
@@ -102,6 +107,20 @@ module.exports = {
 
 			await interaction.reply({
 				content: 'Trial Logs updated',
+				ephemeral: true,
+			});
+		}
+		else if (interaction.options.getSubcommand() === 'update_trial_review_messages') {
+
+			await interaction.reply({
+				content: 'Updating Trial Review Messages...',
+				ephemeral: true,
+			});
+
+			await updateTrailReviewMessages(interaction.client);
+
+			await interaction.editReply({
+				content: 'Trial Review Messages updated',
 				ephemeral: true,
 			});
 		}

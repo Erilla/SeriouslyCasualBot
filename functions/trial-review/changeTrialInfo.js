@@ -22,7 +22,7 @@ async function changeTrialInfo(client, threadId, trial) {
 
 		trialReviewChannel.messages.fetch(trial.trialReviewId)
 			.then(message => {
-				message.edit(generateTrialReviewContent(trial.characterName, trial.role, trial.startDate));
+				message.edit(generateTrialReviewContent(trial.characterName, trial.role, trial.startDate, trial.extended));
 			})
 			.catch(console.error);
 

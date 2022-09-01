@@ -6,6 +6,7 @@ const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo')
 const { archiveApplicationThread } = require('../functions/applications/archiveApplicationThread');
 const { voteForApplicant, voteNeutralApplicant, voteAgainstApplicant, voteKekwAgainstApplicant } = require('../functions/applications/voteApplicant');
 const { generateVotingMessage } = require('../functions/applications/generateVotingMessage');
+const { extendTrial } = require('../functions/trial-review/extendTrial');
 const wait = require('util').promisify(setTimeout);
 
 const adminRoleIds = ['255630010088423425', '170611904752910336'];
@@ -59,6 +60,12 @@ module.exports = {
 			}
 			else if (interaction.customId === 'updateTrialInfo') {
 				await updateTrialInfoModal(interaction);
+			}
+			else if (interaction.customId === 'extendTrialByOneWeek') {
+				const content = await extendTrial(interaction.message.thread.id);
+				await interaction.update({
+					content,
+				});
 			}
 			else if (interaction.customId === 'acceptedApplicant') {
 				if (checkPermissions(interaction.member)) {
