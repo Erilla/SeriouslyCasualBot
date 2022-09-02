@@ -1,6 +1,7 @@
 const { checkApplications } = require('../functions/applications/checkApplications');
 const { keepApplicationThreadsAlive } = require('../functions/applications/keepApplicationThreadsAlive');
 const { updateAchievements } = require('../functions/guild-info/updateAchievements');
+const { alertPromotions } = require('../functions/trial-review/alertPromotions');
 const { checkForReviewAlerts } = require('../functions/trial-review/checkForReviewAlerts');
 const { keepTrialThreadsAlive } = require('../functions/trial-review/keepTrialThreadsAlive');
 const { updateTrialLogs } = require('../functions/trial-review/updateTrialLogs');
@@ -10,7 +11,6 @@ module.exports = {
 	once: true,
 	execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
-
 		checkApplications(client);
 
 		const keepApplicationThreadsAliveMinutes = 3, keepApplicationThreadsAliveInterval = keepApplicationThreadsAliveMinutes * 60 * 1000;
@@ -75,5 +75,19 @@ module.exports = {
 				console.log(`${new Date().toLocaleString()}: Failed to Check For Review Alerts.`);
 			}
 		}, checkForReviewAlertsMInterval);
+
+		const checkForPromotionAlertsMinutes = 5, checkForPromotionAlertsMInterval = checkForPromotionAlertsMinutes * 60 * 1000;
+
+		console.log(`${new Date().toLocaleString()}: Setting up Check For Promotion Alerts (every ${checkForPromotionAlertsMinutes} minutes)...`);
+		setInterval(async () => {
+			try {
+				console.log(`${new Date().toLocaleString()}: Checking for Promotion Alerts...`);
+				await alertPromotions(client);
+				console.log(`${new Date().toLocaleString()}: Promotion Alerts done.`);
+			}
+			catch {
+				console.log(`${new Date().toLocaleString()}: Failed to Check For Promotion Alerts.`);
+			}
+		}, checkForPromotionAlertsMInterval);
 	},
 };

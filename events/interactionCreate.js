@@ -7,6 +7,7 @@ const { archiveApplicationThread } = require('../functions/applications/archiveA
 const { voteForApplicant, voteNeutralApplicant, voteAgainstApplicant, voteKekwAgainstApplicant } = require('../functions/applications/voteApplicant');
 const { generateVotingMessage } = require('../functions/applications/generateVotingMessage');
 const { extendTrial } = require('../functions/trial-review/extendTrial');
+const { markToPromote } = require('../functions/trial-review/markToPromote');
 const wait = require('util').promisify(setTimeout);
 
 const adminRoleIds = ['255630010088423425', '170611904752910336'];
@@ -66,6 +67,20 @@ module.exports = {
 				await interaction.update({
 					content,
 				});
+			}
+			else if (interaction.customId === 'markForPromotion') {
+				const result = await markToPromote(interaction.client, interaction.message.thread.id);
+				if (result) {
+					await interaction.update({
+						content: `🟩 **To Be Promoted** 🟩\n${interaction.message}`,
+					});
+				}
+				else {
+					await interaction.reply({
+						content: 'Already marked for promotion',
+						ephemeral: true,
+					});
+				}
 			}
 			else if (interaction.customId === 'acceptedApplicant') {
 				if (checkPermissions(interaction.member)) {

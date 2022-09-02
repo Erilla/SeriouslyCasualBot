@@ -14,6 +14,10 @@ const generateTrialReviewMessage = (trial) => {
 				.setLabel('Extend Trial by 1 Week')
 				.setStyle(ButtonStyle.Secondary),
 			new ButtonBuilder()
+				.setCustomId('markForPromotion')
+				.setLabel('Mark for Promotion')
+				.setStyle(ButtonStyle.Success),
+			new ButtonBuilder()
 				.setCustomId('closeTrial')
 				.setLabel('Close')
 				.setStyle(ButtonStyle.Danger),
