@@ -9,7 +9,7 @@ raiders.on('error', err => console.error('Keyv connection error:', err));
 const alertSignups = async (client) => {
 	const signups = await getCurrentSignupsForNextRaid();
 	if (signups) {
-		const notSignedRaiders = signups.filter(signup => signup.status === 'Unknown');
+		const notSignedRaiders = signups.signups.filter(signup => signup.status === 'Unknown');
 
 		const notSignedUsers = await Promise.all(
 			await notSignedRaiders.map(async notSignedRaider =>
@@ -23,7 +23,7 @@ const alertSignups = async (client) => {
 				message += `<@${user}>`;
 			});
 
-			message += '\n> \n> Sign up for the next raid! <#980016906620776528>';
+			message += `\n> \n> Sign up for the next raid! \n> <#980016906620776528> / https://wowaudit.com/eu/silvermoon/seriouslycasual/main/raids/${signups.id}`;
 
 			const raidersLoungeChannel = await client.channels.fetch(raidersLoungeChannelId);
 			await raidersLoungeChannel.send(message);
