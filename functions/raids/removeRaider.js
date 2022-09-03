@@ -1,0 +1,23 @@
+const { databaseString } = require('../../config.json');
+
+const Keyv = require('keyv');
+const { updateRaiderJsonData } = require('./updateRaiderJsonData');
+
+const raiders = new Keyv(databaseString, { namespace: 'raiders' });
+raiders.on('error', err => console.error('Keyv connection error:', err));
+
+async function removeRaider(name) {
+	if (name === 'SeriouslyCasualRaidersSeeded') return false;
+
+	await raiders.delete(name)
+		.then(async () => {
+			await updateRaiderJsonData();
+			return true;
+		})
+		.catch((error) => {
+			console.error(error);
+			return false;
+		});
+}
+
+exports.removeRaider = removeRaider;

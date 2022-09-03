@@ -11,5 +11,7 @@
 	"databaseString": "sqlite://./db.sqlite",
 	"trialReviewChannelId": "${TRIAL_REVIEW_CHANNEL_ID}",
 	"warcraftLogsClientId": "${WARCRAFTLOGS_CLIENT_ID}",
-	"warcraftLogsClientSecret": "${WARCRAFTLOGS_CLIENT_SECRET}"
+	"warcraftLogsClientSecret": "${WARCRAFTLOGS_CLIENT_SECRET}",
+	"wowAuditApiSecret": "${WOWAUDIT_API_SECRET}",
+	"raiderJson": "raiders.json"
 }

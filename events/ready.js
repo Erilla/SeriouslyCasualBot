@@ -1,6 +1,7 @@
 const { checkApplications } = require('../functions/applications/checkApplications');
 const { keepApplicationThreadsAlive } = require('../functions/applications/keepApplicationThreadsAlive');
 const { updateAchievements } = require('../functions/guild-info/updateAchievements');
+const { addRaiders } = require('../functions/raids/addRaiders');
 const { alertPromotions } = require('../functions/trial-review/alertPromotions');
 const { checkForReviewAlerts } = require('../functions/trial-review/checkForReviewAlerts');
 const { keepTrialThreadsAlive } = require('../functions/trial-review/keepTrialThreadsAlive');
@@ -9,7 +10,7 @@ const { updateTrialLogs } = require('../functions/trial-review/updateTrialLogs')
 module.exports = {
 	name: 'ready',
 	once: true,
-	execute(client) {
+	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 		checkApplications(client);
 
@@ -89,5 +90,14 @@ module.exports = {
 				console.log(`${new Date().toLocaleString()}: Failed to Check For Promotion Alerts.`);
 			}
 		}, checkForPromotionAlertsMInterval);
+
+
+		await addRaiders(false, false)
+			.then(() => {
+				console.log('Successfully re-seeded raiders');
+			})
+			.catch(async (error) => {
+				console.log(error);
+			});
 	},
 };

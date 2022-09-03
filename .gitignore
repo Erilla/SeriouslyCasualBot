@@ -132,3 +132,5 @@ dist
 # config
 config.json
 *.sqlite
+
+data/raiders.json
