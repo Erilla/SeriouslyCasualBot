@@ -13,5 +13,6 @@
 	"warcraftLogsClientId": "${WARCRAFTLOGS_CLIENT_ID}",
 	"warcraftLogsClientSecret": "${WARCRAFTLOGS_CLIENT_SECRET}",
 	"wowAuditApiSecret": "${WOWAUDIT_API_SECRET}",
+	"raidersLoungeChannelId": "${RAIDERSLOUNGE_CHANNEL_ID}",
 	"raiderJson": "raiders.json"
 }

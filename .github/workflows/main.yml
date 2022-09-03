@@ -32,6 +32,7 @@ jobs:
         WARCRAFTLOGS_CLIENT_ID: ${{ secrets.WARCRAFTLOGS_CLIENT_ID }}
         WARCRAFTLOGS_CLIENT_SECRET: ${{ secrets.WARCRAFTLOGS_CLIENT_SECRET }}
         WOWAUDIT_API_SECRET: ${{ secrets.WOWAUDIT_API_SECRET }}
+        RAIDERSLOUNGE_CHANNEL_ID: ${{ secrets.RAIDERSLOUNGE_CHANNEL_ID }}
 
       with:
         # Origin file

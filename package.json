@@ -8,6 +8,7 @@
     "form-data": "^4.0.0",
     "keyv": "^4.3.3",
     "nodaemon": "^0.0.5",
+    "node-cron": "^3.0.2",
     "node-fetch": "^2.6.7",
     "ongoing": "^1.0.2"
   },

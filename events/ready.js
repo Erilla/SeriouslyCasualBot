@@ -6,6 +6,8 @@ const { alertPromotions } = require('../functions/trial-review/alertPromotions')
 const { checkForReviewAlerts } = require('../functions/trial-review/checkForReviewAlerts');
 const { keepTrialThreadsAlive } = require('../functions/trial-review/keepTrialThreadsAlive');
 const { updateTrialLogs } = require('../functions/trial-review/updateTrialLogs');
+const cron = require('node-cron');
+const { alertSignups } = require('../functions/raids/alertSignups');
 
 module.exports = {
 	name: 'ready',
@@ -99,5 +101,10 @@ module.exports = {
 			.catch(async (error) => {
 				console.log(error);
 			});
+
+		const dayBeforeRaid = '0 19 * * 2,6';
+		cron.schedule(dayBeforeRaid, async () => {
+			await alertSignups(client);
+		});
 	},
 };
