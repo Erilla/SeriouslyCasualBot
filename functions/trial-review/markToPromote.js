@@ -28,7 +28,7 @@ async function markToPromote(client, threadId) {
 
 		const nextRaidDay = nextSunday < nextWednesday ? nextSunday : nextWednesday;
 
-		nextRaidDay.setHours(19);
+		nextRaidDay.setHours(17);
 		nextRaidDay.setMinutes(30);
 
 		await promoteAlerts.set(threadId, nextRaidDay);
