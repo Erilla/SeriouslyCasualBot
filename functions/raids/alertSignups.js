@@ -17,15 +17,16 @@ const alertSignups = async (client) => {
 				await raiders
 					.get(notSignedRaider.name)
 					.catch(err => console.error(err)),
-			)
-				.catch(err => console.error(err)))
+			))
 			.catch(err => console.error(err));
 
 		let message = '> ';
 
 		if (notSignedUsers.length) {
 			notSignedUsers.forEach(user => {
-				message += `<@${user}>`;
+				if (user) {
+					message += `<@${user}>`;
+				}
 			});
 
 			message += `\n> \n> Sign up for the next raid! \n> <#980016906620776528> / https://wowaudit.com/eu/silvermoon/seriouslycasual/main/raids/${signups.id}`;
