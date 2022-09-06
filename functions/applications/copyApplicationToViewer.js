@@ -102,7 +102,9 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 
 			console.log('Creating thread for message...');
 
-			await message.suppressEmbeds(true);
+			await message
+				.suppressEmbeds(true)
+				.catch(err => console.error(err));
 			await message
 				.startThread({
 					name: `${newChannel.name} discussion`,
@@ -115,11 +117,13 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					if (applicationMessages.length > 1) {
 						console.log('Posting additional application messages into thread...');
 
-						await applicationMessages.slice(1).forEach(async applicationMessage => {
+						applicationMessages.slice(1).forEach(async applicationMessage => {
 							await thread
 								.send(applicationMessage)
 								.then(async threadMessage => {
-									await threadMessage.suppressEmbeds(true);
+									await threadMessage.suppressEmbeds(true)
+										// eslint-disable-next-line max-nested-callbacks
+										.catch(err => console.error(err));
 								})
 								.catch(console.error);
 						});
@@ -130,9 +134,10 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					console.log('Setting link between new channel id and thread id.');
 
 					await openApplications.set(newChannel.id, thread.id);
-
+					await wait(2000);
 					await addOverlordsToThread(thread);
-					await createVotingThreadMessage(newChannel.client, thread.id);
+					await createVotingThreadMessage(newChannel.client, thread.id)
+						.catch(err => console.error(err));
 					return thread.id;
 				})
 				.catch(console.error);

@@ -10,7 +10,8 @@ async function keepApplicationThreadsAlive(client) {
 
 	// eslint-disable-next-line no-unused-vars
 	for await (const [key, value] of openApplicationThreads.iterator()) {
-		await keepApplicationThreadAlive(client, key);
+		await keepApplicationThreadAlive(client, key)
+			.catch(err => console.error(err));
 	}
 }
 

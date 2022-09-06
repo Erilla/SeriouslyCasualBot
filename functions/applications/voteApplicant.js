@@ -6,40 +6,53 @@ const applicationVotes = new Keyv(databaseString, { namespace: 'applicationVotes
 applicationVotes.on('error', err => console.error('Keyv connection error:', err));
 
 const voteForApplicant = async (userId, threadId) => {
-	let votes = await applicationVotes.get(threadId);
+	let votes = await applicationVotes
+		.get(threadId)
+		.catch(err => console.error(err));
 	const alreadyVoted = checkIfAlreadyVoted(userId, votes);
 	votes = removeVoter(alreadyVoted, userId, votes);
 
 	votes.forVotes.push(userId);
-	await saveVotes(threadId, votes);
+	await saveVotes(threadId, votes)
+		.catch(err => console.error(err));
 };
 
 const voteNeutralApplicant = async (userId, threadId) => {
-	let votes = await applicationVotes.get(threadId);
+	let votes = await applicationVotes
+		.get(threadId)
+		.catch(err => console.error(err));
 	const alreadyVoted = checkIfAlreadyVoted(userId, votes);
 	votes = removeVoter(alreadyVoted, userId, votes);
 
 	votes.neutralVotes.push(userId);
-	await saveVotes(threadId, votes);
+	await saveVotes(threadId, votes)
+		.catch(err => console.error(err));
 };
 
 const voteAgainstApplicant = async (userId, threadId) => {
-	let votes = await applicationVotes.get(threadId);
+	let votes = await applicationVotes
+		.get(threadId)
+		.catch(err => console.error(err));
 	const alreadyVoted = checkIfAlreadyVoted(userId, votes);
 	votes = removeVoter(alreadyVoted, userId, votes);
 
 	votes.againstVotes.push(userId);
-	await saveVotes(threadId, votes);
+	await saveVotes(threadId, votes)
+		.catch(err => console.error(err));
 };
 
 const voteKekwAgainstApplicant = async (userId, threadId) => {
-	await voteAgainstApplicant(userId, threadId);
-	const votes = await applicationVotes.get(threadId);
+	await voteAgainstApplicant(userId, threadId)
+		.catch(err => console.error(err));
+	const votes = await applicationVotes
+		.get(threadId)
+		.catch(err => console.error(err));
 	if (!votes.kekNo) {
 		votes.kekNo = [];
 	}
 	votes.kekNo.push(userId);
-	await saveVotes(threadId, votes);
+	await saveVotes(threadId, votes)
+		.catch(err => console.error(err));
 };
 
 const checkIfAlreadyVoted = (userId, votes) => {
@@ -79,7 +92,9 @@ const removeVoter = (alreadyVoted, userId, votes) => {
 };
 
 const saveVotes = async (threadId, votes) => {
-	await applicationVotes.set(threadId, votes);
+	await applicationVotes
+		.set(threadId, votes)
+		.catch(err => console.error(err));
 };
 
 exports.voteForApplicant = voteForApplicant;

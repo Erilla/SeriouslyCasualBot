@@ -45,7 +45,8 @@ async function createVotingThreadMessage(client, threadId) {
 
 		const messageEmbed = await generateVotingMessage(threadId);
 
-		const message = await thread.send({ ...messageEmbed, components: [row] });
+		const message = await thread.send({ ...messageEmbed, components: [row] })
+			.catch(err => console.error(err));
 		await applicationVotes.set(threadId,
 			{
 				messageId: message.id,
