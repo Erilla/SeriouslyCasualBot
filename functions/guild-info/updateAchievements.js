@@ -169,8 +169,7 @@ async function postAchievements(interaction) {
 		.setColor(Colors.Green);
 
 	const channel = await interaction.client.channels.cache
-		.get(guildInfoChannelId)
-		.catch(err => console.error(err));
+		.get(guildInfoChannelId);
 	const achievementsPostId = await guildinfoData
 		.get('achievementsPostId')
 		.catch(err => console.error(err));

@@ -22,8 +22,7 @@ async function updateRecruitment(interaction) {
 		);
 
 	const channel = await interaction.client.channels.cache
-		.get(guildInfoChannelId)
-		.catch(err => console.error(err));
+		.get(guildInfoChannelId);
 	await channel
 		.send({ embeds: [embed], components: [row], allowedMentions: { users : [] } })
 		.catch(err => console.error(err));

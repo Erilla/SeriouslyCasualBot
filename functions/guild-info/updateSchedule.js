@@ -32,8 +32,7 @@ async function updateSchedule(interaction) {
 		.setColor(Colors.Green);
 
 	const channel = await interaction.client.channels.cache
-		.get(guildInfoChannelId)
-		.catch(err => console.error(err));
+		.get(guildInfoChannelId);
 	await channel
 		.send({ embeds: [embed] })
 		.catch(err => console.error(err));
