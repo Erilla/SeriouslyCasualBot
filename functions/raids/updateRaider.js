@@ -9,7 +9,9 @@ raiders.on('error', err => console.error('Keyv connection error:', err));
 async function updateRaider(previousName, newName) {
 	if (previousName === 'SeriouslyCasualRaidersSeeded') return false;
 
-	const raider = await raiders.get(previousName);
+	const raider = await raiders
+		.get(previousName)
+		.catch(err => console.error(err));
 
 	if (raider) {
 		const setNew = raiders.set(newName, raider);

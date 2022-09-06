@@ -2,12 +2,16 @@ const { wowAuditApiSecret } = require('../../config.json');
 const fetch = require('node-fetch');
 
 const getCurrentSignupsForNextRaid = async () => {
-	let upcomingRaids = await getUpcomingRaids();
+	let upcomingRaids = await getUpcomingRaids()
+		.catch(err => console.error(err));
 	if (upcomingRaids) {
 		upcomingRaids.sort((a, b) => new Date(a.date) > new Date(b.date));
 		upcomingRaids = upcomingRaids.filter(raid => raid.difficulty === 'Mythic');
 		const nextRaid = upcomingRaids[0];
-		const nextRaidDetailed = await getRaidDetails(nextRaid.id);
+
+		const nextRaidDetailed = await getRaidDetails(nextRaid.id)
+			.catch(err => console.error(err));
+
 		if (nextRaidDetailed) {
 			const result = {
 				id: nextRaid.id,

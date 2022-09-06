@@ -16,11 +16,17 @@ async function alertPromotions(client) {
 		const date = new Date(value);
 
 		if (date < new Date()) {
-			const trialReviewChannel = await client.channels.fetch(trialReviewChannelId);
-			const thread = await trialReviewChannel.threads.fetch(threadId);
+			const trialReviewChannel = await client.channels
+				.fetch(trialReviewChannelId)
+				.catch(err => console.error(err));
+			const thread = await trialReviewChannel.threads
+				.fetch(threadId)
+				.catch(err => console.error(err));
 
 			if (thread) {
-				await thread.send(`<@&${adminRoleId}> Promotion time!`);
+				await thread
+					.send(`<@&${adminRoleId}> Promotion time!`)
+					.catch(err => console.error(err));
 				alerted.push(threadId);
 			}
 			else {
@@ -30,7 +36,9 @@ async function alertPromotions(client) {
 	}
 
 	alerted.forEach(async id => {
-		await promoteAlerts.delete(id);
+		await promoteAlerts
+			.delete(id)
+			.catch(err => console.error(err));
 	});
 }
 

@@ -2,7 +2,7 @@ const { guildInfoChannelId, applicationChannelUrl } = require('../../config.json
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require('discord.js');
 const recruitmentContent = require('../../data/recruitment.json');
 
-function updateRecruitment(interaction) {
+async function updateRecruitment(interaction) {
 	console.log('Updating Recruitment...');
 
 	const contentBody = [];
@@ -21,8 +21,12 @@ function updateRecruitment(interaction) {
 				.setURL(applicationChannelUrl),
 		);
 
-	const channel = interaction.client.channels.cache.get(guildInfoChannelId);
-	channel.send({ embeds: [embed], components: [row], allowedMentions: { users : [] } });
+	const channel = await interaction.client.channels.cache
+		.get(guildInfoChannelId)
+		.catch(err => console.error(err));
+	await channel
+		.send({ embeds: [embed], components: [row], allowedMentions: { users : [] } })
+		.catch(err => console.error(err));
 
 	console.log('Finished updating Recruitment.');
 }

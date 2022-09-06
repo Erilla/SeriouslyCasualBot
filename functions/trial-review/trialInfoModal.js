@@ -11,7 +11,8 @@ async function createTrialInfoModal(interaction) {
 		.setCustomId('addNewTrialInfoModal')
 		.setTitle('Add New Trial Info');
 
-	await showTrialInfoModal(interaction, modal);
+	await showTrialInfoModal(interaction, modal)
+		.catch(err => console.error(err));
 }
 
 async function updateTrialInfoModal(interaction) {
@@ -19,7 +20,8 @@ async function updateTrialInfoModal(interaction) {
 		.setCustomId('updateTrialInfoModal')
 		.setTitle('Update Trial Info');
 
-	await showTrialInfoModal(interaction, modal);
+	await showTrialInfoModal(interaction, modal)
+		.catch(err => console.error(err));
 }
 
 const formatDate = (date) => {
@@ -53,7 +55,9 @@ async function showTrialInfoModal(interaction, modal) {
 	if (interaction.isButton()) {
 		const threadId = interaction.message.thread.id;
 
-		const trial = await trials.get(threadId);
+		const trial = await trials
+			.get(threadId)
+			.catch(err => console.error(err));
 
 		if (trial) {
 			characterNameInput.setValue(trial.characterName);
@@ -69,7 +73,9 @@ async function showTrialInfoModal(interaction, modal) {
 	// Add inputs to the modal
 	modal.addComponents(firstActionRow, secondActionRow, thirdActionRow);
 
-	await interaction.showModal(modal);
+	await interaction
+		.showModal(modal)
+		.catch(err => console.error(err));
 }
 
 exports.createTrialInfoModal = createTrialInfoModal;

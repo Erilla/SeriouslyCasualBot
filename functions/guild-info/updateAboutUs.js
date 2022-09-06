@@ -2,7 +2,7 @@ const { guildInfoChannelId } = require('../../config.json');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors } = require('discord.js');
 const aboutUsContent = require('../../data/aboutus.json');
 
-function updateAboutUs(interaction) {
+async function updateAboutUs(interaction) {
 	console.log('Updating About Us...');
 	const embed = new EmbedBuilder()
 		.setTitle(aboutUsContent.title)
@@ -27,8 +27,10 @@ function updateAboutUs(interaction) {
 				.setEmoji(aboutUsContent.warcraftLogsIcon),
 		);
 
-	const channel = interaction.client.channels.cache.get(guildInfoChannelId);
-	channel.send({ embeds: [embed], components: [row] });
+	const channel = await interaction.client.channels.cache.get(guildInfoChannelId);
+	await channel
+		.send({ embeds: [embed], components: [row] })
+		.catch(err => console.error(err));
 
 	console.log('Finished updating About Us.');
 }

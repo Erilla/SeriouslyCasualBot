@@ -14,26 +14,35 @@ async function createTrialReviewThread(client, trial) {
 	console.log(`Creating trial thread for ${trial.characterName}...`);
 
 	// Find Trial Reviews channel
-	const trialReviewChannel = await client.channels.fetch(trialReviewChannelId);
+	const trialReviewChannel = await client.channels
+		.fetch(trialReviewChannelId)
+		.catch(err => console.error(err));
 
 	// Send message to channel
 	const trialReviewMessage = generateTrialReviewMessage(trial);
 
 	trialReviewChannel.send(trialReviewMessage)
 		.then(async message => {
-			const thread = await message.startThread({
-				name: `${trial.characterName} Review`,
-			});
+			const thread = await message
+				.startThread({
+					name: `${trial.characterName} Review`,
+				})
+				.catch(err => console.error(err));
 
 			trial.trialReviewId = message.id;
 
-			const trialLogsContent = await generateTrialLogsContent(trial);
-			const trialLogsMessage = await thread.send(trialLogsContent);
+			const trialLogsContent = await generateTrialLogsContent(trial)
+				.catch(err => console.error(err));
+			const trialLogsMessage = await thread
+				.send(trialLogsContent)
+				.catch(err => console.error(err));
 			trial.trialLogsId = trialLogsMessage.id;
 
-			await changeTrialInfo(client, thread.id, trial);
+			await changeTrialInfo(client, thread.id, trial)
+				.catch(err => console.error(err));
 
-			await addOverlordsToThread(thread);
+			await addOverlordsToThread(thread)
+				.catch(err => console.error(err));
 		})
 		.catch(console.error);
 

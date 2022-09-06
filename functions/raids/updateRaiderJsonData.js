@@ -10,7 +10,8 @@ raiders.on('error', err => console.error('Keyv connection error:', err));
 
 const updateRaiderJsonData = async () => {
 
-	const raidersData = await getRaiders();
+	const raidersData = await getRaiders()
+		.catch(err => console.error(err));
 
 	fs.writeFile(fileName, JSON.stringify(raidersData, null, 2), function writeJSON(err) {
 		if (err) return console.log(err);

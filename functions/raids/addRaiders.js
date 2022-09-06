@@ -9,11 +9,15 @@ raiders.on('error', err => console.error('Keyv connection error:', err));
 
 const addRaiders = async (override = false, useSeedData = false) => {
 	const seededKey = 'SeriouslyCasualRaidersSeeded';
-	const seeded = await raiders.get(seededKey);
+	const seeded = await raiders
+		.get(seededKey)
+		.catch(err => console.error(err));
 
 	if (override || !seeded) {
 		console.log('Seeding raiders...');
-		await raiders.clear();
+		await raiders
+			.clear()
+			.catch(err => console.error(err));
 
 		let raidersJson = null;
 
@@ -34,11 +38,16 @@ const addRaiders = async (override = false, useSeedData = false) => {
 		}
 
 		raidersJson.forEach(async raiderSeedData => {
-			await raiders.set(raiderSeedData.name, raiderSeedData.userId);
+			await raiders
+				.set(raiderSeedData.name, raiderSeedData.userId)
+				.catch(err => console.error(err));
 		});
 
-		await raiders.set(seededKey, true);
-		await updateRaiderJsonData();
+		await raiders
+			.set(seededKey, true)
+			.catch(err => console.error(err));
+		await updateRaiderJsonData()
+			.catch(err => console.error(err));
 		return;
 	}
 

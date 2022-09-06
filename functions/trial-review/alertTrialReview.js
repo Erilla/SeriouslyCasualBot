@@ -9,10 +9,16 @@ trials.on('error', err => console.error('Keyv connection error:', err));
 
 async function alertTrialReview(client, threadId, alertName) {
 
-	const trialReviewChannel = await client.channels.fetch(trialReviewChannelId);
-	const thread = await trialReviewChannel.threads.fetch(threadId);
+	const trialReviewChannel = await client.channels
+		.fetch(trialReviewChannelId)
+		.catch(err => console.error(err));
+	const thread = await trialReviewChannel.threads
+		.fetch(threadId)
+		.catch(err => console.error(err));
 	if (thread) {
-		await thread.send(`<@&${adminRoleId}> ${alertName}`);
+		await thread
+			.send(`<@&${adminRoleId}> ${alertName}`)
+			.catch(err => console.error(err));
 	}
 	else {
 		console.log(`Could not find Thread ${threadId}`);

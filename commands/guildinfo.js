@@ -17,17 +17,22 @@ module.exports = {
 	async execute(interaction) {
 		if (!interaction.isCommand()) return;
 
-		await interaction.reply({ content: 'Updating Guild Info...' });
+		await interaction
+			.reply({ content: 'Updating Guild Info...' })
+			.catch(err => console.error(err));
 
-		clearGuildInfo(interaction);
-		updateAboutUs(interaction);
-		updateSchedule(interaction);
-		updateRecruitment(interaction);
-		updateAchievements(interaction);
+		await clearGuildInfo(interaction);
+		await updateAboutUs(interaction);
+		await updateSchedule(interaction);
+		await updateRecruitment(interaction);
+		await updateAchievements(interaction);
 
 		if (interaction.channelId !== guildInfoChannelId) {
-			await wait(1000);
-			await interaction.deleteReply();
+			await wait(1000)
+				.catch(err => console.error(err));
+			await interaction
+				.deleteReply()
+				.catch(err => console.error(err));
 		}
 	},
 	permissions: [

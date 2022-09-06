@@ -7,7 +7,8 @@ trials.on('error', err => console.error('Keyv connection error:', err));
 
 async function getTrialLogs(characterName) {
 
-	const token = await getToken();
+	const token = await getToken()
+		.catch(err => console.error(err));
 
 	return await fetch('https://www.warcraftlogs.com/api/v2/client', {
 		method: 'POST',
@@ -48,7 +49,8 @@ async function getTrialLogs(characterName) {
 				return s.players.length ? s.code : null;
 			}).filter(code => code !== null);
 			return reportCodes.reverse();
-		});
+		})
+		.catch(err => console.error(err));
 }
 
 async function getToken() {

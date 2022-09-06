@@ -8,7 +8,9 @@ const trials = new Keyv(databaseString, { namespace: 'trials' });
 trials.on('error', err => console.error('Keyv connection error:', err));
 
 async function changeTrialInfo(client, threadId, trial) {
-	const existingTrial = await trials.get(threadId);
+	const existingTrial = await trials
+		.get(threadId)
+		.catch(err => console.error(err));
 
 	if (existingTrial) {
 		trial = {
@@ -26,11 +28,15 @@ async function changeTrialInfo(client, threadId, trial) {
 			})
 			.catch(console.error);
 
-		await updateTrialLogsContent(client, trial);
+		await updateTrialLogsContent(client, trial)
+			.catch(err => console.error(err));
 	}
 
-	await trials.set(threadId, trial);
-	await updateTrialAlerts(threadId);
+	await trials
+		.set(threadId, trial)
+		.catch(err => console.error(err));
+	await updateTrialAlerts(threadId)
+		.catch(err => console.error(err));
 }
 
 exports.changeTrialInfo = changeTrialInfo;

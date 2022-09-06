@@ -11,10 +11,17 @@ trialAlerts.on('error', err => console.error('Keyv connection error:', err));
 
 async function updateTrialAlerts(threadId) {
 
-	const trial = await trials.get(threadId);
-	let trialAlert = await trialAlerts.get(threadId);
-	trialAlert = await generateTrialAlert(trial);
-	await trialAlerts.set(threadId, trialAlert);
+	const trial = await trials
+		.get(threadId)
+		.catch(err => console.error(err));
+	let trialAlert = await trialAlerts
+		.get(threadId)
+		.catch(err => console.error(err));
+	trialAlert = await generateTrialAlert(trial)
+		.catch(err => console.error(err));
+	await trialAlerts
+		.set(threadId, trialAlert)
+		.catch(err => console.error(err));
 }
 
 exports.updateTrialAlerts = updateTrialAlerts;

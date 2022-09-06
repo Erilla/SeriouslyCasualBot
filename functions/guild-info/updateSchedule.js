@@ -2,7 +2,7 @@ const { guildInfoChannelId } = require('../../config.json');
 const { EmbedBuilder, Colors } = require('discord.js');
 const scheduleContent = require('../../data/schedule.json');
 
-function updateSchedule(interaction) {
+async function updateSchedule(interaction) {
 	console.log('Updating Schedule...');
 
 	const content = {
@@ -31,8 +31,12 @@ function updateSchedule(interaction) {
 		.setFooter({ text: scheduleContent.timeZone })
 		.setColor(Colors.Green);
 
-	const channel = interaction.client.channels.cache.get(guildInfoChannelId);
-	channel.send({ embeds: [embed] });
+	const channel = await interaction.client.channels.cache
+		.get(guildInfoChannelId)
+		.catch(err => console.error(err));
+	await channel
+		.send({ embeds: [embed] })
+		.catch(err => console.error(err));
 
 	console.log('Finished updating Schedule.');
 }

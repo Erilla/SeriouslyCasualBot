@@ -7,8 +7,12 @@ trials.on('error', err => console.error('Keyv connection error:', err));
 
 async function keepTrialThreadAlive(client, threadId) {
 
-	const trialReviewChannel = await client.channels.fetch(trialReviewChannelId);
-	const thread = await trialReviewChannel.threads.fetch(threadId);
+	const trialReviewChannel = await client.channels
+		.fetch(trialReviewChannelId)
+		.catch(err => console.error(err));
+	const thread = await trialReviewChannel.threads
+		.fetch(threadId)
+		.catch(err => console.error(err));
 	if (thread) {
 		if (thread.archived) {
 			thread.setArchived(false)

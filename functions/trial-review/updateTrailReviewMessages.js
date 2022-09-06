@@ -10,12 +10,18 @@ async function updateTrailReviewMessages(client) {
 
 	// eslint-disable-next-line no-unused-vars
 	for await (const [key, value] of trials.iterator()) {
-		const trialReviewChannel = await client.channels.fetch(trialReviewChannelId);
-		const trialReviewMessage = await trialReviewChannel.messages.fetch(value.trialReviewId);
+		const trialReviewChannel = await client.channels
+			.fetch(trialReviewChannelId)
+			.catch(err => console.error(err));
+		const trialReviewMessage = await trialReviewChannel.messages
+			.fetch(value.trialReviewId)
+			.catch(err => console.error(err));
 
 		const newMessageContent = generateTrialReviewMessage(value);
 
-		await trialReviewMessage.edit(newMessageContent);
+		await trialReviewMessage
+			.edit(newMessageContent)
+			.catch(err => console.error(err));
 	}
 }
 

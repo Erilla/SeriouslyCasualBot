@@ -30,7 +30,7 @@ async function updateAchievements(interaction) {
 
 			let error = 0;
 
-			const raidStaticDataResponse = await getRaidStaticData(expansion);
+			const raidStaticDataResponse = await getRaidStaticData(expansion).catch(err => console.error(err));
 			if (raidStaticDataResponse?.response?.status && raidStaticDataResponse?.response?.status === 500) {
 				complete = true;
 			}
@@ -46,7 +46,7 @@ async function updateAchievements(interaction) {
 					const tierEndDate = getTierEndDate(raid);
 
 					console.log(`Getting Raid Rankings for raid ${raidSlug}...`);
-					const raidRankingsResponse = await getRaidRankings(raidSlug);
+					const raidRankingsResponse = await getRaidRankings(raidSlug).catch(err => console.error(err));
 
 					console.log(`Got Raid Rankings Response for raid ${raidSlug}.`);
 
@@ -168,14 +168,22 @@ async function postAchievements(interaction) {
 		})
 		.setColor(Colors.Green);
 
-	const channel = interaction.client.channels.cache.get(guildInfoChannelId);
-	const achievementsPostId = await guildinfoData.get('achievementsPostId');
+	const channel = await interaction.client.channels.cache
+		.get(guildInfoChannelId)
+		.catch(err => console.error(err));
+	const achievementsPostId = await guildinfoData
+		.get('achievementsPostId')
+		.catch(err => console.error(err));
 
 	if (achievementsPostId) {
 		try {
-			const achievementMessage = await channel.messages.fetch(achievementsPostId);
+			const achievementMessage = await channel.messages
+				.fetch(achievementsPostId)
+				.catch(err => console.error(err));
 
-			achievementMessage.edit({ embeds: [embed] });
+			await achievementMessage
+				.edit({ embeds: [embed] })
+				.catch(err => console.error(err));
 
 			console.log('Achievements updated!');
 			return;
@@ -185,11 +193,13 @@ async function postAchievements(interaction) {
 		}
 	}
 
-	channel.send({ embeds: [embed] })
+	channel
+		.send({ embeds: [embed] })
 		.then(response => {
 			guildinfoData.set('achievementsPostId', response.id);
 			console.log(response.id);
-		});
+		})
+		.catch(err => console.error(err));
 }
 
 function buildManualAchievements(expansion) {

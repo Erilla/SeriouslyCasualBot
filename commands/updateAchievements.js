@@ -13,12 +13,17 @@ module.exports = {
 	async execute(interaction) {
 		if (!interaction.isCommand()) return;
 
-		await interaction.reply({ content: 'Updates achievements...' });
+		await interaction
+			.reply({ content: 'Updates achievements...' })
+			.catch(err => console.error(err));
 
 		updateAchievements(interaction);
 
-		await wait(1000);
-		await interaction.deleteReply();
+		await wait(1000)
+			.catch(err => console.error(err));
+		await interaction
+			.deleteReply()
+			.catch(err => console.error(err));
 	},
 	permissions: [
 		{

@@ -10,7 +10,8 @@ async function keepTrialThreadsAlive(client) {
 
 	// eslint-disable-next-line no-unused-vars
 	for await (const [key, value] of trials.iterator()) {
-		await keepTrialThreadAlive(client, key);
+		await keepTrialThreadAlive(client, key)
+			.catch(err => console.error(err));
 	}
 }
 

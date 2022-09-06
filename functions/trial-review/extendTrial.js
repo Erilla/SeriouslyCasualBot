@@ -12,8 +12,12 @@ trialAlerts.on('error', err => console.error('Keyv connection error:', err));
 
 async function extendTrial(threadId) {
 
-	let trial = await trials.get(threadId);
-	let trialAlert = await trialAlerts.get(threadId);
+	let trial = await trials
+		.get(threadId)
+		.catch(err => console.error(err));
+	let trialAlert = await trialAlerts
+		.get(threadId)
+		.catch(err => console.error(err));
 
 	if (!trial.extended) {
 		trial = {
@@ -25,8 +29,12 @@ async function extendTrial(threadId) {
 
 	trialAlert = generateTrialAlert(trial);
 
-	await trials.set(threadId, trial);
-	await trialAlerts.set(threadId, trialAlert);
+	await trials
+		.set(threadId, trial)
+		.catch(err => console.error(err));
+	await trialAlerts
+		.set(threadId, trialAlert)
+		.catch(err => console.error(err));
 
 	return generateTrialReviewContent(trial.characterName, trial.role, trial.startDate, trial.extended);
 }

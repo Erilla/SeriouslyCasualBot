@@ -58,28 +58,34 @@ module.exports = {
 		if (!interaction.isCommand()) return;
 
 		if (interaction.options.getSubcommand() === 'create_thread') {
-			await createTrialInfoModal(interaction);
+			await createTrialInfoModal(interaction)
+				.catch(err => console.error(err));
 		}
 		else if (interaction.options.getSubcommand() === 'get_current_trials') {
 			await interaction.reply({
-				content: await getCurrentTrials(),
+				content: await getCurrentTrials().catch(err => console.error(err)),
 				ephemeral: true,
-			});
+			})
+				.catch(err => console.error(err));
 		}
 		else if (interaction.options.getSubcommand() === 'remove_trial') {
 			const threadId = interaction.options.getString('thread_id');
 
 			if (removeTrial(threadId)) {
-				await interaction.reply({
-					content: `Successfully removed Trial with thread Id ${threadId}`,
-					ephemeral: true,
-				});
+				await interaction
+					.reply({
+						content: `Successfully removed Trial with thread Id ${threadId}`,
+						ephemeral: true,
+					})
+					.catch(err => console.error(err));
 			}
 			else {
-				await interaction.reply({
-					content: `Error: Did not remove Trial with thread Id ${threadId}`,
-					ephemeral: true,
-				});
+				await interaction
+					.reply({
+						content: `Error: Did not remove Trial with thread Id ${threadId}`,
+						ephemeral: true,
+					})
+					.catch(err => console.error(err));
 			}
 		}
 		else if (interaction.options.getSubcommand() === 'change_trial_info') {
@@ -94,35 +100,46 @@ module.exports = {
 				startDate,
 			};
 
-			await changeTrialInfo(interaction.client, threadId, trial);
+			await changeTrialInfo(interaction.client, threadId, trial)
+				.catch(err => console.error(err));
 
-			await interaction.reply({
-				content: `Successfully updated Trial with thread Id ${threadId}`,
-				ephemeral: true,
-			});
+			await interaction
+				.reply({
+					content: `Successfully updated Trial with thread Id ${threadId}`,
+					ephemeral: true,
+				})
+				.catch(err => console.error(err));
 		}
 		else if (interaction.options.getSubcommand() === 'update_trial_logs') {
 
-			await updateTrialLogs(interaction.client);
+			await updateTrialLogs(interaction.client)
+				.catch(err => console.error(err));
 
-			await interaction.reply({
-				content: 'Trial Logs updated',
-				ephemeral: true,
-			});
+			await interaction
+				.reply({
+					content: 'Trial Logs updated',
+					ephemeral: true,
+				})
+				.catch(err => console.error(err));
 		}
 		else if (interaction.options.getSubcommand() === 'update_trial_review_messages') {
 
-			await interaction.reply({
-				content: 'Updating Trial Review Messages...',
-				ephemeral: true,
-			});
+			await interaction
+				.reply({
+					content: 'Updating Trial Review Messages...',
+					ephemeral: true,
+				})
+				.catch(err => console.error(err));
 
-			await updateTrailReviewMessages(interaction.client);
+			await updateTrailReviewMessages(interaction.client)
+				.catch(err => console.error(err));
 
-			await interaction.editReply({
-				content: 'Trial Review Messages updated',
-				ephemeral: true,
-			});
+			await interaction
+				.editReply({
+					content: 'Trial Review Messages updated',
+					ephemeral: true,
+				})
+				.catch(err => console.error(err));
 		}
 	},
 };
