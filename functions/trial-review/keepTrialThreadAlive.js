@@ -1,4 +1,5 @@
 const { trialReviewChannelId, databaseString } = require('../../config.json');
+const { ThreadAutoArchiveDuration } = require('discord.js');
 
 const Keyv = require('keyv');
 
@@ -14,6 +15,8 @@ async function keepTrialThreadAlive(client, threadId) {
 		.fetch(threadId)
 		.catch(err => console.error(err));
 	if (thread) {
+		thread.autoArchiveDuration(ThreadAutoArchiveDuration.OneWeek);
+
 		if (thread.archived) {
 			thread.setArchived(false)
 				.then(newThread => console.log(`Keeping Thread Id ${newThread.id} alive`))
