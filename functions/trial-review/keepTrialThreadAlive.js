@@ -15,7 +15,7 @@ async function keepTrialThreadAlive(client, threadId) {
 		.fetch(threadId)
 		.catch(err => console.error(err));
 	if (thread) {
-		thread.autoArchiveDuration(ThreadAutoArchiveDuration.OneWeek);
+		thread.setAutoArchiveDuration(ThreadAutoArchiveDuration.OneWeek);
 
 		if (thread.archived) {
 			thread.setArchived(false)

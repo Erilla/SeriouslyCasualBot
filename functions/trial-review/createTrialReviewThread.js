@@ -30,7 +30,7 @@ async function createTrialReviewThread(client, trial) {
 				})
 				.catch(err => console.error(err));
 
-			thread.autoArchiveDuration(ThreadAutoArchiveDuration.OneWeek);
+			thread.setAutoArchiveDuration(ThreadAutoArchiveDuration.OneWeek);
 
 			trial.trialReviewId = message.id;
 
