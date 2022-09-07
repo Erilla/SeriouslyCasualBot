@@ -19,7 +19,7 @@ async function updateTrialLogsContent(client, trial) {
 			.fetch(trial.trialLogsId)
 			.catch(err => console.error(err));
 		await trialLogsMessage
-			.edit(await generateTrialLogsContent(trial).catch(err => console.error(err)))
+			.edit(await generateTrialLogsContent(trial))
 			.catch(err => console.error(err));
 		console.log(`Updated Trial Log Message for ${trial.characterName}`);
 	}

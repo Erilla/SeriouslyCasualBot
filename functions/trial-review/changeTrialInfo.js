@@ -25,18 +25,16 @@ async function changeTrialInfo(client, threadId, trial) {
 		trialReviewChannel.messages.fetch(trial.trialReviewId)
 			.then(message => {
 				message.edit(generateTrialReviewContent(trial.characterName, trial.role, trial.startDate, trial.extended));
+				message.thread.name = `${trial.characterName} Review`;
 			})
 			.catch(console.error);
 
-		await updateTrialLogsContent(client, trial)
-			.catch(err => console.error(err));
+		await updateTrialLogsContent(client, trial);
 	}
 
 	await trials
-		.set(threadId, trial)
-		.catch(err => console.error(err));
-	await updateTrialAlerts(threadId)
-		.catch(err => console.error(err));
+		.set(threadId, trial);
+	await updateTrialAlerts(threadId);
 }
 
 exports.changeTrialInfo = changeTrialInfo;

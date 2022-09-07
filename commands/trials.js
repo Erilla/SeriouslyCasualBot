@@ -58,12 +58,11 @@ module.exports = {
 		if (!interaction.isCommand()) return;
 
 		if (interaction.options.getSubcommand() === 'create_thread') {
-			await createTrialInfoModal(interaction)
-				.catch(err => console.error(err));
+			await createTrialInfoModal(interaction);
 		}
 		else if (interaction.options.getSubcommand() === 'get_current_trials') {
 			await interaction.reply({
-				content: await getCurrentTrials().catch(err => console.error(err)),
+				content: await getCurrentTrials(),
 				ephemeral: true,
 			})
 				.catch(err => console.error(err));
@@ -100,8 +99,7 @@ module.exports = {
 				startDate,
 			};
 
-			await changeTrialInfo(interaction.client, threadId, trial)
-				.catch(err => console.error(err));
+			await changeTrialInfo(interaction.client, threadId, trial);
 
 			await interaction
 				.reply({
@@ -112,8 +110,7 @@ module.exports = {
 		}
 		else if (interaction.options.getSubcommand() === 'update_trial_logs') {
 
-			await updateTrialLogs(interaction.client)
-				.catch(err => console.error(err));
+			await updateTrialLogs(interaction.client);
 
 			await interaction
 				.reply({
@@ -131,8 +128,7 @@ module.exports = {
 				})
 				.catch(err => console.error(err));
 
-			await updateTrailReviewMessages(interaction.client)
-				.catch(err => console.error(err));
+			await updateTrailReviewMessages(interaction.client);
 
 			await interaction
 				.editReply({

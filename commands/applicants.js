@@ -22,10 +22,7 @@ module.exports = {
 		if (interaction.options.getSubcommand() === 'create_voting_message') {
 			const threadId = interaction.options.getString('thread_id');
 
-			if (
-				await createVotingThreadMessage(interaction.client, threadId)
-					.catch(err => console.error(err))
-			) {
+			if (await createVotingThreadMessage(interaction.client, threadId)) {
 				await interaction
 					.reply({
 						content: `Successfully added voting message to thread Id ${threadId}`,

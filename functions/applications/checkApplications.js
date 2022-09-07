@@ -31,9 +31,7 @@ async function checkApplications(client) {
 									trackedCategoryChannel.children.cache.forEach(async trackedChannel => {
 										const trackedChannelThreadId = await openApplications.get(trackedChannel.id);
 										if (typeof trackedChannelThreadId === 'undefined') {
-											await copyApplicationToViewer(trackedChannel)
-												// eslint-disable-next-line max-nested-callbacks
-												.catch(err => console.error(err));
+											await copyApplicationToViewer(trackedChannel);
 										}
 									});
 								}

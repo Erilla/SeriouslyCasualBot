@@ -5,8 +5,7 @@ async function generateTrialLogsContent(trial) {
 	const baseUrl = 'https://www.warcraftlogs.com/reports/';
 	let content = 'Logs:\n';
 
-	const logCodes = await getTrialLogs(trial.characterName)
-		.catch(err => console.error(err));
+	const logCodes = await getTrialLogs(trial.characterName);
 
 	logCodes.forEach(code => {
 		content += `${baseUrl}${code}\n`;

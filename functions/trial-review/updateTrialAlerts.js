@@ -17,8 +17,7 @@ async function updateTrialAlerts(threadId) {
 	let trialAlert = await trialAlerts
 		.get(threadId)
 		.catch(err => console.error(err));
-	trialAlert = await generateTrialAlert(trial)
-		.catch(err => console.error(err));
+	trialAlert = generateTrialAlert(trial);
 	await trialAlerts
 		.set(threadId, trialAlert)
 		.catch(err => console.error(err));

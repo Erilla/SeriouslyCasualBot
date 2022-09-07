@@ -7,8 +7,7 @@ const raiders = new Keyv(databaseString, { namespace: 'raiders' });
 raiders.on('error', err => console.error('Keyv connection error:', err));
 
 const alertSignups = async (client) => {
-	const signups = await getCurrentSignupsForNextRaid()
-		.catch(err => console.error(err));
+	const signups = await getCurrentSignupsForNextRaid();
 	if (signups) {
 		const notSignedRaiders = signups.signups.filter(signup => signup.status === 'Unknown');
 

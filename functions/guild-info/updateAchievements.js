@@ -30,7 +30,7 @@ async function updateAchievements(interaction) {
 
 			let error = 0;
 
-			const raidStaticDataResponse = await getRaidStaticData(expansion).catch(err => console.error(err));
+			const raidStaticDataResponse = await getRaidStaticData(expansion);
 			if (raidStaticDataResponse?.response?.status && raidStaticDataResponse?.response?.status === 500) {
 				complete = true;
 			}
@@ -46,7 +46,7 @@ async function updateAchievements(interaction) {
 					const tierEndDate = getTierEndDate(raid);
 
 					console.log(`Getting Raid Rankings for raid ${raidSlug}...`);
-					const raidRankingsResponse = await getRaidRankings(raidSlug).catch(err => console.error(err));
+					const raidRankingsResponse = await getRaidRankings(raidSlug);
 
 					console.log(`Got Raid Rankings Response for raid ${raidSlug}.`);
 

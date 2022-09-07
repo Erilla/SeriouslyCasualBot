@@ -48,8 +48,7 @@ module.exports = {
 			if (interaction.customId === 'closeTrial') {
 				console.log(`${interaction.user.tag} in #${interaction.channel.name} clicked the closeTrial button.`);
 
-				await removeTrial(interaction.message.thread.id)
-					.catch(err => console.error(err));
+				await removeTrial(interaction.message.thread.id);
 				await interaction.message.thread.send('Closing Trial Thread')
 					.catch(err => console.error(err));
 				await interaction.message.thread.setArchived(true)
@@ -65,12 +64,10 @@ module.exports = {
 
 			}
 			else if (interaction.customId === 'updateTrialInfo') {
-				await updateTrialInfoModal(interaction)
-					.catch(err => console.error(err));
+				await updateTrialInfoModal(interaction);
 			}
 			else if (interaction.customId === 'extendTrialByOneWeek') {
-				const content = await extendTrial(interaction.message.thread.id)
-					.catch(err => console.error(err));
+				const content = await extendTrial(interaction.message.thread.id);
 
 				await interaction
 					.update({
@@ -98,8 +95,7 @@ module.exports = {
 			}
 			else if (interaction.customId === 'acceptedApplicant') {
 				if (checkPermissions(interaction.member)) {
-					await createTrialInfoModal(interaction)
-						.catch(err => console.error(err));
+					await createTrialInfoModal(interaction);
 				}
 				else {
 					await interaction
@@ -112,8 +108,7 @@ module.exports = {
 			}
 			else if (interaction.customId === 'rejectedApplicant') {
 				if (checkPermissions(interaction.member)) {
-					await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Rejected')
-						.catch(err => console.error(err));
+					await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Rejected');
 				}
 				else {
 					await interaction
@@ -125,35 +120,27 @@ module.exports = {
 				}
 			}
 			else if (interaction.customId === 'voteFor') {
-				await voteForApplicant(interaction.user.id, interaction.channelId)
-					.catch(err => console.error(err));
+				await voteForApplicant(interaction.user.id, interaction.channelId);
 				await interaction
-					.update(await generateVotingMessage(interaction.channelId)
-						.catch(err => console.error(err)))
+					.update(await generateVotingMessage(interaction.channelId))
 					.catch(err => console.error(err));
 			}
 			else if (interaction.customId === 'voteNeutral') {
-				await voteNeutralApplicant(interaction.user.id, interaction.channelId)
-					.catch(err => console.error(err));
+				await voteNeutralApplicant(interaction.user.id, interaction.channelId);
 				await interaction
-					.update(await generateVotingMessage(interaction.channelId)
-						.catch(err => console.error(err)))
+					.update(await generateVotingMessage(interaction.channelId))
 					.catch(err => console.error(err));
 			}
 			else if (interaction.customId === 'voteAgainst') {
-				await voteAgainstApplicant(interaction.user.id, interaction.channelId)
-					.catch(err => console.error(err));
+				await voteAgainstApplicant(interaction.user.id, interaction.channelId);
 				await interaction
-					.update(await generateVotingMessage(interaction.channelId)
-						.catch(err => console.error(err)))
+					.update(await generateVotingMessage(interaction.channelId))
 					.catch(err => console.error(err));
 			}
 			else if (interaction.customId === 'voteKekWAgainst') {
-				await voteKekwAgainstApplicant(interaction.user.id, interaction.channelId)
-					.catch(err => console.error(err));
+				await voteKekwAgainstApplicant(interaction.user.id, interaction.channelId);
 				await interaction
-					.update(await generateVotingMessage(interaction.channelId)
-						.catch(err => console.error(err)))
+					.update(await generateVotingMessage(interaction.channelId))
 					.catch(err => console.error(err));
 			}
 		}
@@ -164,12 +151,10 @@ module.exports = {
 				const startDate = interaction.fields.getTextInputValue('startDateInput');
 
 				if (dateInputValidator(startDate)) {
-					await createTrialReviewThread(interaction.client, { characterName, role, startDate: new Date(startDate) })
-						.catch(err => console.error(err));
+					await createTrialReviewThread(interaction.client, { characterName, role, startDate: new Date(startDate) });
 
 					if (interaction.message?.thread?.id) {
-						await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Accepted')
-							.catch(err => console.error(err));
+						await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Accepted');
 					}
 
 					await interaction
@@ -177,8 +162,7 @@ module.exports = {
 							content: 'Successfully created Trial Thread',
 						})
 						.catch(err => console.error(err));
-					await wait(1000)
-						.catch(err => console.error(err));
+					await wait(1000);
 					await interaction.deleteReply()
 						.catch(err => console.error(err));
 				}
@@ -187,8 +171,7 @@ module.exports = {
 						content: 'Invalid Date',
 					})
 						.catch(err => console.error(err));
-					await wait(1000)
-						.catch(err => console.error(err));
+					await wait(1000);
 					await interaction.deleteReply()
 						.catch(err => console.error(err));
 				}
@@ -205,16 +188,14 @@ module.exports = {
 					startDate,
 				};
 
-				await changeTrialInfo(interaction.client, threadId, trial)
-					.catch(err => console.error(err));
+				await changeTrialInfo(interaction.client, threadId, trial);
 
 				await interaction.reply({
 					content: `Successfully updated Trial with thread Id ${threadId}`,
 				})
 					.catch(err => console.error(err));
 
-				await wait(1000)
-					.catch(err => console.error(err));
+				await wait(1000);
 				await interaction.deleteReply()
 					.catch(err => console.error(err));
 			}

@@ -46,8 +46,7 @@ const addRaiders = async (override = false, useSeedData = false) => {
 		await raiders
 			.set(seededKey, true)
 			.catch(err => console.error(err));
-		await updateRaiderJsonData()
-			.catch(err => console.error(err));
+		await updateRaiderJsonData();
 		return;
 	}
 

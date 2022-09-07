@@ -11,8 +11,7 @@ async function addRaider(name, userId) {
 
 	return await raiders.set(name, userId)
 		.then(async () => {
-			await updateRaiderJsonData()
-				.catch(err => console.error(err));
+			await updateRaiderJsonData();
 			return true;
 		})
 		.catch((error) => {

@@ -19,8 +19,7 @@ module.exports = {
 
 		updateAchievements(interaction);
 
-		await wait(1000)
-			.catch(err => console.error(err));
+		await wait(1000);
 		await interaction
 			.deleteReply()
 			.catch(err => console.error(err));

@@ -4,6 +4,7 @@ const { changeTrialInfo } = require('./changeTrialInfo');
 const Keyv = require('keyv');
 const { addOverlordsToThread } = require('../addOverlordsToThread');
 const { generateTrialReviewMessage } = require('./generateTrialReviewMessage');
+const { ThreadAutoArchiveDuration } = require('discord.js');
 
 const trials = new Keyv(databaseString, { namespace: 'trials' });
 trials.on('error', err => console.error('Keyv connection error:', err));
@@ -29,20 +30,19 @@ async function createTrialReviewThread(client, trial) {
 				})
 				.catch(err => console.error(err));
 
+			thread.autoArchiveDuration(ThreadAutoArchiveDuration.OneWeek);
+
 			trial.trialReviewId = message.id;
 
-			const trialLogsContent = await generateTrialLogsContent(trial)
-				.catch(err => console.error(err));
+			const trialLogsContent = await generateTrialLogsContent(trial);
 			const trialLogsMessage = await thread
 				.send(trialLogsContent)
 				.catch(err => console.error(err));
 			trial.trialLogsId = trialLogsMessage.id;
 
-			await changeTrialInfo(client, thread.id, trial)
-				.catch(err => console.error(err));
+			await changeTrialInfo(client, thread.id, trial);
 
-			await addOverlordsToThread(thread)
-				.catch(err => console.error(err));
+			await addOverlordsToThread(thread);
 		})
 		.catch(console.error);
 

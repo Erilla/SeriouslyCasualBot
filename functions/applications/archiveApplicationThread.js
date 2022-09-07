@@ -32,8 +32,7 @@ async function archiveApplicationThread(client, threadId, reason) {
 			.catch(console.error);
 
 		await openApplicationThreads
-			.delete(threadId)
-			.catch(err => console.error(err));
+			.delete(threadId);
 	}
 	else {
 		console.log(`Could not find Thread ${threadId}`);

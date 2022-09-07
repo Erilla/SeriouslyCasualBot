@@ -11,8 +11,7 @@ async function createTrialInfoModal(interaction) {
 		.setCustomId('addNewTrialInfoModal')
 		.setTitle('Add New Trial Info');
 
-	await showTrialInfoModal(interaction, modal)
-		.catch(err => console.error(err));
+	await showTrialInfoModal(interaction, modal);
 }
 
 async function updateTrialInfoModal(interaction) {
@@ -20,8 +19,7 @@ async function updateTrialInfoModal(interaction) {
 		.setCustomId('updateTrialInfoModal')
 		.setTitle('Update Trial Info');
 
-	await showTrialInfoModal(interaction, modal)
-		.catch(err => console.error(err));
+	await showTrialInfoModal(interaction, modal);
 }
 
 const formatDate = (date) => {

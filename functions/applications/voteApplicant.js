@@ -13,8 +13,7 @@ const voteForApplicant = async (userId, threadId) => {
 	votes = removeVoter(alreadyVoted, userId, votes);
 
 	votes.forVotes.push(userId);
-	await saveVotes(threadId, votes)
-		.catch(err => console.error(err));
+	await saveVotes(threadId, votes);
 };
 
 const voteNeutralApplicant = async (userId, threadId) => {
@@ -25,8 +24,7 @@ const voteNeutralApplicant = async (userId, threadId) => {
 	votes = removeVoter(alreadyVoted, userId, votes);
 
 	votes.neutralVotes.push(userId);
-	await saveVotes(threadId, votes)
-		.catch(err => console.error(err));
+	await saveVotes(threadId, votes);
 };
 
 const voteAgainstApplicant = async (userId, threadId) => {
@@ -37,13 +35,11 @@ const voteAgainstApplicant = async (userId, threadId) => {
 	votes = removeVoter(alreadyVoted, userId, votes);
 
 	votes.againstVotes.push(userId);
-	await saveVotes(threadId, votes)
-		.catch(err => console.error(err));
+	await saveVotes(threadId, votes);
 };
 
 const voteKekwAgainstApplicant = async (userId, threadId) => {
-	await voteAgainstApplicant(userId, threadId)
-		.catch(err => console.error(err));
+	await voteAgainstApplicant(userId, threadId);
 	const votes = await applicationVotes
 		.get(threadId)
 		.catch(err => console.error(err));
@@ -51,8 +47,7 @@ const voteKekwAgainstApplicant = async (userId, threadId) => {
 		votes.kekNo = [];
 	}
 	votes.kekNo.push(userId);
-	await saveVotes(threadId, votes)
-		.catch(err => console.error(err));
+	await saveVotes(threadId, votes);
 };
 
 const checkIfAlreadyVoted = (userId, votes) => {

@@ -14,16 +14,14 @@ module.exports = {
 	once: true,
 	async execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
-		await checkApplications(client)
-			.catch(err => console.error(err));
+		await checkApplications(client);
 
 		const keepApplicationThreadsAliveMinutes = 3, keepApplicationThreadsAliveInterval = keepApplicationThreadsAliveMinutes * 60 * 1000;
 
 		console.log(`${new Date().toLocaleString()}: Keeping Application Threads Alive (every ${keepApplicationThreadsAliveMinutes} minutes)...`);
 		setInterval(async () => {
 			try {
-				await keepApplicationThreadsAlive(client)
-					.catch(err => console.error(err));
+				await keepApplicationThreadsAlive(client);
 			}
 			catch {
 				console.log(`${new Date().toLocaleString()}: Failed to keep application threads alive.`);
@@ -35,8 +33,7 @@ module.exports = {
 		console.log(`${new Date().toLocaleString()}: Setting up Update Achievements (every ${updateAchievementsMinutes} minutes)...`);
 		setInterval(async () => {
 			try {
-				await updateAchievements({ client })
-					.catch(err => console.error(err));
+				await updateAchievements({ client });
 			}
 			catch {
 				console.log(`${new Date().toLocaleString()}: Failed to update achievements.`);
@@ -49,8 +46,7 @@ module.exports = {
 		setInterval(async () => {
 			try {
 				console.log(`${new Date().toLocaleString()}: Updating Trial Logs Messages...`);
-				await updateTrialLogs(client)
-					.catch(err => console.error(err));
+				await updateTrialLogs(client);
 			}
 			catch {
 				console.log(`${new Date().toLocaleString()}: Failed to update Trial Logs Messages.`);
@@ -63,8 +59,7 @@ module.exports = {
 		setInterval(async () => {
 			try {
 				console.log(`${new Date().toLocaleString()}: Keeping Trial Threads Alive...`);
-				await keepTrialThreadsAlive(client)
-					.catch(err => console.error(err));
+				await keepTrialThreadsAlive(client);
 			}
 			catch {
 				console.log(`${new Date().toLocaleString()}: Failed to Keep Trial Threads Alive.`);
@@ -77,8 +72,7 @@ module.exports = {
 		setInterval(async () => {
 			try {
 				console.log(`${new Date().toLocaleString()}: Checking for Review Alerts...`);
-				await checkForReviewAlerts(client)
-					.catch(err => console.error(err));
+				await checkForReviewAlerts(client);
 			}
 			catch {
 				console.log(`${new Date().toLocaleString()}: Failed to Check For Review Alerts.`);
@@ -91,8 +85,7 @@ module.exports = {
 		setInterval(async () => {
 			try {
 				console.log(`${new Date().toLocaleString()}: Checking for Promotion Alerts...`);
-				await alertPromotions(client)
-					.catch(err => console.error(err));
+				await alertPromotions(client);
 				console.log(`${new Date().toLocaleString()}: Promotion Alerts done.`);
 			}
 			catch {
@@ -111,8 +104,7 @@ module.exports = {
 
 		const dayBeforeRaid = '0 19 * * 2,6';
 		cron.schedule(dayBeforeRaid, async () => {
-			await alertSignups(client)
-				.catch(err => console.error(err));
+			await alertSignups(client);
 		});
 	},
 };

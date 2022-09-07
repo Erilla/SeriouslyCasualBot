@@ -67,7 +67,7 @@ module.exports = {
 			const character_name = interaction.options.getString('character_name');
 			const user = interaction.options.getUser('user');
 
-			if (await addRaider(character_name, user.id).catch(err => console.error(err))) {
+			if (await addRaider(character_name, user.id)) {
 				await interaction
 					.reply({
 						content: `Successfully added ${character_name} ${user.id}`,
@@ -104,7 +104,7 @@ module.exports = {
 		else if (interaction.options.getSubcommand() === 'get_raiders') {
 			await interaction
 				.reply({
-					content: JSON.stringify(await getRaiders().catch(err => console.error(err)), null, 2),
+					content: JSON.stringify(await getRaiders(), null, 2),
 					ephemeral: true,
 				})
 				.catch(err => console.error(err));
@@ -112,7 +112,7 @@ module.exports = {
 		else if (interaction.options.getSubcommand() === 'remove_raider') {
 			const character_name = interaction.options.getString('character_name');
 
-			if (await removeRaider(character_name).catch(err => console.error(err))) {
+			if (await removeRaider(character_name)) {
 				await interaction
 					.reply({
 						content: `Successfully remove raider ${character_name}`,
@@ -133,7 +133,7 @@ module.exports = {
 			const oldCharacterName = interaction.options.getString('old_character_name');
 			const newCharacterName = interaction.options.getString('new_character_name');
 
-			if (await updateRaider(oldCharacterName, newCharacterName).catch(err => console.error(err))) {
+			if (await updateRaider(oldCharacterName, newCharacterName)) {
 				await interaction
 					.reply({
 						content: `Successfully updated ${oldCharacterName} with ${newCharacterName}`,
@@ -152,8 +152,7 @@ module.exports = {
 		}
 		else if (interaction.options.getSubcommand() === 'update_raider_seeddata') {
 
-			await updateRaiderJsonData()
-				.catch(err => console.error(err));
+			await updateRaiderJsonData();
 
 			await interaction
 				.editReply({
