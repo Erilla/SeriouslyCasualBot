@@ -22,7 +22,7 @@ async function checkApplications(client) {
 						console.log(`${new Date().toLocaleString()}: Found ${channels.size} guild channels to check applications...`);
 
 						channels.forEach(async channel => {
-							if (channel.id === applicationsCategoryId) {
+							if (channel && channel.id && channel.id === applicationsCategoryId) {
 								const trackedCategoryChannel = channel;
 								console.log(`${new Date().toLocaleString()}: Channels in tracked category: ${trackedCategoryChannel.children.cache.size}`);
 

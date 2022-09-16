@@ -1,4 +1,6 @@
 const { applicationsViewerChannelId, databaseString } = require('../../config.json');
+const { ThreadAutoArchiveDuration } = require('discord.js');
+
 const Keyv = require('keyv');
 
 const openApplicationThreads = new Keyv(databaseString, { namespace: 'openApplicationThreads' });
@@ -17,6 +19,8 @@ async function keepApplicationThreadAlive(client, threadId) {
 			.catch(console.error);
 
 	if (thread) {
+		thread.setAutoArchiveDuration(ThreadAutoArchiveDuration.OneDay);
+
 		if (thread.archived) {
 			thread.setArchived(false)
 				.then(newThread => {

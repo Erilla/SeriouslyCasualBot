@@ -19,7 +19,7 @@ async function keepTrialThreadAlive(client, threadId) {
 
 		if (thread.archived) {
 			thread.setArchived(false)
-				.then(newThread => console.log(`Keeping Thread Id ${newThread.id} alive`))
+				.then(newThread => console.log(`Keeping Thread Id ${newThread.name} alive`))
 				.catch(console.error);
 		}
 	}
