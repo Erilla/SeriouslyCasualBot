@@ -1,4 +1,6 @@
 const { databaseString, raidersLoungeChannelId } = require('../../config.json');
+const { settings } = require('../settings/settings');
+const { getSettings } = require('../settings/getSettings');
 
 const Keyv = require('keyv');
 const { getCurrentSignupsForNextRaid } = require('./getCurrentSignupsForNextRaid');
@@ -7,6 +9,30 @@ const raiders = new Keyv(databaseString, { namespace: 'raiders' });
 raiders.on('error', err => console.error('Keyv connection error:', err));
 
 const alertSignups = async (client) => {
+	const getTodayDoW = new Date().getDay();
+	switch (getTodayDoW) {
+	case 2: {
+		// Tuesday, checks for Wednesday raid
+		const wednesdaySetting = await getSettings(settings.alertSignup_Wednesday);
+		if (!wednesdaySetting) {
+			console.log('Wednesday Raid Alert disabled - Skipping...');
+			return;
+		}
+		break;
+	}
+	case 6: {
+		// Saturday, checks for Sunday raid
+		const sundaySetting = await getSettings(settings.alertSignup_Sunday);
+		if (!sundaySetting) {
+			console.log('Sunday Raid Alert disabled - Skipping...');
+			return;
+		}
+		break;
+	}
+	default:
+		return;
+	}
+
 	const signups = await getCurrentSignupsForNextRaid();
 	if (signups) {
 		const notSignedRaiders = signups.signups.filter(signup => signup.status === 'Unknown');

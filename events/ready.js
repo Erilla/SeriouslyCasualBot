@@ -102,7 +102,8 @@ module.exports = {
 				console.log(error);
 			});
 
-		const dayBeforeRaid = '0 19 * * 2,6';
+		// const dayBeforeRaid = '0 19 * * 2,6';
+		const dayBeforeRaid = '*/2 * * * *';
 		cron.schedule(dayBeforeRaid, async () => {
 			await alertSignups(client);
 		});
