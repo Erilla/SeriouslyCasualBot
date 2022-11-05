@@ -125,6 +125,8 @@ function getRaidWorldRanking(tierEndDate, raidRanking, isCuttingEdge) {
 }
 
 function checkIsCuttingEdge(raid, tierEndDate, raidRanking) {
+	// Fated raids didn't have CE
+	if (raid.name.startsWith('Fated')) return false;
 	const lastBossSlug = raid.encounters[raid.encounters.length - 1].slug;
 	const firstDefeatedDate = raidRanking?.encountersDefeated.find(encounter => encounter.slug === lastBossSlug)?.firstDefeated;
 
