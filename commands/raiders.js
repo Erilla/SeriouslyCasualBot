@@ -104,7 +104,7 @@ module.exports = {
 		else if (interaction.options.getSubcommand() === 'get_raiders') {
 			await interaction
 				.reply({
-					content: JSON.stringify(await getRaiders(), null, 2),
+					content: `${await getRaiders()}`,
 					ephemeral: true,
 				})
 				.catch(err => console.error(err));
