@@ -5,7 +5,9 @@ const getCurrentSignupsForNextRaid = async () => {
 	let upcomingRaids = await getUpcomingRaids();
 	if (upcomingRaids) {
 		upcomingRaids.sort((a, b) => new Date(a.date) > new Date(b.date));
-		upcomingRaids = upcomingRaids.filter(raid => raid.difficulty === 'Mythic');
+		upcomingRaids = upcomingRaids.filter(
+			(raid) => raid.difficulty === 'Mythic' && raid.status === 'Planned',
+		);
 		const nextRaid = upcomingRaids[0];
 
 		const nextRaidDetailed = await getRaidDetails(nextRaid.id);
@@ -13,7 +15,9 @@ const getCurrentSignupsForNextRaid = async () => {
 		if (nextRaidDetailed) {
 			const result = {
 				id: nextRaid.id,
-				signups: nextRaidDetailed.signups.map(x => { return { name : x.character.name, status: x.status }; }),
+				signups: nextRaidDetailed.signups.map((x) => {
+					return { name: x.character.name, status: x.status };
+				}),
 			};
 			return result;
 		}
@@ -29,17 +33,23 @@ const getCurrentSignupsForNextRaid = async () => {
 };
 
 const getUpcomingRaids = async () => {
-	return await fetch('https://wowaudit.com/v1/raids?include_past=false', generateQueryOptions())
-		.then(response => response.json())
-		.then(response => response.raids)
-		.catch(err => console.error(err));
+	return await fetch(
+		'https://wowaudit.com/v1/raids?include_past=false',
+		generateQueryOptions(),
+	)
+		.then((response) => response.json())
+		.then((response) => response.raids)
+		.catch((err) => console.error(err));
 };
 
 const getRaidDetails = async (id) => {
-	return await fetch(`https://wowaudit.com/v1/raids/${id}}`, generateQueryOptions())
-		.then(response => response.json())
-		.then(response => response)
-		.catch(err => console.error(err));
+	return await fetch(
+		`https://wowaudit.com/v1/raids/${id}}`,
+		generateQueryOptions(),
+	)
+		.then((response) => response.json())
+		.then((response) => response)
+		.catch((err) => console.error(err));
 };
 
 const generateQueryOptions = () => {

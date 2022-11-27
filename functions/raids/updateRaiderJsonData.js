@@ -12,7 +12,7 @@ const updateRaiderJsonData = async () => {
 
 	const raidersData = await getRaiders();
 
-	fs.writeFile(fileName, JSON.stringify(raidersData, null, 2), function writeJSON(err) {
+	fs.writeFile(fileName, JSON.stringify(raidersData, null, 2), async function writeJSON(err) {
 		if (err) return console.log(err);
 		console.log(JSON.stringify(`./data/${raidersData}`));
 		console.log('writing to ' + fileName);
