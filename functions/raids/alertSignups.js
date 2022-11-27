@@ -17,7 +17,7 @@ const alertSignups = async (client) => {
 		case 1: {
 			// Monday, checks for Wednesday raid
 			const wednesdaySetting = await getSettings(
-				settings.alertSignup_Wednesday,
+				settings.alertSignup_Wednesday_48,
 			);
 			if (!wednesdaySetting) {
 				console.log('Wednesday Raid Alert disabled - Skipping...');
@@ -38,7 +38,7 @@ const alertSignups = async (client) => {
 		}
 		case 5: {
 			// Friday, checks for Sunday raid
-			const sundaySetting = await getSettings(settings.alertSignup_Sunday);
+			const sundaySetting = await getSettings(settings.alertSignup_Sunday_48);
 			if (!sundaySetting) {
 				console.log('Sunday Raid Alert disabled - Skipping...');
 				return;
