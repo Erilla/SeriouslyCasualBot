@@ -1,7 +1,10 @@
 const { guildInfoChannelId, databaseString } = require('../../config.json');
 const { EmbedBuilder, Colors } = require('discord.js');
 const achievementsContent = require('../../data/achievements.json');
-const { getRaidRankings, getRaidStaticData } = require('../../services/raiderioService');
+const {
+	getRaidRankings,
+	getRaidStaticData,
+} = require('../../services/raiderioService');
 const Keyv = require('keyv');
 
 const guildinfoData = new Keyv(databaseString, { namespace: 'guildinfo' });
@@ -31,13 +34,16 @@ async function updateAchievements(interaction) {
 			let error = 0;
 
 			const raidStaticDataResponse = await getRaidStaticData(expansion);
-			if (raidStaticDataResponse?.response?.status && raidStaticDataResponse?.response?.status === 500) {
+			if (
+				raidStaticDataResponse?.response?.status &&
+				raidStaticDataResponse?.response?.status === 400
+			) {
 				complete = true;
 			}
 			else if (raidStaticDataResponse?.raids) {
 				raidStaticDataResponse?.raids?.sort((a, b) => {
 					if (a.ends.eu === null) return 1;
-					return (a.ends.eu > b.ends.eu) ? 1 : -1;
+					return a.ends.eu > b.ends.eu ? 1 : -1;
 				});
 				for (const raid of raidStaticDataResponse.raids) {
 					const raidSlug = raid.slug;
@@ -57,8 +63,11 @@ async function updateAchievements(interaction) {
 							let encountersDefeated = 0;
 
 							for (const tempRaidRanking of raidRankingsResponse.raidRankings) {
-								if (encountersDefeated < tempRaidRanking.encountersDefeated.length) {
-									encountersDefeated = tempRaidRanking.encountersDefeated.length;
+								if (
+									encountersDefeated < tempRaidRanking.encountersDefeated.length
+								) {
+									encountersDefeated =
+										tempRaidRanking.encountersDefeated.length;
 									raidRanking = tempRaidRanking;
 								}
 							}
@@ -68,8 +77,16 @@ async function updateAchievements(interaction) {
 						}
 
 						const killedBosses = getKilledNumberBosses(raidRanking);
-						const isCuttingEdge = checkIsCuttingEdge(raid, tierEndDate, raidRanking);
-						const worldRanking = getRaidWorldRanking(tierEndDate, raidRanking, isCuttingEdge);
+						const isCuttingEdge = checkIsCuttingEdge(
+							raid,
+							tierEndDate,
+							raidRanking,
+						);
+						const worldRanking = getRaidWorldRanking(
+							tierEndDate,
+							raidRanking,
+							isCuttingEdge,
+						);
 						const progress = buildProgress(killedBosses, totalBosses);
 
 						if (killedBosses) {
@@ -120,7 +137,7 @@ function getRaidWorldRanking(tierEndDate, raidRanking, isCuttingEdge) {
 		return '**In Progress**';
 	}
 	else {
-		return `${(isCuttingEdge ? '**CE**' : '\u200b')} WR ${raidRanking?.rank}`;
+		return `${isCuttingEdge ? '**CE**' : '\u200b'} WR ${raidRanking?.rank}`;
 	}
 }
 
@@ -128,9 +145,14 @@ function checkIsCuttingEdge(raid, tierEndDate, raidRanking) {
 	// Fated raids didn't have CE
 	if (raid.name.startsWith('Fated')) return false;
 	const lastBossSlug = raid.encounters[raid.encounters.length - 1].slug;
-	const firstDefeatedDate = raidRanking?.encountersDefeated.find(encounter => encounter.slug === lastBossSlug)?.firstDefeated;
+	const firstDefeatedDate = raidRanking?.encountersDefeated.find(
+		(encounter) => encounter.slug === lastBossSlug,
+	)?.firstDefeated;
 
-	return tierEndDate !== null && Date.parse(firstDefeatedDate) < Date.parse(tierEndDate);
+	return (
+		tierEndDate !== null &&
+		Date.parse(firstDefeatedDate) < Date.parse(tierEndDate)
+	);
 }
 
 function buildProgress(killedBosses, totalBosses) {
@@ -150,41 +172,43 @@ function buildAchievement(raidName, progress, worldRanking) {
 }
 
 async function postAchievements(interaction) {
-
 	const embed = new EmbedBuilder()
 		.setTitle(achievementsContent.title)
-		.addFields({
-			name: 'Raid',
-			value: `${raidsString}`,
-			inline: true,
-		},
-		{
-			name: '\u200b',
-			value: `${progressString}`,
-			inline: true,
-		},
-		{
-			name: '\u200b',
-			value: `${worldRankingstring}`,
-			inline: true,
-		})
+		.addFields(
+			{
+				name: 'Raid',
+				value: `${raidsString}`,
+				inline: true,
+			},
+			{
+				name: '\u200b',
+				value: `${progressString}`,
+				inline: true,
+			},
+			{
+				name: '\u200b',
+				value: `${worldRankingstring}`,
+				inline: true,
+			},
+		)
 		.setColor(Colors.Green);
 
-	const channel = await interaction.client.channels.cache
-		.get(guildInfoChannelId);
+	const channel = await interaction.client.channels.cache.get(
+		guildInfoChannelId,
+	);
 	const achievementsPostId = await guildinfoData
 		.get('achievementsPostId')
-		.catch(err => console.error(err));
+		.catch((err) => console.error(err));
 
 	if (achievementsPostId) {
 		try {
 			const achievementMessage = await channel.messages
 				.fetch(achievementsPostId)
-				.catch(err => console.error(err));
+				.catch((err) => console.error(err));
 
 			await achievementMessage
 				.edit({ embeds: [embed] })
-				.catch(err => console.error(err));
+				.catch((err) => console.error(err));
 
 			console.log('Achievements updated!');
 			return;
@@ -196,18 +220,19 @@ async function postAchievements(interaction) {
 
 	channel
 		.send({ embeds: [embed] })
-		.then(response => {
+		.then((response) => {
 			guildinfoData.set('achievementsPostId', response.id);
 			console.log(response.id);
 		})
-		.catch(err => console.error(err));
+		.catch((err) => console.error(err));
 }
 
 function buildManualAchievements(expansion) {
+	const expansionAchieves = achievementsContent.achievements.filter(
+		(achievement) => achievement.expansion === expansion,
+	);
 
-	const expansionAchieves = achievementsContent.achievements.filter(achievement => achievement.expansion === expansion);
-
-	expansionAchieves.forEach(achieve => {
+	expansionAchieves.forEach((achieve) => {
 		raidsString = achieve.raid + '\n' + raidsString;
 		progressString = achieve.progress + '\n' + progressString;
 		worldRankingstring = achieve.result + '\n' + worldRankingstring + ' ';
