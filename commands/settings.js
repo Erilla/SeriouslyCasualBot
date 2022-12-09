@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { settings } = require('../functions/settings/settings');
 const { getSettings } = require('../functions/settings/getSettings');
+const { getAllSettings } = require('../functions/settings/getAllSettings');
 const { setSetting } = require('../functions/settings/setSetting');
 
 const command = new SlashCommandBuilder()
@@ -34,6 +35,11 @@ const command = new SlashCommandBuilder()
 						},
 					),
 			),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('get_all_settings')
+			.setDescription('Returns the all settings'),
 	)
 	.addSubcommand((subcommand) =>
 		subcommand
@@ -87,6 +93,14 @@ module.exports = {
 
 			await interaction.reply({
 				content: `Set ${setting} as ${newSetting}`,
+				ephemeral: true,
+			});
+		}
+		else if (interaction.options.getSubcommand() === 'get_all_settings') {
+			const allSettings = await getAllSettings();
+
+			await interaction.reply({
+				content: `__**All Settings**__\n${allSettings}`,
 				ephemeral: true,
 			});
 		}
