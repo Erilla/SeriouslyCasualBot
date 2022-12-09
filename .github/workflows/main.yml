@@ -14,43 +14,44 @@ jobs:
     runs-on: ubuntu-latest
     environment: Prod
     steps:
-    - uses: actions/checkout@master
+      - uses: actions/checkout@master
 
-    - name: replace_envs
-      # uses: franzbischoff/replace_envs@7d7bb985ee9f2406b8d92bf45c53688430666b84
-      uses: franzbischoff/replace_envs@v1
-      env:
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        GUILD_ID: ${{ secrets.GUILD_ID }}
-        TOKEN: ${{ secrets.TOKEN }}
-        GUILD_INFO_CHANNEL_ID: ${{ secrets.GUILD_INFO_CHANNEL_ID }}
-        APPLICATION_CHANNEL_URL: ${{ secrets.APPLICATION_CHANNEL_URL }}
-        ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
-        APPLICATION_CATEGORY_ID: ${{ secrets.APPLICATION_CATEGORY_ID }}
-        APPLICATION_VIEWER_CHANNEL_ID: ${{ secrets.APPLICATION_VIEWER_CHANNEL_ID }}
-        TRIAL_REVIEW_CHANNEL_ID: ${{ secrets.TRIAL_REVIEW_CHANNEL_ID }}
-        WARCRAFTLOGS_CLIENT_ID: ${{ secrets.WARCRAFTLOGS_CLIENT_ID }}
-        WARCRAFTLOGS_CLIENT_SECRET: ${{ secrets.WARCRAFTLOGS_CLIENT_SECRET }}
-        WOWAUDIT_API_SECRET: ${{ secrets.WOWAUDIT_API_SECRET }}
-        RAIDERSLOUNGE_CHANNEL_ID: ${{ secrets.RAIDERSLOUNGE_CHANNEL_ID }}
+      - name: replace_envs
+        # uses: franzbischoff/replace_envs@7d7bb985ee9f2406b8d92bf45c53688430666b84
+        uses: franzbischoff/replace_envs@v1
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          GUILD_ID: ${{ secrets.GUILD_ID }}
+          TOKEN: ${{ secrets.TOKEN }}
+          GUILD_INFO_CHANNEL_ID: ${{ secrets.GUILD_INFO_CHANNEL_ID }}
+          APPLICATION_CHANNEL_URL: ${{ secrets.APPLICATION_CHANNEL_URL }}
+          ADMIN_ROLE_ID: ${{ secrets.ADMIN_ROLE_ID }}
+          APPLICATION_CATEGORY_ID: ${{ secrets.APPLICATION_CATEGORY_ID }}
+          APPLICATION_VIEWER_CHANNEL_ID: ${{ secrets.APPLICATION_VIEWER_CHANNEL_ID }}
+          TRIAL_REVIEW_CHANNEL_ID: ${{ secrets.TRIAL_REVIEW_CHANNEL_ID }}
+          WARCRAFTLOGS_CLIENT_ID: ${{ secrets.WARCRAFTLOGS_CLIENT_ID }}
+          WARCRAFTLOGS_CLIENT_SECRET: ${{ secrets.WARCRAFTLOGS_CLIENT_SECRET }}
+          WOWAUDIT_API_SECRET: ${{ secrets.WOWAUDIT_API_SECRET }}
+          RAIDERSLOUNGE_CHANNEL_ID: ${{ secrets.RAIDERSLOUNGE_CHANNEL_ID }}
+          LOOT_CHANNEL_ID: ${{ SECRETS.LOOT_CHANNEL_ID }}
 
-      with:
-        # Origin file
-        from_file: 'example-config.json'
-        # Destination file
-        to_file: 'config.json'
-        # Commit changes?
-        commit: false
-        
-    - name: List output files
-      run: ls
-      
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@2.0.0
-      env:
-        FTP_SERVER: ${{ secrets.FTP_SERVER }}
-        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        LOCAL_DIR: ./
-        METHOD: sftp
-        PORT: 23
+        with:
+          # Origin file
+          from_file: 'example-config.json'
+          # Destination file
+          to_file: 'config.json'
+          # Commit changes?
+          commit: false
+
+      - name: List output files
+        run: ls
+
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@2.0.0
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          LOCAL_DIR: ./
+          METHOD: sftp
+          PORT: 23

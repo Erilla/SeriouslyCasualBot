@@ -2,8 +2,8 @@
 	"clientId": "${CLIENT_ID}",
 	"guildId": "${GUILD_ID}",
 	"token": "${TOKEN}",
-    "guildInfoChannelId": "${GUILD_INFO_CHANNEL_ID}",
-    "applicationChannelUrl": "${APPLICATION_CHANNEL_URL}",
+	"guildInfoChannelId": "${GUILD_INFO_CHANNEL_ID}",
+	"applicationChannelUrl": "${APPLICATION_CHANNEL_URL}",
 	"adminRoleId": "${ADMIN_ROLE_ID}",
 	"applicationsCategoryId": "${APPLICATION_CATEGORY_ID}",
 	"applicationsViewerChannelId": "${APPLICATION_VIEWER_CHANNEL_ID}",
@@ -14,5 +14,6 @@
 	"warcraftLogsClientSecret": "${WARCRAFTLOGS_CLIENT_SECRET}",
 	"wowAuditApiSecret": "${WOWAUDIT_API_SECRET}",
 	"raidersLoungeChannelId": "${RAIDERSLOUNGE_CHANNEL_ID}",
-	"raiderJson": "raiders.json"
+	"raiderJson": "raiders.json",
+	"lootChannelId": "${LOOT_CHANNEL_ID}"
 }

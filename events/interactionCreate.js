@@ -1,15 +1,33 @@
 const { removeTrial } = require('../functions/trial-review/removeTrial');
-const { updateTrialInfoModal, createTrialInfoModal } = require('../functions/trial-review/trialInfoModal');
-const { createTrialReviewThread } = require('../functions/trial-review/createTrialReviewThread');
-const { dateInputValidator } = require('../functions/trial-review/dateInputValidator');
-const { changeTrialInfo } = require('../functions/trial-review/changeTrialInfo');
-const { archiveApplicationThread } = require('../functions/applications/archiveApplicationThread');
-const { voteForApplicant, voteNeutralApplicant, voteAgainstApplicant, voteKekwAgainstApplicant } = require('../functions/applications/voteApplicant');
-const { generateVotingMessage } = require('../functions/applications/generateVotingMessage');
+const {
+	updateTrialInfoModal,
+	createTrialInfoModal,
+} = require('../functions/trial-review/trialInfoModal');
+const {
+	createTrialReviewThread,
+} = require('../functions/trial-review/createTrialReviewThread');
+const {
+	dateInputValidator,
+} = require('../functions/trial-review/dateInputValidator');
+const {
+	changeTrialInfo,
+} = require('../functions/trial-review/changeTrialInfo');
+const {
+	archiveApplicationThread,
+} = require('../functions/applications/archiveApplicationThread');
+const {
+	voteForApplicant,
+	voteNeutralApplicant,
+	voteAgainstApplicant,
+	voteKekwAgainstApplicant,
+} = require('../functions/applications/voteApplicant');
+const {
+	generateVotingMessage,
+} = require('../functions/applications/generateVotingMessage');
 const { extendTrial } = require('../functions/trial-review/extendTrial');
 const { markToPromote } = require('../functions/trial-review/markToPromote');
 const wait = require('util').promisify(setTimeout);
-
+const { updateLootResponse } = require('../functions/loot/updateLootResponse');
 const adminRoleIds = ['255630010088423425', '170611904752910336'];
 
 function checkPermissions(member) {
@@ -17,7 +35,7 @@ function checkPermissions(member) {
 
 	let found = false;
 
-	adminRoleIds.forEach(adminRoleId => {
+	adminRoleIds.forEach((adminRoleId) => {
 		if (roles.get(adminRoleId)) {
 			found = true;
 		}
@@ -29,10 +47,13 @@ function checkPermissions(member) {
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
-
 		if (interaction.isCommand()) {
-			console.log(`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`);
-			const executedCommand = interaction.client.commands.get(interaction.commandName);
+			console.log(
+				`${interaction.user.tag} in #${interaction.channel.name} triggered an interaction.`,
+			);
+			const executedCommand = interaction.client.commands.get(
+				interaction.commandName,
+			);
 
 			if (!executedCommand) return;
 
@@ -41,18 +62,25 @@ module.exports = {
 			}
 			catch (error) {
 				console.error(error);
-				await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+				await interaction.reply({
+					content: 'There was an error while executing this command!',
+					ephemeral: true,
+				});
 			}
 		}
 		else if (interaction.isButton()) {
 			if (interaction.customId === 'closeTrial') {
-				console.log(`${interaction.user.tag} in #${interaction.channel.name} clicked the closeTrial button.`);
+				console.log(
+					`${interaction.user.tag} in #${interaction.channel.name} clicked the closeTrial button.`,
+				);
 
 				await removeTrial(interaction.message.thread.id);
-				await interaction.message.thread.send('Closing Trial Thread')
-					.catch(err => console.error(err));
-				await interaction.message.thread.setArchived(true)
-					.catch(err => console.error(err));
+				await interaction.message.thread
+					.send('Closing Trial Thread')
+					.catch((err) => console.error(err));
+				await interaction.message.thread
+					.setArchived(true)
+					.catch((err) => console.error(err));
 
 				return await interaction
 					.update({
@@ -60,8 +88,7 @@ module.exports = {
 						components: [],
 						ephemeral: true,
 					})
-					.catch(err => console.error(err));
-
+					.catch((err) => console.error(err));
 			}
 			else if (interaction.customId === 'updateTrialInfo') {
 				await updateTrialInfoModal(interaction);
@@ -73,16 +100,19 @@ module.exports = {
 					.update({
 						content,
 					})
-					.catch(err => console.error(err));
+					.catch((err) => console.error(err));
 			}
 			else if (interaction.customId === 'markForPromotion') {
-				const result = await markToPromote(interaction.client, interaction.message.thread.id);
+				const result = await markToPromote(
+					interaction.client,
+					interaction.message.thread.id,
+				);
 				if (result) {
 					await interaction
 						.update({
 							content: `🟩 **To Be Promoted** 🟩\n${interaction.message}`,
 						})
-						.catch(err => console.error(err));
+						.catch((err) => console.error(err));
 				}
 				else {
 					await interaction
@@ -90,7 +120,7 @@ module.exports = {
 							content: 'Already marked for promotion',
 							ephemeral: true,
 						})
-						.catch(err => console.error(err));
+						.catch((err) => console.error(err));
 				}
 			}
 			else if (interaction.customId === 'acceptedApplicant') {
@@ -103,12 +133,16 @@ module.exports = {
 							content: 'Insufficent permissions',
 							ephemeral: true,
 						})
-						.catch(err => console.error(err));
+						.catch((err) => console.error(err));
 				}
 			}
 			else if (interaction.customId === 'rejectedApplicant') {
 				if (checkPermissions(interaction.member)) {
-					await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Rejected');
+					await archiveApplicationThread(
+						interaction.client,
+						interaction.message.thread.id,
+						'Rejected',
+					);
 				}
 				else {
 					await interaction
@@ -116,71 +150,99 @@ module.exports = {
 							content: 'Insufficent permissions',
 							ephemeral: true,
 						})
-						.catch(err => console.error(err));
+						.catch((err) => console.error(err));
 				}
 			}
 			else if (interaction.customId === 'voteFor') {
 				await voteForApplicant(interaction.user.id, interaction.channelId);
 				await interaction
 					.update(await generateVotingMessage(interaction.channelId))
-					.catch(err => console.error(err));
+					.catch((err) => console.error(err));
 			}
 			else if (interaction.customId === 'voteNeutral') {
 				await voteNeutralApplicant(interaction.user.id, interaction.channelId);
 				await interaction
 					.update(await generateVotingMessage(interaction.channelId))
-					.catch(err => console.error(err));
+					.catch((err) => console.error(err));
 			}
 			else if (interaction.customId === 'voteAgainst') {
 				await voteAgainstApplicant(interaction.user.id, interaction.channelId);
 				await interaction
 					.update(await generateVotingMessage(interaction.channelId))
-					.catch(err => console.error(err));
+					.catch((err) => console.error(err));
 			}
 			else if (interaction.customId === 'voteKekWAgainst') {
-				await voteKekwAgainstApplicant(interaction.user.id, interaction.channelId);
+				await voteKekwAgainstApplicant(
+					interaction.user.id,
+					interaction.channelId,
+				);
 				await interaction
 					.update(await generateVotingMessage(interaction.channelId))
-					.catch(err => console.error(err));
+					.catch((err) => console.error(err));
+			}
+			else if (interaction.customId.startsWith('updateLootResponse')) {
+				const [, response, bossId] = interaction.customId.split('|');
+
+				await interaction
+					.update(
+						await updateLootResponse(
+							interaction.client,
+							response,
+							bossId,
+							interaction.user.id,
+						),
+					)
+					.catch((err) => console.error(err));
 			}
 		}
 		else if (interaction.isModalSubmit()) {
 			if (interaction.customId === 'addNewTrialInfoModal') {
-				const characterName = interaction.fields.getTextInputValue('characterNameInput');
+				const characterName =
+					interaction.fields.getTextInputValue('characterNameInput');
 				const role = interaction.fields.getTextInputValue('roleInput');
-				const startDate = interaction.fields.getTextInputValue('startDateInput');
+				const startDate =
+					interaction.fields.getTextInputValue('startDateInput');
 
 				if (dateInputValidator(startDate)) {
-					await createTrialReviewThread(interaction.client, { characterName, role, startDate: new Date(startDate) });
+					await createTrialReviewThread(interaction.client, {
+						characterName,
+						role,
+						startDate: new Date(startDate),
+					});
 
 					if (interaction.message?.thread?.id) {
-						await archiveApplicationThread(interaction.client, interaction.message.thread.id, 'Accepted');
+						await archiveApplicationThread(
+							interaction.client,
+							interaction.message.thread.id,
+							'Accepted',
+						);
 					}
 
 					await interaction
 						.reply({
 							content: 'Successfully created Trial Thread',
 						})
-						.catch(err => console.error(err));
+						.catch((err) => console.error(err));
 					await wait(1000);
-					await interaction.deleteReply()
-						.catch(err => console.error(err));
+					await interaction.deleteReply().catch((err) => console.error(err));
 				}
 				else {
-					await interaction.reply({
-						content: 'Invalid Date',
-					})
-						.catch(err => console.error(err));
+					await interaction
+						.reply({
+							content: 'Invalid Date',
+						})
+						.catch((err) => console.error(err));
 					await wait(1000);
-					await interaction.deleteReply()
-						.catch(err => console.error(err));
+					await interaction.deleteReply().catch((err) => console.error(err));
 				}
 			}
 			else if (interaction.customId === 'updateTrialInfoModal') {
 				const threadId = interaction.message.thread.id;
-				const characterName = interaction.fields.getTextInputValue('characterNameInput');
+				const characterName =
+					interaction.fields.getTextInputValue('characterNameInput');
 				const role = interaction.fields.getTextInputValue('roleInput');
-				const startDate = interaction.fields.getTextInputValue('startDateInput');
+				const startDate =
+					interaction.fields.getTextInputValue('startDateInput');
 
 				const trial = {
 					characterName,
@@ -190,16 +252,15 @@ module.exports = {
 
 				await changeTrialInfo(interaction.client, threadId, trial);
 
-				await interaction.reply({
-					content: `Successfully updated Trial with thread Id ${threadId}`,
-				})
-					.catch(err => console.error(err));
+				await interaction
+					.reply({
+						content: `Successfully updated Trial with thread Id ${threadId}`,
+					})
+					.catch((err) => console.error(err));
 
 				await wait(1000);
-				await interaction.deleteReply()
-					.catch(err => console.error(err));
+				await interaction.deleteReply().catch((err) => console.error(err));
 			}
 		}
-
 	},
 };
