@@ -16,7 +16,7 @@ const updateLootResponse = async (client, response, bossId, userId) => {
 
 	await updateLootPost(client, bossId);
 
-	return;
+	return '';
 };
 
 const removeFromAllLootResponses = (bossLootResponses, userId) => {
