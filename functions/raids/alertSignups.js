@@ -12,10 +12,14 @@ const raiders = new Keyv(databaseString, { namespace: 'raiders' });
 raiders.on('error', (err) => console.error('Keyv connection error:', err));
 
 const alertSignups = async (client) => {
-	const getTodayDoW = new Date().getDay();
+	const today = new Date();
+	const getTodayDoW = today.getDay();
+	const nextRaidDay = new Date();
+
 	switch (getTodayDoW) {
 		case 1: {
 			// Monday, checks for Wednesday raid
+			nextRaidDay.setDate(today.getDate() + 2);
 			const wednesdaySetting = await getSettings(
 				settings.alertSignup_Wednesday_48,
 			);
@@ -27,6 +31,7 @@ const alertSignups = async (client) => {
 		}
 		case 2: {
 			// Tuesday, checks for Wednesday raid
+			nextRaidDay.setDate(today.getDate() + 1);
 			const wednesdaySetting = await getSettings(
 				settings.alertSignup_Wednesday,
 			);
@@ -38,6 +43,7 @@ const alertSignups = async (client) => {
 		}
 		case 5: {
 			// Friday, checks for Sunday raid
+			nextRaidDay.setDate(today.getDate() + 2);
 			const sundaySetting = await getSettings(settings.alertSignup_Sunday_48);
 			if (!sundaySetting) {
 				console.log('Sunday Raid Alert disabled - Skipping...');
@@ -47,6 +53,7 @@ const alertSignups = async (client) => {
 		}
 		case 6: {
 			// Saturday, checks for Sunday raid
+			nextRaidDay.setDate(today.getDate() + 1);
 			const sundaySetting = await getSettings(settings.alertSignup_Sunday);
 			if (!sundaySetting) {
 				console.log('Sunday Raid Alert disabled - Skipping...');
@@ -58,10 +65,15 @@ const alertSignups = async (client) => {
 			break;
 	}
 
-	const signups = await getCurrentSignupsForNextRaid();
+	const nextRaid = await getCurrentSignupsForNextRaid();
 	let message = '';
-	if (signups) {
-		const notSignedRaiders = signups.signups.filter(
+	const nextRaidDayString = nextRaidDay.toISOString().split('T')[0];
+	if (
+		nextRaid &&
+		nextRaidDay !== today &&
+		nextRaidDayString === nextRaid.date
+	) {
+		const notSignedRaiders = nextRaid.signups.filter(
 			(signup) => signup.status === 'Unknown',
 		);
 
@@ -87,7 +99,7 @@ const alertSignups = async (client) => {
 
 			message += `\n ${signupAlertMessages.messages[messageIndex]}`;
 
-			message += `\n <#980016906620776528> / https://wowaudit.com/eu/silvermoon/seriouslycasual/main/raids/${signups.id}`;
+			message += `\n\n <#980016906620776528> / https://wowaudit.com/eu/silvermoon/seriouslycasual/main/raids/${nextRaid.id}`;
 		}
 		else {
 			message += 'Holy shit everyone has signed up for the next raid!';

@@ -15,6 +15,7 @@ const getCurrentSignupsForNextRaid = async () => {
 		if (nextRaidDetailed) {
 			const result = {
 				id: nextRaid.id,
+				date: nextRaid.date,
 				signups: nextRaidDetailed.signups.map((x) => {
 					return { name: x.character.name, status: x.status };
 				}),
