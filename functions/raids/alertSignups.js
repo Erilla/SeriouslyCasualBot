@@ -16,9 +16,12 @@ const alertSignups = async (client) => {
 	const getTodayDoW = today.getDay();
 	const nextRaidDay = new Date();
 
+	let twoDayReminder = false;
+
 	switch (getTodayDoW) {
 		case 1: {
 			// Monday, checks for Wednesday raid
+			twoDayReminder = true;
 			nextRaidDay.setDate(today.getDate() + 2);
 			const wednesdaySetting = await getSettings(
 				settings.alertSignup_Wednesday_48,
@@ -43,6 +46,7 @@ const alertSignups = async (client) => {
 		}
 		case 5: {
 			// Friday, checks for Sunday raid
+			twoDayReminder = true;
 			nextRaidDay.setDate(today.getDate() + 2);
 			const sundaySetting = await getSettings(settings.alertSignup_Sunday_48);
 			if (!sundaySetting) {
@@ -65,6 +69,8 @@ const alertSignups = async (client) => {
 			break;
 	}
 
+	nextRaidDay.setHours(19, 0, 0);
+
 	const nextRaid = await getCurrentSignupsForNextRaid();
 	let message = '';
 	const nextRaidDayString = nextRaidDay.toISOString().split('T')[0];
@@ -86,9 +92,19 @@ const alertSignups = async (client) => {
 			),
 		).catch((err) => console.error(err));
 
+		let foundUser = false;
+
 		if (notSignedUsers.length) {
+			if (twoDayReminder) {
+				const deadlineDate = new Date().setDate(nextRaidDay.getDate() - 1);
+				const timer = Math.floor(deadlineDate / 1000);
+				message += `You have [<t:${timer}:R>] to sign else you won't get your EP!\n\n`;
+			}
+
 			notSignedUsers.forEach((user) => {
-				if (user) {
+				if (user && user !== 'undefined') {
+					console.log('user entered');
+					foundUser = true;
 					message += `<@${user}>\n`;
 				}
 			});
@@ -101,14 +117,25 @@ const alertSignups = async (client) => {
 
 			message += `\n\n <#980016906620776528> / https://wowaudit.com/eu/silvermoon/seriouslycasual/main/raids/${nextRaid.id}`;
 		}
-		else {
-			message += 'Holy shit everyone has signed up for the next raid!';
+
+		if (!foundUser) {
+			if (twoDayReminder) {
+				message = '';
+			}
+			else {
+				message = 'Holy shit everyone has signed up for the next raid!';
+			}
 		}
 
-		const raidersLoungeChannel = await client.channels
-			.fetch(raidersLoungeChannelId)
-			.catch((err) => console.error(err));
-		await raidersLoungeChannel.send(message).catch((err) => console.error(err));
+		if (message !== '') {
+			const raidersLoungeChannel = await client.channels
+				.fetch(raidersLoungeChannelId)
+				.catch((err) => console.error(err));
+			await raidersLoungeChannel
+				.send(message)
+				.catch((err) => console.error(err));
+		}
+
 		return true;
 	}
 	else {
