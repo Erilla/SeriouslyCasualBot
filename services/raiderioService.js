@@ -8,8 +8,8 @@ const getRaidRankings = async (raid) => {
 
 	const promise = axios.get(url);
 	const dataPromise = promise
-		.then(response => response.data)
-		.catch(error => error);
+		.then((response) => response.data)
+		.catch((error) => error);
 
 	return dataPromise;
 };
@@ -20,11 +20,27 @@ const getRaidStaticData = async (expansionId) => {
 
 	const promise = axios.get(url);
 	const dataPromise = promise
-		.then(response => response.data)
-		.catch(error => error);
+		.then((response) => response.data)
+		.catch((error) => error);
+
+	return dataPromise;
+};
+
+const getPreviousWeeklyHighestMythicPlusRun = async (region, realm, name) => {
+	const baseUrl = 'https://raider.io/api/v1/characters/profile';
+	const url = `${baseUrl}?region=${region}&realm=${realm}&name=${encodeURIComponent(
+		name,
+	)}&fields=mythic_plus_previous_weekly_highest_level_runs`;
+
+	const promise = axios.get(url);
+	const dataPromise = promise
+		.then((response) => response.data)
+		.catch((error) => error);
 
 	return dataPromise;
 };
 
 exports.getRaidRankings = getRaidRankings;
 exports.getRaidStaticData = getRaidStaticData;
+exports.getPreviousWeeklyHighestMythicPlusRun =
+	getPreviousWeeklyHighestMythicPlusRun;

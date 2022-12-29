@@ -22,6 +22,9 @@ const {
 } = require('../functions/trial-review/updateTrialLogs');
 const cron = require('node-cron');
 const { alertSignups } = require('../functions/raids/alertSignups');
+const {
+	alertHighestMythicPlusDone,
+} = require('../functions/raids/alertHighestMythicPlusDone');
 
 module.exports = {
 	name: 'ready',
@@ -159,6 +162,11 @@ module.exports = {
 		const dayBeforeRaid = '0 19 * * 1,2,5,6';
 		cron.schedule(dayBeforeRaid, async () => {
 			await alertSignups(client);
+		});
+
+		const resetDay = '0 12 * * 3';
+		cron.schedule(resetDay, async () => {
+			await alertHighestMythicPlusDone(client);
 		});
 	},
 };

@@ -15,5 +15,6 @@
 	"wowAuditApiSecret": "${WOWAUDIT_API_SECRET}",
 	"raidersLoungeChannelId": "${RAIDERSLOUNGE_CHANNEL_ID}",
 	"raiderJson": "raiders.json",
-	"lootChannelId": "${LOOT_CHANNEL_ID}"
+	"lootChannelId": "${LOOT_CHANNEL_ID}",
+	"weeklyCheckChannelId": "${WEEKLY_CHECK_CHANNEL_ID}"
 }

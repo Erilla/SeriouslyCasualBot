@@ -34,6 +34,7 @@ jobs:
           WOWAUDIT_API_SECRET: ${{ secrets.WOWAUDIT_API_SECRET }}
           RAIDERSLOUNGE_CHANNEL_ID: ${{ secrets.RAIDERSLOUNGE_CHANNEL_ID }}
           LOOT_CHANNEL_ID: ${{ SECRETS.LOOT_CHANNEL_ID }}
+          WEEKLY_CHECK_CHANNEL_ID: ${{ SECRETS.WEEKLY_CHECK_CHANNEL_ID }}
 
         with:
           # Origin file
