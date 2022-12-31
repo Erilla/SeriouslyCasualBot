@@ -64,8 +64,6 @@ jobs:
           local_path: ./*
           # files will copy to under remote_path
           remote_path: ./
-          # sftp args
-          args: "-passphrase #{${{ secrets.FTP_PASSWORD }}}"
     
       #- name: FTP-Deploy-Action
        # uses: SamKirkland/FTP-Deploy-Action@2.0.0
