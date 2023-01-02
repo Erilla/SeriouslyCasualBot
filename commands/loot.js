@@ -37,6 +37,16 @@ const command = new SlashCommandBuilder()
 		subcommand
 			.setName('create_posts')
 			.setDescription('Adds the current raids loot post'),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('update_priority_post')
+			.setDescription('Updates the priority post')
+			.addBooleanOption((option) =>
+				option
+					.setName('create_post')
+					.setDescription('Creates the post'),
+			),
 	);
 
 module.exports = {
@@ -104,6 +114,33 @@ module.exports = {
 			await interaction
 				.reply({
 					content: 'Checking raid expansions',
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
+
+			checkRaidExpansions(interaction.client)
+				.then(async () => {
+					await interaction
+						.editReply({
+							content: 'Checked raid expansions',
+							ephemeral: true,
+						})
+						.catch((err) => console.error(err));
+				})
+				.catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'update_priority_post') {
+			const createPost = interaction.options.getBoolean('create_post');
+
+			let message = 'Updating Priority post';
+
+			if (createPost) {
+				message = 'Creating Priority post';
+			}
+
+			await interaction
+				.reply({
+					content: message,
 					ephemeral: true,
 				})
 				.catch((err) => console.error(err));

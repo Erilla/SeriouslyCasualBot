@@ -25,6 +25,9 @@ const { alertSignups } = require('../functions/raids/alertSignups');
 const {
 	alertHighestMythicPlusDone,
 } = require('../functions/raids/alertHighestMythicPlusDone');
+const {
+	updatePriorityRankingPost,
+} = require('../functions/epgp/priorityRankingPost');
 
 module.exports = {
 	name: 'ready',
@@ -167,6 +170,11 @@ module.exports = {
 		const resetDay = '0 12 * * 3';
 		cron.schedule(resetDay, async () => {
 			await alertHighestMythicPlusDone(client);
+		});
+
+		const everyTenthMinute = '10 * * * *';
+		cron.schedule(everyTenthMinute, async () => {
+			await updatePriorityRankingPost(client);
 		});
 	},
 };

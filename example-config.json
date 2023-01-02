@@ -16,5 +16,6 @@
 	"raidersLoungeChannelId": "${RAIDERSLOUNGE_CHANNEL_ID}",
 	"raiderJson": "raiders.json",
 	"lootChannelId": "${LOOT_CHANNEL_ID}",
-	"weeklyCheckChannelId": "${WEEKLY_CHECK_CHANNEL_ID}"
+	"weeklyCheckChannelId": "${WEEKLY_CHECK_CHANNEL_ID}",
+	"priorityLootChannelId": "${PRIORITY_LOOT_CHANNEL_ID}"
 }
