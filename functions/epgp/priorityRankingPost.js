@@ -66,14 +66,20 @@ const generatePriorityRankingsPost = async () => {
 	)}\n`;
 
 	response.raiders.forEach((raider) => {
+		let epDifference = raider.points.effortPointsDifference;
+		if (+epDifference > 0) epDifference = `+${epDifference}`;
+
+		let gpDifference = raider.points.gearPointsDifference;
+		if (+gpDifference > 0) gpDifference = `+${gpDifference}`;
+
 		content += `${formatColumn(
 			raider.characterName,
 			nameColumnLength,
 		)}${formatColumn(
-			`${raider.points.effortPoints} [${raider.points.effortPointsDifference}]`,
+			`${raider.points.effortPoints} [${epDifference}]`,
 			numberColumnLength,
 		)}${formatColumn(
-			`${raider.points.gearPoints} [${raider.points.gearPointsDifference}]`,
+			`${raider.points.gearPoints} [${gpDifference}]`,
 			numberColumnLength,
 		)}${formatColumn(
 			(Math.round(raider.points.priority * 100) / 100).toFixed(4),
