@@ -48,12 +48,30 @@ jobs:
       - name: List output files
         run: ls
 
-      - name: FTP-Deploy-Action
-        uses: SamKirkland/FTP-Deploy-Action@2.0.0
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          LOCAL_DIR: ./
-          METHOD: sftp
-          PORT: 23
+      - name: SFTP Deploy
+        # You may pin to the exact commit or the version.
+        # uses: wlixcc/SFTP-Deploy-Action@da88a4dbe95286266bbac3c0b2b8284048d20c8f
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          # username
+          username: ${{ secrets.FTP_USERNAME }}
+          # your sftp server
+          server: ${{ secrets.FTP_SERVER }}
+          # your sftp server port, default to 22
+          port: 22
+          # you can copy private_key from your *.pem file, keep format
+          ssh_private_key: ${{ secrets.FTP_PRIVATE_KEY }}
+          # will put all file under this path
+          local_path: ./*
+          # files will copy to under remote_path
+          remote_path: ./
+    
+      #- name: FTP-Deploy-Action
+       # uses: SamKirkland/FTP-Deploy-Action@2.0.0
+        #env:
+        #  FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        #  FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        #  FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        #  LOCAL_DIR: ./
+        #  METHOD: sftp
+        #  PORT: 23
