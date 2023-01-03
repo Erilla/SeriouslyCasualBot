@@ -6,7 +6,7 @@
     "discord-api-types": "^0.37.25",
     "discord.js": "^14.7.1",
     "form-data": "^4.0.0",
-    "keyv": "^4.3.3",
+    "keyv": "^4.5.2",
     "nodaemon": "^0.0.5",
     "node-cron": "^3.0.2",
     "node-fetch": "^2.6.7",
