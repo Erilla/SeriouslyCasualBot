@@ -33,7 +33,7 @@ module.exports = {
 
 			createPost
 				? await createPriorityRankingPost(interaction)
-				: await updatePriorityRankingPost(interaction);
+				: await updatePriorityRankingPost(interaction.client, interaction);
 		}
 	},
 };
