@@ -90,6 +90,9 @@ const generatePriorityRankingsPost = async () => {
 	content += `\n\n[Last Upload: ${new Date(
 		response.lastUploadedDate,
 	).toUTCString()}]`;
+	content += `\n\n[Cutoff Date for point differences: ${new Date(
+		response.cutOffDate,
+	).toUTCString()}]`;
 	content += '```';
 
 	return content;
