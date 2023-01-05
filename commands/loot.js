@@ -4,6 +4,10 @@ const { deleteLootPost } = require('../functions/loot/deleteLootPost');
 const {
 	checkRaidExpansions,
 } = require('../functions/loot/checkRaidExpansions');
+const {
+	createPriorityRankingPost,
+	updatePriorityRankingPost,
+} = require('../functions/epgp/priorityRankingPost');
 
 const command = new SlashCommandBuilder()
 	.setName('loot')
@@ -43,9 +47,7 @@ const command = new SlashCommandBuilder()
 			.setName('update_priority_post')
 			.setDescription('Updates the priority post')
 			.addBooleanOption((option) =>
-				option
-					.setName('create_post')
-					.setDescription('Creates the post'),
+				option.setName('create_post').setDescription('Creates the post'),
 			),
 	);
 
@@ -129,32 +131,19 @@ module.exports = {
 				})
 				.catch((err) => console.error(err));
 		}
-		else if (interaction.options.getSubcommand() === 'update_priority_post') {
+		if (interaction.options.getSubcommand() === 'update_priority_post') {
 			const createPost = interaction.options.getBoolean('create_post');
-
-			let message = 'Updating Priority post';
-
-			if (createPost) {
-				message = 'Creating Priority post';
-			}
 
 			await interaction
 				.reply({
-					content: message,
+					content: `${createPost ? 'Creating' : 'Updating'} Priority post...`,
 					ephemeral: true,
 				})
 				.catch((err) => console.error(err));
 
-			checkRaidExpansions(interaction.client)
-				.then(async () => {
-					await interaction
-						.editReply({
-							content: 'Checked raid expansions',
-							ephemeral: true,
-						})
-						.catch((err) => console.error(err));
-				})
-				.catch((err) => console.error(err));
+			createPost
+				? await createPriorityRankingPost(interaction)
+				: await updatePriorityRankingPost(interaction.client, interaction);
 		}
 	},
 };

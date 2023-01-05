@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {
-	createPriorityRankingPost,
-	updatePriorityRankingPost,
+	generatePriorityRankingsPost,
 } = require('../functions/epgp/priorityRankingPost');
 
 const command = new SlashCommandBuilder()
@@ -9,10 +8,31 @@ const command = new SlashCommandBuilder()
 	.setDescription('Commands around the EPGP')
 	.addSubcommand((subcommand) =>
 		subcommand
-			.setName('update_priority_post')
+			.setName('get_by_token')
 			.setDescription('Updates the priority post')
-			.addBooleanOption((option) =>
-				option.setName('create_post').setDescription('Creates the post'),
+			.addStringOption((option) =>
+				option
+					.setName('tier_token')
+					.setDescription('Filter by tier token')
+					.setRequired(true)
+					.setChoices(
+						{
+							name: 'Zenith (Evoker, Monk, Rogue, Warrior)',
+							value: 'Zenith',
+						},
+						{
+							name: 'Dreadful (Death Knight, Demon Hunter, Warlock)',
+							value: 'Dreadful',
+						},
+						{
+							name: 'Mystic (Druid, Hunter, Mage)',
+							value: 'Mystic',
+						},
+						{
+							name: 'Venerated (Paladin, Priest, Shaman)',
+							value: 'Venerated',
+						},
+					),
 			),
 	);
 
@@ -21,19 +41,23 @@ module.exports = {
 	async execute(interaction) {
 		if (!interaction.isCommand()) return;
 
-		if (interaction.options.getSubcommand() === 'update_priority_post') {
-			const createPost = interaction.options.getBoolean('create_post');
+		if (interaction.options.getSubcommand() === 'get_by_token') {
+			const tierToken = interaction.options.getString('tier_token');
 
 			await interaction
 				.reply({
-					content: `${createPost ? 'Creating' : 'Updating'} Priority post...`,
+					content: `Retrieving rankings by ${tierToken} token...`,
 					ephemeral: true,
 				})
 				.catch((err) => console.error(err));
 
-			createPost
-				? await createPriorityRankingPost(interaction)
-				: await updatePriorityRankingPost(interaction.client, interaction);
+			const post = await generatePriorityRankingsPost(tierToken);
+			await interaction
+				.editReply({
+					content: post,
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
 		}
 	},
 };

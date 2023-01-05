@@ -50,13 +50,16 @@ const updatePriorityRankingPost = async (client, interaction) => {
 	});
 };
 
-const generatePriorityRankingsPost = async () => {
-	const response = await getPriorityRankings();
+const generatePriorityRankingsPost = async (tierToken) => {
+	const response = await getPriorityRankings(tierToken);
 
 	const nameColumnLength = 15;
 	const numberColumnLength = 14;
 
 	let content = '```css\n';
+
+	if (tierToken) content += `Filtered by ${tierToken} token\n`;
+
 	content += `${formatColumn('[Name]', nameColumnLength)}${formatColumn(
 		'[EP]',
 		numberColumnLength,
@@ -90,7 +93,7 @@ const generatePriorityRankingsPost = async () => {
 	content += `\n\n[Last Upload: ${new Date(
 		response.lastUploadedDate,
 	).toUTCString()}]`;
-	content += `\n\n[Cutoff Date for point differences: ${new Date(
+	content += `[Cutoff Date for point differences: ${new Date(
 		response.cutOffDate,
 	).toUTCString()}]`;
 	content += '```';
@@ -105,5 +108,6 @@ const formatColumn = (value, length) => {
 	return result;
 };
 
+exports.generatePriorityRankingsPost = generatePriorityRankingsPost;
 exports.createPriorityRankingPost = createPriorityRankingPost;
 exports.updatePriorityRankingPost = updatePriorityRankingPost;
