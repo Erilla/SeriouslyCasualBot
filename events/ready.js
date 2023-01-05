@@ -172,7 +172,7 @@ module.exports = {
 			await alertHighestMythicPlusDone(client);
 		});
 
-		const everyTenthMinute = '10 * * * *';
+		const everyTenthMinute = '*/10 * * * *';
 		cron.schedule(everyTenthMinute, async () => {
 			await updatePriorityRankingPost(client);
 		});
