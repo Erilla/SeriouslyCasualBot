@@ -14,5 +14,10 @@ jobs:
 
     runs-on: self-hosted
     steps:
-    - name: restart service
-      run: pm2 restart all
+    - name: stop service
+      run: pm2 stop all
+    - name: npm install
+      working-directory: /root/
+      run: npm install
+    - name: start service
+      run: pm2 start all
