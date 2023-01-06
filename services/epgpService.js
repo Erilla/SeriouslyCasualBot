@@ -1,10 +1,13 @@
 const axios = require('axios');
 
-const getPriorityRankings = (tierToken) => {
+const getPriorityRankings = (tierToken, armourType) => {
 	let url = 'https://epgp-api.ryanwong.uk/api/Points/raider/all';
 
 	if (tierToken) {
 		url += `/tierToken/${tierToken}`;
+	}
+	else if (armourType) {
+		url += `/armour/${armourType}`;
 	}
 
 	const promise = axios.get(url);

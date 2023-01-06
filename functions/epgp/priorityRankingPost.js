@@ -50,15 +50,16 @@ const updatePriorityRankingPost = async (client, interaction) => {
 	});
 };
 
-const generatePriorityRankingsPost = async (tierToken) => {
-	const response = await getPriorityRankings(tierToken);
+const generatePriorityRankingsPost = async (tierToken, armourType) => {
+	const response = await getPriorityRankings(tierToken, armourType);
 
 	const nameColumnLength = 15;
-	const numberColumnLength = 14;
+	const numberColumnLength = 15;
 
 	let content = '```css\n';
 
 	if (tierToken) content += `Filtered by ${tierToken} token\n`;
+	else if (armourType) content += `Filtered by ${armourType}\n`;
 
 	content += `${formatColumn('[Name]', nameColumnLength)}${formatColumn(
 		'[EP]',
@@ -93,7 +94,7 @@ const generatePriorityRankingsPost = async (tierToken) => {
 	content += `\n\n[Last Upload: ${new Date(
 		response.lastUploadedDate,
 	).toUTCString()}]`;
-	content += `[Cutoff Date for point differences: ${new Date(
+	content += `\n[Cutoff Date for point differences: ${new Date(
 		response.cutOffDate,
 	).toUTCString()}]`;
 	content += '```';

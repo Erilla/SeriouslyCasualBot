@@ -9,7 +9,9 @@ const command = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('get_by_token')
-			.setDescription('Updates the priority post')
+			.setDescription(
+				'Returns a table containing EPGP filtered by specified token type',
+			)
 			.addStringOption((option) =>
 				option
 					.setName('tier_token')
@@ -34,6 +36,37 @@ const command = new SlashCommandBuilder()
 						},
 					),
 			),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('get_by_armour')
+			.setDescription(
+				'Returns a table containing EPGP filtered by specified armour type',
+			)
+			.addStringOption((option) =>
+				option
+					.setName('armour_type')
+					.setDescription('Filter by armour Type')
+					.setRequired(true)
+					.setChoices(
+						{
+							name: 'Cloth',
+							value: 'Cloth',
+						},
+						{
+							name: 'Leather',
+							value: 'Leather',
+						},
+						{
+							name: 'Mail',
+							value: 'Mail',
+						},
+						{
+							name: 'Plate',
+							value: 'Plate',
+						},
+					),
+			),
 	);
 
 module.exports = {
@@ -52,6 +85,24 @@ module.exports = {
 				.catch((err) => console.error(err));
 
 			const post = await generatePriorityRankingsPost(tierToken);
+			await interaction
+				.editReply({
+					content: post,
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'get_by_armour') {
+			const armourType = interaction.options.getString('armour_type');
+
+			await interaction
+				.reply({
+					content: `Retrieving rankings by ${armourType}...`,
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
+
+			const post = await generatePriorityRankingsPost(null, armourType);
 			await interaction
 				.editReply({
 					content: post,
