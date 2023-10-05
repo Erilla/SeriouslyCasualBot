@@ -81,6 +81,8 @@ async function updateAchievements(interaction) {
 							raid,
 							tierEndDate,
 							raidRanking,
+							killedBosses,
+							totalBosses,
 						);
 						const worldRanking = getRaidWorldRanking(
 							tierEndDate,
@@ -133,7 +135,7 @@ function getTierEndDate(raid) {
 }
 
 function getRaidWorldRanking(tierEndDate, raidRanking, isCuttingEdge) {
-	if (tierEndDate === null) {
+	if (!isCuttingEdge && tierEndDate === null) {
 		return '**In Progress**';
 	}
 	else {
@@ -141,7 +143,13 @@ function getRaidWorldRanking(tierEndDate, raidRanking, isCuttingEdge) {
 	}
 }
 
-function checkIsCuttingEdge(raid, tierEndDate, raidRanking) {
+function checkIsCuttingEdge(
+	raid,
+	tierEndDate,
+	raidRanking,
+	killedBosses,
+	totalBosses,
+) {
 	// Fated raids didn't have CE
 	if (raid.name.startsWith('Fated')) return false;
 	const lastBossSlug = raid.encounters[raid.encounters.length - 1].slug;
@@ -150,8 +158,9 @@ function checkIsCuttingEdge(raid, tierEndDate, raidRanking) {
 	)?.firstDefeated;
 
 	return (
-		tierEndDate !== null &&
-		Date.parse(firstDefeatedDate) < Date.parse(tierEndDate)
+		(tierEndDate !== null &&
+			Date.parse(firstDefeatedDate) < Date.parse(tierEndDate)) ||
+		(tierEndDate === null && killedBosses === totalBosses)
 	);
 }
 

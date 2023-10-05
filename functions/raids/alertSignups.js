@@ -123,7 +123,7 @@ const alertSignups = async (client) => {
 				message = '';
 			}
 			else {
-				message = 'Holy shit everyone has signed up for the next raid!';
+				message = '🎆🎆All have signed up for the next raid🎆🎆';
 			}
 		}
 
