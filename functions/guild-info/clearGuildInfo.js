@@ -1,4 +1,7 @@
-const { guildInfoChannelId } = require('../../config.json');
+const { guildInfoChannelId, databaseString } = require('../../config.json');
+
+const Keyv = require('keyv');
+const guildinfoData = new Keyv(databaseString, { namespace: 'guildinfo' });
 
 async function clearGuildInfo(interaction) {
 	console.log('Clearing Guild Info messages...');
@@ -12,6 +15,7 @@ async function clearGuildInfo(interaction) {
 					.delete()
 					.catch(err => console.error(err));
 			});
+			guildinfoData.clear();
 			console.log('Finished clearing Guild Info messages');
 		})
 		.catch(err => console.error(err));
