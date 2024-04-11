@@ -79,7 +79,7 @@ function sliceApplicationMessages(applicationMessages, application) {
 			// Found a question
 			if (questionFound)
 			{
-			applicationMessages.push(tempMessage.slice(0, maxLength));
+			applicationMessages.push((tempMessage + "\n\n").slice(0, maxLength));
 			tempMessage = line;
 			}
 			else {
@@ -90,10 +90,10 @@ function sliceApplicationMessages(applicationMessages, application) {
 			tempMessage += line;
 		}
 		});
-		applicationMessages.push(tempMessage.slice(0, maxLength));
+		applicationMessages.push((tempMessage + "\n\n").slice(0, maxLength));
 	}
 	else {
-		applicationMessages.push(application.slice(0, maxLength));
+		applicationMessages.push((application + "\n\n").slice(0, maxLength));
 	}
 
 	return applicationMessages;
@@ -157,7 +157,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					console.log('Setting link between new channel id and thread id.');
 
 					await openApplications.set(newChannel.id, thread.id);
-					await wait(2000);
+					await wait(5000);
 					await addOverlordsToThread(thread);
 					await createVotingThreadMessage(newChannel.client, thread.id)
 						.catch(err => console.error(err));
