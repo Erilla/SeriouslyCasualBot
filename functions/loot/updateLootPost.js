@@ -63,9 +63,6 @@ const generatePlayerResponseString = async (playersId, raidersObject) => {
 		if (raiderObject) {
 			result += `${raiderObject.key}\n`;
 		}
-		else {
-			result += `<@${playerId}>\n`;
-		}
 	});
 
 	return playersId.length ? result : '*None*';

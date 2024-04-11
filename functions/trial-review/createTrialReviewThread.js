@@ -39,6 +39,7 @@ async function createTrialReviewThread(client, trial) {
 				.send(trialLogsContent)
 				.catch(err => console.error(err));
 			trial.trialLogsId = trialLogsMessage.id;
+			await trialLogsMessage.pin();
 
 			await changeTrialInfo(client, thread.id, trial);
 

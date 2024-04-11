@@ -96,14 +96,14 @@ const alertSignups = async (client) => {
 
 		if (notSignedUsers.length) {
 			if (twoDayReminder) {
-				const deadlineDate = new Date().setDate(nextRaidDay.getDate() - 1);
+				const deadlineDate = new Date(nextRaidDay).setDate(nextRaidDay.getDate() - 1);
 				const timer = Math.floor(deadlineDate / 1000);
-				message += `You have [<t:${timer}:R>] to sign else you won't get your EP!\n\n`;
+				message += `Sign up for the next raid!\n`;
+				message += `[<t:${timer}:R>]\n\n`
 			}
 
 			notSignedUsers.forEach((user) => {
 				if (user && user !== 'undefined') {
-					console.log('user entered');
 					foundUser = true;
 					message += `<@${user}>\n`;
 				}
@@ -123,7 +123,7 @@ const alertSignups = async (client) => {
 				message = '';
 			}
 			else {
-				message = '🎆🎆All have signed up for the next raid🎆🎆';
+				message = '🎆🎆Everyone has signed for the next raid🎆🎆';
 			}
 		}
 

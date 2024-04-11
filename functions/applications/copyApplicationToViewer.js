@@ -67,12 +67,33 @@ function sliceApplicationMessages(applicationMessages, application) {
 	console.log('Splitting application...');
 
 	const maxLength = 2000;
-	if (application.length > maxLength) {
-		applicationMessages.push(application.slice(0, maxLength));
-		sliceApplicationMessages(applicationMessages, application.slice(maxLength));
+	if((application.match(new RegExp("\\*\\*", "g")) || []).length)
+	{
+		const splitMessage = application.split(/(?=[\n])|(?<=[\n])/);
+
+		let tempMessage = "";
+		let questionFound = false;
+		splitMessage.forEach(line => {
+		if (line.match(new RegExp("(.*(\\*\\*.*\\*\\*){1}.*)")))
+		{
+			// Found a question
+			if (questionFound)
+			{
+			applicationMessages.push(tempMessage.slice(0, maxLength));
+			tempMessage = line;
+			}
+			else {
+			questionFound = true;
+			tempMessage += line;
+			}
+		} else {
+			tempMessage += line;
+		}
+		});
+		applicationMessages.push(tempMessage.slice(0, maxLength));
 	}
 	else {
-		applicationMessages.push(application);
+		applicationMessages.push(application.slice(0, maxLength));
 	}
 
 	return applicationMessages;
@@ -95,8 +116,10 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 				.setStyle(ButtonStyle.Danger),
 		);
 
+	const mainMessage = applicationMessages[0] + applicationMessages[1]
+
 	viewerChannel
-		.send({ content:applicationMessages[0], components: [row], embeds: [] })
+		.send({ content:mainMessage, components: [row], embeds: [] })
 		.then(async message => {
 			console.log(`Created message for ${viewerChannel.name}: ${message.id}`);
 
@@ -114,10 +137,10 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 
 					await openApplicationThreads.set(thread.id);
 
-					if (applicationMessages.length > 1) {
+					if (applicationMessages.length > 2) {
 						console.log('Posting additional application messages into thread...');
 
-						applicationMessages.slice(1).forEach(async applicationMessage => {
+						applicationMessages.slice(2).forEach(async applicationMessage => {
 							await thread
 								.send(applicationMessage)
 								.then(async threadMessage => {
