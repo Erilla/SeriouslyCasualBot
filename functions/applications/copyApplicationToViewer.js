@@ -155,7 +155,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					console.log('Setting link between new channel id and thread id.');
 
 					await openApplications.set(newChannel.id, thread.id);
-					await wait(5000);
+					await wait(10000);
 					await addOverlordsToThread(thread);
 					await createVotingThreadMessage(newChannel.client, thread.id)
 						.catch(err => console.error(err));
