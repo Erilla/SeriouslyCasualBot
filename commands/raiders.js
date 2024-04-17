@@ -1,8 +1,11 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { addRaider } = require('../functions/raids/addRaider');
+const { addOverlord } = require('../functions/raids/addOverlord');
 const { addRaiders } = require('../functions/raids/addRaiders');
 const { getRaiders } = require('../functions/raids/getRaiders');
+const { getOverlords } = require('../functions/raids/getOverlords');
 const { removeRaider } = require('../functions/raids/removeRaider');
+const { removeOverlord } = require('../functions/raids/removeOverlord');
 const { updateRaider } = require('../functions/raids/updateRaider');
 const {
 	updateRaiderJsonData,
@@ -82,6 +85,38 @@ const command = new SlashCommandBuilder()
 			.setName('previous_highest_mythicplus')
 			.setDescription(
 				'Returns the highest mythic plus dungeon each raider has completed',
+			),
+	).addSubcommand((subcommand) =>
+		subcommand
+			.setName('add_overlord')
+			.setDescription('Adds specified user as overlord')
+			.addStringOption((option) =>
+				option
+					.setName('name')
+					.setDescription('name of the user')
+					.setRequired(true),
+			)
+			.addUserOption((option) =>
+				option
+					.setName('user')
+					.setDescription('Discord user of the raider')
+					.setRequired(true),
+			),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('get_overlords')
+			.setDescription('Returns list of current overlords'),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('remove_overlord')
+			.setDescription('Removes speified overlord')
+			.addStringOption((option) =>
+				option
+					.setName('name')
+					.setDescription('Character name of the overlord')
+					.setRequired(true),
 			),
 	);
 module.exports = {
@@ -202,6 +237,55 @@ module.exports = {
 			const message = await getHighestMythicPlusDoneMessage();
 
 			await interaction.editReply(message).catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'add_overlord') {
+			const name = interaction.options.getString('name');
+			const user = interaction.options.getUser('user');
+
+			if (await addOverlord(name, user.id)) {
+				await interaction
+					.reply({
+						content: `Successfully added ${name} ${user.id}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
+			else {
+				await interaction
+					.reply({
+						content: `Error: Did not add ${name} ${user.id}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
+		}
+		else if (interaction.options.getSubcommand() === 'get_overlords') {
+			await interaction
+				.reply({
+					content: `${await getOverlords()}`,
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'remove_overlords') {
+			const name = interaction.options.getString('name');
+
+			if (await removeOverlord(name)) {
+				await interaction
+					.reply({
+						content: `Successfully remove overlord ${name}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
+			else {
+				await interaction
+					.reply({
+						content: `Error: Did not remove overlord ${name}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
 		}
 	},
 };

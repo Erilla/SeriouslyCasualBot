@@ -1,24 +1,18 @@
+const { databaseString } = require('../config.json');
+const Keyv = require('keyv');
+
+const overlords = new Keyv(databaseString, {
+	namespace: 'overlords',
+});
+
 async function addOverlordsToThread(thread) {
 
-	// Ryan
-	await thread.members
-		.add('105035733558890496')
-		.catch(console.error);
+	for await (const [, value] of overlords.iterator()) {
 
-	// Warz
-	await thread.members
-		.add('205969498908524544')
-		.catch(console.error);
-
-	// Bing
-	await thread.members
-		.add('230118286229110784')
-		.catch(console.error);
-
-	// Mart
-	await thread.members
-		.add('135853920286146560')
-		.catch(console.error);
+		await thread.members
+			.add(value)
+			.catch(console.error);
+	}
 }
 
 exports.addOverlordsToThread = addOverlordsToThread;
