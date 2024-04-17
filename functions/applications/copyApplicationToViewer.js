@@ -67,33 +67,31 @@ function sliceApplicationMessages(applicationMessages, application) {
 	console.log('Splitting application...');
 
 	const maxLength = 2000;
-	if((application.match(new RegExp("\\*\\*", "g")) || []).length)
-	{
+	if ((application.match(new RegExp('\\*\\*', 'g')) || []).length) {
 		const splitMessage = application.split(/(?=[\n])|(?<=[\n])/);
 
-		let tempMessage = "";
+		let tempMessage = '';
 		let questionFound = false;
 		splitMessage.forEach(line => {
-		if (line.match(new RegExp("(.*(\\*\\*.*\\*\\*){1}.*)")))
-		{
+			if (line.match(new RegExp('(.*(\\*\\*.*\\*\\*){1}.*)'))) {
 			// Found a question
-			if (questionFound)
-			{
-			applicationMessages.push((tempMessage + "\n\n").slice(0, maxLength));
-			tempMessage = line;
+				if (questionFound) {
+					applicationMessages.push((tempMessage + '\n\n').slice(0, maxLength));
+					tempMessage = line;
+				}
+				else {
+					questionFound = true;
+					tempMessage += line;
+				}
 			}
 			else {
-			questionFound = true;
-			tempMessage += line;
+				tempMessage += line;
 			}
-		} else {
-			tempMessage += line;
-		}
 		});
-		applicationMessages.push((tempMessage + "\n\n").slice(0, maxLength));
+		applicationMessages.push((tempMessage + '\n\n~~--------------------------------------------~~').slice(0, maxLength));
 	}
 	else {
-		applicationMessages.push((application + "\n\n").slice(0, maxLength));
+		applicationMessages.push((application + '\n\n~~--------------------------------------------~~').slice(0, maxLength));
 	}
 
 	return applicationMessages;
@@ -116,7 +114,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 				.setStyle(ButtonStyle.Danger),
 		);
 
-	const mainMessage = applicationMessages[0] + applicationMessages[1]
+	const mainMessage = applicationMessages[0] + applicationMessages[1];
 
 	viewerChannel
 		.send({ content:mainMessage, components: [row], embeds: [] })
