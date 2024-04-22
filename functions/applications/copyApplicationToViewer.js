@@ -67,32 +67,58 @@ function sliceApplicationMessages(applicationMessages, application) {
 	console.log('Splitting application...');
 
 	const maxLength = 2000;
+	let tempMessage = '';
 	if ((application.match(new RegExp('\\*\\*', 'g')) || []).length) {
 		const splitMessage = application.split(/(?=[\n])|(?<=[\n])/);
 
-		let tempMessage = '';
 		let questionFound = false;
 		splitMessage.forEach(line => {
 			if (line.match(new RegExp('(.*(\\*\\*.*\\*\\*){1}.*)'))) {
 			// Found a question
 				if (questionFound) {
-					applicationMessages.push((tempMessage + '\n\n').slice(0, maxLength));
+					applicationMessages.push((tempMessage).slice(0, maxLength));
+					applicationMessages.push('~~--------------------------------------------~~');
 					tempMessage = line;
 				}
 				else {
 					questionFound = true;
-					tempMessage += line;
+
+					if ((tempMessage.length + line.length) > maxLength) {
+						applicationMessages.push(tempMessage);
+						tempMessage = line;
+					}
+					else {
+						tempMessage += line;
+					}
+
 				}
+			}
+			else if ((tempMessage.length + line.length) > maxLength) {
+				applicationMessages.push(tempMessage);
+				tempMessage = line;
 			}
 			else {
 				tempMessage += line;
 			}
 		});
-		applicationMessages.push((tempMessage + '\n\n~~--------------------------------------------~~').slice(0, maxLength));
 	}
 	else {
-		applicationMessages.push((application + '\n\n~~--------------------------------------------~~').slice(0, maxLength));
+		tempMessage = application;
 	}
+
+	if (tempMessage.length > maxLength) {
+		let remainingMessage = tempMessage;
+		do {
+			applicationMessages.push(remainingMessage.slice(0, maxLength));
+			remainingMessage = remainingMessage.slice(maxLength, remainingMessage.length);
+		}
+		while (remainingMessage.length > 0);
+	}
+	else {
+		applicationMessages.push(tempMessage);
+
+	}
+	applicationMessages.push('~~--------------------------------------------~~');
 
 	return applicationMessages;
 }
