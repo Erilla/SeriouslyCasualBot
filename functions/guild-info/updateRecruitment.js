@@ -1,12 +1,17 @@
-const { guildInfoChannelId, applicationChannelUrl } = require('../../config.json');
+const { guildInfoChannelId, applicationChannelUrl, databaseString } = require('../../config.json');
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, Colors, ButtonStyle } = require('discord.js');
+const Keyv = require('keyv');
 const recruitmentContent = require('../../data/recruitment.json');
+
+const overlords = new Keyv(databaseString, {
+	namespace: 'overlords',
+});
 
 async function updateRecruitment(interaction) {
 	console.log('Updating Recruitment...');
 
 	const contentBody = [];
-	buildRecruitmentBody(contentBody);
+	await buildRecruitmentBody(contentBody);
 
 	const embed = new EmbedBuilder()
 		.setTitle(recruitmentContent.title)
@@ -30,22 +35,46 @@ async function updateRecruitment(interaction) {
 	console.log('Finished updating Recruitment.');
 }
 
-function buildRecruitmentBody(contentBody) {
+async function buildRecruitmentBody(contentBody) {
 	const space = {
 		name: '\u200b',
 		value : '\u200b',
 	};
 
-	recruitmentContent.content.forEach(content => {
+	const overlordsString = await getOverlords();
+
+	recruitmentContent.content.forEach((content) => {
+		const overlordsToken = '{{OVERLORDS}}';
+		let body = content.body;
+
+		if (body.includes(overlordsToken)) {
+			body = body.replace(overlordsToken, overlordsString);
+		}
+
 		const newContent = {
 			name: content.title,
-			value: content.body,
+			value: body,
 		};
+		console.log(newContent);
 		contentBody.push(newContent);
 		contentBody.push(space);
 	});
 
 	contentBody.pop();
+}
+
+async function getOverlords() {
+
+	let result = '';
+	for await (const [, value] of overlords.iterator()) {
+		if (result !== '') {
+			result += ' / ';
+		}
+
+		result += `<@${value}>`;
+	}
+
+	return result;
 }
 
 exports.updateRecruitment = updateRecruitment;
