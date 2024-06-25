@@ -3,18 +3,22 @@ const fileName = `./data/${raiderJson}`;
 const fs = require('fs');
 
 const Keyv = require('keyv');
-const { getRaiders } = require('./getRaiders');
 
 const raiders = new Keyv(databaseString, { namespace: 'raiders' });
 raiders.on('error', err => console.error('Keyv connection error:', err));
 
 const updateRaiderJsonData = async () => {
 
-	const raidersData = await getRaiders();
+	const raidersObject = [];
 
-	fs.writeFile(fileName, JSON.stringify(raidersData, null, 2), async function writeJSON(err) {
+	for await (const [key, value] of raiders.iterator()) {
+		raidersObject.push({ 'name': key, 'userId': value });
+	}
+
+	const json = JSON.stringify(raidersObject, null, 2);
+
+	fs.writeFile(fileName, json, async function writeJSON(err) {
 		if (err) return console.log(err);
-		console.log(JSON.stringify(`./data/${raidersData}`));
 		console.log('writing to ' + fileName);
 	});
 };
