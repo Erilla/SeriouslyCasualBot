@@ -19,19 +19,9 @@ function deployCommands() {
 	rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
 		.then(() => {
 			console.log('Successfully registered application commands.');
-			// response.forEach(registeredCommand => {
-			// 	const permissions = commandPermissions.find(p => p.name === registeredCommand.name).permissions;
-			// 	applyPermissions(registeredCommand.id, permissions);
-			// });
 
 		})
 		.catch(console.error);
 }
-
-// function applyPermissions(commandId, permissions) {
-// 	rest.put(Routes.applicationCommandPermissions(clientId, guildId, commandId), { body: { permissions: permissions } })
-// 		.then(() => console.log(`Successfully applied permission to ${commandId}`))
-// 		.catch(console.error);
-// }
 
 exports.deployCommands = deployCommands;

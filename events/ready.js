@@ -28,6 +28,9 @@ const {
 const {
 	updatePriorityRankingPost,
 } = require('../functions/epgp/priorityRankingPost');
+const {
+	syncRaiders,
+} = require('../functions/raids/syncRaiders');
 
 module.exports = {
 	name: 'ready',
@@ -176,5 +179,25 @@ module.exports = {
 		cron.schedule(everyTenthMinute, async () => {
 			await updatePriorityRankingPost(client);
 		});
+
+		const syncRaidersMinutes = 10,
+			syncRaidersMInterval = syncRaidersMinutes * 60 * 1000;
+
+		console.log(
+			`${new Date().toLocaleString()}: Setting up Sync Raiders (every ${syncRaidersMinutes} minutes)...`,
+		);
+		setInterval(async () => {
+			try {
+				console.log(
+					`${new Date().toLocaleString()}: Syncing raiders...`,
+				);
+				await syncRaiders(client);
+			}
+			catch {
+				console.log(
+					`${new Date().toLocaleString()}: Failed to sync raiders.`,
+				);
+			}
+		}, syncRaidersMInterval);
 	},
 };

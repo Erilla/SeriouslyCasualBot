@@ -3,10 +3,13 @@ const { addRaider } = require('../functions/raids/addRaider');
 const { addOverlord } = require('../functions/raids/addOverlord');
 const { addRaiders } = require('../functions/raids/addRaiders');
 const { getRaiders } = require('../functions/raids/getRaiders');
+const { syncRaiders } = require('../functions/raids/syncRaiders');
+const { sendAlertForRaidersWithNoUser } = require('../functions/raids/sendAlertForRaidersWithNoUser');
 const { getOverlords } = require('../functions/raids/getOverlords');
 const { removeRaider } = require('../functions/raids/removeRaider');
 const { removeOverlord } = require('../functions/raids/removeOverlord');
 const { updateRaider } = require('../functions/raids/updateRaider');
+const { updateRaiderDiscordUser } = require('../functions/raids/updateRaiderDiscordUser');
 const {
 	updateRaiderJsonData,
 } = require('../functions/raids/updateRaiderJsonData');
@@ -49,6 +52,16 @@ const command = new SlashCommandBuilder()
 	)
 	.addSubcommand((subcommand) =>
 		subcommand
+			.setName('sync_raiders')
+			.setDescription('Syncs raiders with BattleNet roster'),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('check_missing_users')
+			.setDescription('Checks for raiders with missing users'),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
 			.setName('remove_raider')
 			.setDescription('Removes speified raider')
 			.addStringOption((option) =>
@@ -72,6 +85,23 @@ const command = new SlashCommandBuilder()
 				option
 					.setName('new_character_name')
 					.setDescription('New character name of the raider')
+					.setRequired(true),
+			),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('update_raider_user')
+			.setDescription('Updates specified raiders user id')
+			.addStringOption((option) =>
+				option
+					.setName('character_name')
+					.setDescription('Character name of the raider')
+					.setRequired(true),
+			)
+			.addUserOption((option) =>
+				option
+					.setName('user')
+					.setDescription('Discord user of the raider')
 					.setRequired(true),
 			),
 	)
@@ -170,6 +200,24 @@ module.exports = {
 				})
 				.catch((err) => console.error(err));
 		}
+		else if (interaction.options.getSubcommand() === 'sync_raiders') {
+			await syncRaiders(interaction.client);
+			await interaction
+				.reply({
+					content: `${await getRaiders()}`,
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'check_missing_users') {
+			await sendAlertForRaidersWithNoUser(interaction.client);
+			await interaction
+				.reply({
+					content: 'Success!',
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
+		}
 		else if (interaction.options.getSubcommand() === 'remove_raider') {
 			const character_name = interaction.options.getString('character_name');
 
@@ -224,6 +272,27 @@ module.exports = {
 					ephemeral: true,
 				})
 				.catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'update_raider_user') {
+			const character_name = interaction.options.getString('character_name');
+			const user = interaction.options.getUser('user');
+
+			if (await updateRaiderDiscordUser(character_name, user.id)) {
+				await interaction
+					.reply({
+						content: `Successfully updated ${character_name} ${user.id}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
+			else {
+				await interaction
+					.reply({
+						content: `Error: Did not updated raider ${character_name} ${user.id}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
 		}
 		else if (
 			interaction.options.getSubcommand() === 'previous_highest_mythicplus'

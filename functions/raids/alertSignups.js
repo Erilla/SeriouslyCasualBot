@@ -98,12 +98,12 @@ const alertSignups = async (client) => {
 			if (twoDayReminder) {
 				const deadlineDate = new Date(nextRaidDay).setDate(nextRaidDay.getDate() - 1);
 				const timer = Math.floor(deadlineDate / 1000);
-				message += `Sign up for the next raid!\n`;
-				message += `[<t:${timer}:R>]\n\n`
+				message += 'Sign up for the next raid!\n';
+				message += `[<t:${timer}:R>]\n\n`;
 			}
 
 			notSignedUsers.forEach((user) => {
-				if (user && user !== 'undefined') {
+				if (user && user !== 'undefined' && user !== null) {
 					foundUser = true;
 					message += `<@${user}>\n`;
 				}

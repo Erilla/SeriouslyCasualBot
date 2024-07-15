@@ -17,5 +17,8 @@
 	"raiderJson": "raiders.json",
 	"lootChannelId": "${LOOT_CHANNEL_ID}",
 	"weeklyCheckChannelId": "${WEEKLY_CHECK_CHANNEL_ID}",
-	"priorityLootChannelId": "${PRIORITY_LOOT_CHANNEL_ID}"
+	"priorityLootChannelId": "${PRIORITY_LOOT_CHANNEL_ID}",
+	"bnetClientId": "${BNET_CLIENT_ID}",
+	"bnetClientSecret": "${BNET_CLIENT_SECRET}",
+	"botSetupChannelId": "${BOT_SETUP_CHANNEL_ID}"
 }
