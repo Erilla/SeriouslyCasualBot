@@ -23,7 +23,7 @@ const command = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('add_raiders')
-			.setDescription('Re-seeds raiders into database')
+			.setDescription('[DEPRECATED] Re-seeds raiders into database')
 			.addBooleanOption((option) =>
 				option.setName('use_seed_data').setDescription('Use Seed Data?'),
 			),
@@ -31,7 +31,7 @@ const command = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('add_raider')
-			.setDescription('Adds specified raider')
+			.setDescription('[DEPRECATED] Adds specified raider')
 			.addStringOption((option) =>
 				option
 					.setName('character_name')
@@ -63,7 +63,7 @@ const command = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('remove_raider')
-			.setDescription('Removes speified raider')
+			.setDescription('[DEPRECATED] Removes speified raider')
 			.addStringOption((option) =>
 				option
 					.setName('character_name')
@@ -74,7 +74,7 @@ const command = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('update_raider')
-			.setDescription('Updates specified raider')
+			.setDescription('[DEPRECATED] Updates specified raider')
 			.addStringOption((option) =>
 				option
 					.setName('old_character_name')
@@ -108,7 +108,7 @@ const command = new SlashCommandBuilder()
 	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('update_raider_seeddata')
-			.setDescription('Updates raiders seed data'),
+			.setDescription('[DEPRECATED] Updates raiders seed data'),
 	)
 	.addSubcommand((subcommand) =>
 		subcommand

@@ -9,6 +9,9 @@ const Keyv = require('keyv');
 const raiders = new Keyv(databaseString, { namespace: 'raiders' });
 raiders.on('error', (err) => console.error('Keyv connection error:', err));
 
+const raidersRealms = new Keyv(databaseString, { namespace: 'raidersRealms' });
+raidersRealms.on('error', (err) => console.error('Keyv connection error:', err));
+
 const getHighestMythicPlusDoneMessage = async () => {
 	let content = '';
 
@@ -16,9 +19,11 @@ const getHighestMythicPlusDoneMessage = async () => {
 		if (key !== 'SeriouslyCasualRaidersSeeded') {
 			console.log(`Retrieving runs for ${key}`);
 
+			const realm = await raidersRealms.get(key);
+
 			const result = await getPreviousWeeklyHighestMythicPlusRun(
 				'eu',
-				'silvermoon',
+				realm,
 				key,
 			);
 
@@ -35,12 +40,14 @@ const getHighestMythicPlusDoneMessage = async () => {
 
 	const buffer = Buffer.from(content, 'utf-8');
 
+	const today = new Date();
+
 	return {
 		content: 'Highest Mythic+ Runs last week',
 		files: [
 			{
 				attachment: buffer,
-				name: 'highest_mythicplus.txt',
+				name: `highest_mythicplus_${today.toISOString()}.txt`,
 				description: 'Mythic+ done by raiders last week',
 			},
 		],

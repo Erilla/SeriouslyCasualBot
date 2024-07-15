@@ -1,4 +1,5 @@
 const { databaseString } = require('../../config.json');
+const { removeRaiderRealm } = require('./removeRaiderRealm');
 
 const Keyv = require('keyv');
 const { updateRaiderJsonData } = require('./updateRaiderJsonData');
@@ -12,6 +13,7 @@ async function removeRaider(name) {
 	return await raiders
 		.delete(name)
 		.then(async () => {
+			await removeRaiderRealm(name);
 			await updateRaiderJsonData();
 			return true;
 		})
