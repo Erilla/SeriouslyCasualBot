@@ -14,8 +14,9 @@ const {
 	updateRaiderJsonData,
 } = require('../functions/raids/updateRaiderJsonData');
 const {
-	getHighestMythicPlusDoneMessage,
+	getPreviousWeekMythicPlusMessage, getPreviousWeeklyGreatVaultMessage,
 } = require('../functions/raids/alertHighestMythicPlusDone');
+const { getHistoricalData } = require('../services/wowauditService');
 
 const command = new SlashCommandBuilder()
 	.setName('raiders')
@@ -115,8 +116,46 @@ const command = new SlashCommandBuilder()
 			.setName('previous_highest_mythicplus')
 			.setDescription(
 				'Returns the highest mythic plus dungeon each raider has completed',
+			)
+			.addNumberOption((option) =>
+				option
+					.setName('year')
+					.setDescription('The year')
+					.setRequired(true)
+					.setMinValue(2010),
+			)
+			.addNumberOption((option) =>
+				option
+					.setName('week_of_the_year')
+					.setDescription('Week of the year (1-53)')
+					.setRequired(true)
+					.setMaxValue(53)
+					.setMinValue(1),
 			),
-	).addSubcommand((subcommand) =>
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('previous_great_vault')
+			.setDescription(
+				'Returns the previous great vault each raider has completed',
+			)
+			.addNumberOption((option) =>
+				option
+					.setName('year')
+					.setDescription('The year')
+					.setRequired(true)
+					.setMinValue(2010),
+			)
+			.addNumberOption((option) =>
+				option
+					.setName('week_of_the_year')
+					.setDescription('Week of the year (1-53)')
+					.setRequired(true)
+					.setMaxValue(53)
+					.setMinValue(1),
+			),
+	)
+	.addSubcommand((subcommand) =>
 		subcommand
 			.setName('add_overlord')
 			.setDescription('Adds specified user as overlord')
@@ -297,13 +336,30 @@ module.exports = {
 		else if (
 			interaction.options.getSubcommand() === 'previous_highest_mythicplus'
 		) {
+			const year = interaction.options.getNumber('year');
+			const week_of_the_year = interaction.options.getNumber('week_of_the_year');
 			await interaction
 				.reply({
 					content: 'Retrieving runs...',
 				})
 				.catch((err) => console.error(err));
+			const data = await getHistoricalData(year, week_of_the_year);
+			const message = await getPreviousWeekMythicPlusMessage(data);
 
-			const message = await getHighestMythicPlusDoneMessage();
+			await interaction.editReply(message).catch((err) => console.error(err));
+		}
+		else if (
+			interaction.options.getSubcommand() === 'previous_great_vault'
+		) {
+			const year = interaction.options.getNumber('year');
+			const week_of_the_year = interaction.options.getNumber('week_of_the_year');
+			await interaction
+				.reply({
+					content: 'Retrieving runs...',
+				})
+				.catch((err) => console.error(err));
+			const data = await getHistoricalData(year, week_of_the_year);
+			const message = await getPreviousWeeklyGreatVaultMessage(data);
 
 			await interaction.editReply(message).catch((err) => console.error(err));
 		}
