@@ -36,11 +36,11 @@ function checkPermissions(member) {
 
 	let found = false;
 
-	adminRoleIds.forEach((adminRoleId) => {
+	for (const adminRoleId of adminRoleIds) {
 		if (roles.get(adminRoleId)) {
 			found = true;
 		}
-	});
+	}
 
 	return found;
 }

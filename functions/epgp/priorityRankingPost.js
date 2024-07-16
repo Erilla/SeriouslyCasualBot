@@ -69,7 +69,7 @@ const generatePriorityRankingsPost = async (tierToken, armourType) => {
 		numberColumnLength,
 	)}\n`;
 
-	response.raiders.forEach((raider) => {
+	for (const raider of response.raiders) {
 		let epDifference = raider.points.effortPointsDifference;
 		if (+epDifference > 0) epDifference = `+${epDifference}`;
 
@@ -89,7 +89,7 @@ const generatePriorityRankingsPost = async (tierToken, armourType) => {
 			(Math.round(raider.points.priority * 100) / 100).toFixed(4),
 			numberColumnLength,
 		)}\n`;
-	});
+	}
 
 	content += `\n\n[Last Upload: ${new Date(
 		response.lastUploadedDate,

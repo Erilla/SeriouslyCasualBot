@@ -52,11 +52,11 @@ async function retrieveApplication(newChannel) {
 		.then(messages => {
 			console.log(`${messages.length} messages found...`);
 
-			messages.reverse().forEach(message => {
+			for (const message of messages.reverse()) {
 				if (message.embeds.length) {
 					application += message.embeds[0].description + '\n';
 				}
-			});
+			}
 
 			return application;
 		})
@@ -72,9 +72,10 @@ function sliceApplicationMessages(applicationMessages, application) {
 		const splitMessage = application.split(/(?=[\n])|(?<=[\n])/);
 
 		let questionFound = false;
-		splitMessage.forEach(line => {
+
+		for (const line of splitMessage) {
 			if (line.match(new RegExp('(.*(\\*\\*.*\\*\\*){1}.*)'))) {
-			// Found a question
+				// Found a question
 				if (questionFound) {
 					applicationMessages.push((tempMessage).slice(0, maxLength));
 					applicationMessages.push('~~--------------------------------------------~~');
@@ -100,7 +101,7 @@ function sliceApplicationMessages(applicationMessages, application) {
 			else {
 				tempMessage += line;
 			}
-		});
+		}
 	}
 	else {
 		tempMessage = application;
@@ -164,7 +165,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 					if (applicationMessages.length > 2) {
 						console.log('Posting additional application messages into thread...');
 
-						applicationMessages.slice(2).forEach(async applicationMessage => {
+						for (const applicationMessage of applicationMessages.slice(2)) {
 							await thread
 								.send(applicationMessage)
 								.then(async threadMessage => {
@@ -173,7 +174,7 @@ async function postApplicationMessages(newChannel, viewerChannel, applicationMes
 										.catch(err => console.error(err));
 								})
 								.catch(console.error);
-						});
+						}
 
 						console.log('Thread messages done.');
 					}

@@ -43,7 +43,7 @@ async function buildRecruitmentBody(contentBody) {
 
 	const overlordsString = await getOverlords();
 
-	recruitmentContent.content.forEach((content) => {
+	for (const content of recruitmentContent.content) {
 		const overlordsToken = '{{OVERLORDS}}';
 		let body = content.body;
 
@@ -58,7 +58,7 @@ async function buildRecruitmentBody(contentBody) {
 		console.log(newContent);
 		contentBody.push(newContent);
 		contentBody.push(space);
-	});
+	}
 
 	contentBody.pop();
 }

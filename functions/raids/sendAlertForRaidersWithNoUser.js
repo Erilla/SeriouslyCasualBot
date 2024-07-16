@@ -12,7 +12,7 @@ async function sendAlertForRaidersWithNoUser(client, missingUser) {
 
 	if (missingUser.length > 0) {
 		await client.channels.fetch(botSetupChannelId).then(async (channel) => {
-			missingUser.forEach(async missing => {
+			for (const missing of missingUser) {
 				const userSelect = new UserSelectMenuBuilder()
 					.setCustomId('missing_user_select')
 					.setPlaceholder(`Select user for ${missing}`)
@@ -22,7 +22,7 @@ async function sendAlertForRaidersWithNoUser(client, missingUser) {
 				const row = new ActionRowBuilder()
 					.addComponents(userSelect);
 				await channel.send({ content: missing, components: [row] });
-			});
+			}
 		});
 	}
 

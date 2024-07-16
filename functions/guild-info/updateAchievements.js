@@ -241,11 +241,11 @@ function buildManualAchievements(expansion) {
 		(achievement) => achievement.expansion === expansion,
 	);
 
-	expansionAchieves.forEach((achieve) => {
+	for (const achieve of expansionAchieves) {
 		raidsString = achieve.raid + '\n' + raidsString;
 		progressString = achieve.progress + '\n' + progressString;
 		worldRankingstring = achieve.result + '\n' + worldRankingstring + ' ';
-	});
+	}
 }
 
 exports.updateAchievements = updateAchievements;

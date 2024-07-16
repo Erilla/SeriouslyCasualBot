@@ -92,9 +92,9 @@ module.exports = {
 
 			const lootPosts = [];
 
-			bossIdsArray.forEach((bossId) => {
+			for (const bossId of bossIdsArray) {
 				lootPosts.push(deleteLootPost(interaction.client, bossId));
-			});
+			}
 
 			await interaction
 				.reply({

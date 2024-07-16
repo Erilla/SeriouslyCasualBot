@@ -15,16 +15,17 @@ const generateVotersContent = (votes) => {
 		against: '',
 	};
 
-	votes.forVotes.forEach(forVote => {
+	for (const forVote of votes.forVotes) {
 		content.for += `<@${forVote}> `;
-	});
+	}
 
-	votes.neutralVotes.forEach(neutralVote => {
+	for (const neutralVote of votes.neutralVotes) {
 		content.neutral += `<@${neutralVote}> `;
-	});
-	votes.againstVotes.forEach(againstVote => {
+	}
+
+	for (const againstVote of votes.againstVote) {
 		content.against += `<@${againstVote}> `;
-	});
+	}
 
 	return content;
 };

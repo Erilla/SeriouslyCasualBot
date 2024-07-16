@@ -101,7 +101,7 @@ const alertSignups = async (client) => {
 				message += `[<t:${timer}:R>]\n\n`;
 			}
 
-			notSignedUsers.forEach((user) => {
+			for (const user of notSignedUsers) {
 				if (user && user !== 'undefined' && user !== null) {
 					foundUser = true;
 					if (isNaN(user)) {
@@ -111,7 +111,7 @@ const alertSignups = async (client) => {
 						message += `<@${user}>\n`;
 					}
 				}
-			});
+			}
 
 			const messageIndex = Math.floor(
 				Math.random() * signupAlertMessages.messages.length,

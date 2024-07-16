@@ -58,14 +58,14 @@ const updateLootPost = async (client, bossId) => {
 const generatePlayerResponseString = async (playersId, raidersObject) => {
 	let result = '';
 
-	await playersId.forEach(async (playerId) => {
+	for (const playerId of playersId) {
 		const raiderObject = raidersObject.find((o) => o.value === playerId);
 		if (raiderObject) {
 			result += `${raiderObject.key}\n`;
 		}
-	});
+	}
 
-	return playersId.length ? result : '*None*';
+	return playersId.length && result.length ? result : '*None*';
 };
 
 const getRaiders = async () => {

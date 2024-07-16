@@ -84,10 +84,10 @@ const getPreviousWeekMythicPlusMessage = async (historicData) => {
 		return (characterA < characterB) ? -1 : (characterA > characterB) ? 1 : 0;
 	});
 
-	dungeonsDone.forEach(character => {
+	for (const character of dungeonsDone) {
 		const dungeons = character.dungeonsDone?.join(',') ?? 'No Data';
 		content += `${character.characterName}: [${dungeons}]\n`;
-	});
+	}
 
 	const buffer = Buffer.from(content, 'utf-8');
 
@@ -129,7 +129,8 @@ const getPreviousWeeklyGreatVaultMessage = async (historicData) => {
 
 	content += `${formatColumn('', longestCharacter)}| ${formatColumn('Raid', 16)} | ${formatColumn('Dungeon', 16)} | ${formatColumn('PVP', 16)} | ${formatColumn('Delves', 16)} \n`;
 	content += '-'.repeat(content.length) + '\n';
-	greatVault.forEach(character => {
+
+	for (const character of greatVault) {
 		const raids = character.greatVault?.raids ?? null;
 		const dungeons = character.greatVault?.dungeons ?? null;
 		const pvp = character.greatVault?.pvp ?? null;
@@ -145,7 +146,7 @@ const getPreviousWeeklyGreatVaultMessage = async (historicData) => {
 		content += `${dungeonOptions} | `;
 		content += `${pvpOptions} | `;
 		content += `${delvesOptions}\n`;
-	});
+	}
 
 	const buffer = Buffer.from(content, 'utf-8');
 

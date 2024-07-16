@@ -17,6 +17,7 @@ const {
 	getPreviousWeekMythicPlusMessage, getPreviousWeeklyGreatVaultMessage,
 } = require('../functions/raids/alertHighestMythicPlusDone');
 const { getHistoricalData } = require('../services/wowauditService');
+const { getIgnoredCharacters, ignoreCharacter, removeIgnoredCharacter } = require('../functions/raids/ignoreCharacter');
 
 const command = new SlashCommandBuilder()
 	.setName('raiders')
@@ -50,6 +51,33 @@ const command = new SlashCommandBuilder()
 		subcommand
 			.setName('get_raiders')
 			.setDescription('Returns list of current raiders'),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('get_ignored_characters')
+			.setDescription('Returns list of ignored characters'),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('ignore_character')
+			.setDescription('Ignores character for sync raiders')
+			.addStringOption((option) =>
+				option
+					.setName('character_name')
+					.setDescription('Character name of the raider')
+					.setRequired(true),
+			),
+	)
+	.addSubcommand((subcommand) =>
+		subcommand
+			.setName('remove_ignore_character')
+			.setDescription('Remove specified ignored character')
+			.addStringOption((option) =>
+				option
+					.setName('character_name')
+					.setDescription('Character name of the raider')
+					.setRequired(true),
+			),
 	)
 	.addSubcommand((subcommand) =>
 		subcommand
@@ -238,6 +266,54 @@ module.exports = {
 					ephemeral: true,
 				})
 				.catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'get_ignored_characters') {
+			await interaction
+				.reply({
+					content: `${await getIgnoredCharacters()}`,
+					ephemeral: true,
+				})
+				.catch((err) => console.error(err));
+		}
+		else if (interaction.options.getSubcommand() === 'ignore_character') {
+			const character_name = interaction.options.getString('character_name');
+
+			if (await ignoreCharacter(character_name)) {
+				await interaction
+					.reply({
+						content: `Successfully ignored character ${character_name}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
+			else {
+				await interaction
+					.reply({
+						content: `Error: Did not ignore character ${character_name}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
+		}
+		else if (interaction.options.getSubcommand() === 'remove_ignore_character') {
+			const character_name = interaction.options.getString('character_name');
+
+			if (await removeIgnoredCharacter(character_name)) {
+				await interaction
+					.reply({
+						content: `Successfully removed ignored character ${character_name}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
+			else {
+				await interaction
+					.reply({
+						content: `Error: Did not remove ignored character ${character_name}`,
+						ephemeral: true,
+					})
+					.catch((err) => console.error(err));
+			}
 		}
 		else if (interaction.options.getSubcommand() === 'sync_raiders') {
 			await syncRaiders(interaction.client);

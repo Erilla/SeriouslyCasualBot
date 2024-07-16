@@ -35,11 +35,11 @@ async function alertPromotions(client) {
 		}
 	}
 
-	alerted.forEach(async id => {
+	for (const id of alerted) {
 		await promoteAlerts
 			.delete(id)
 			.catch(err => console.error(err));
-	});
+	}
 }
 
 exports.alertPromotions = alertPromotions;

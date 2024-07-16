@@ -68,19 +68,19 @@ const checkIfAlreadyVoted = (userId, votes) => {
 
 const removeVoter = (alreadyVoted, userId, votes) => {
 	switch (alreadyVoted) {
-	case 1:
-		votes.forVotes = votes.forVotes.filter(voter => voter !== userId);
-		break;
-	case 2:
-		votes.neutralVotes = votes.neutralVotes.filter(voter => voter !== userId);
-		break;
-	case 3:
-		votes.againstVotes = votes.againstVotes.filter(voter => voter !== userId);
-		if (!votes.kekNo) {
-			votes.kekNo = [];
-		}
-		votes.kekNo = votes.kekNo.filter(voter => voter != userId);
-		break;
+		case 1:
+			votes.forVotes = votes.forVotes.filter(voter => voter !== userId);
+			break;
+		case 2:
+			votes.neutralVotes = votes.neutralVotes.filter(voter => voter !== userId);
+			break;
+		case 3:
+			votes.againstVotes = votes.againstVotes.filter(voter => voter !== userId);
+			if (!votes.kekNo) {
+				votes.kekNo = [];
+			}
+			votes.kekNo = votes.kekNo.filter(voter => voter != userId);
+			break;
 	}
 
 	return votes;

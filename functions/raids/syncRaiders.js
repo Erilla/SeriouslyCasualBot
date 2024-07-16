@@ -7,6 +7,7 @@ const { addRaider } = require('../raids/addRaider');
 const { addRaiderRealm } = require('../raids/addRaiderRealm');
 const { removeRaider } = require('../raids/removeRaider');
 const { removeRaiderRealm } = require('../raids/removeRaiderRealm');
+const { getStoredIgnoredCharacters } = require('../raids/ignoreCharacter');
 
 const { sendAlertForRaidersWithNoUser } = require('./sendAlertForRaidersWithNoUser');
 
@@ -18,39 +19,60 @@ const syncRaiders = async (client) => {
 	const storedRaiderRealms = await getStoredRaiderRealms();
 	const storedRaiderRealmsLowered = storedRaiderRealms.map(s => s.name.toLowerCase());
 
-	const guildRoster = await getGuildRoster();
-	if (guildRoster) {
+	const ignoreCharacters = await getStoredIgnoredCharacters();
+
+	const wholeRoster = await getGuildRoster();
+	const guildRoster = ignoreCharacters.length > 0 ? wholeRoster.filter(r => !ignoreCharacters.includes(r.character.name)) : wholeRoster;
+	if (guildRoster.length) {
 		const characterNamesLowered = guildRoster.map(r => r.character.name.toLowerCase());
 
 		const needToRemove = storedCharacterNames
 			.filter(storedName => !characterNamesLowered.includes(storedName.toLowerCase()));
 
-		const botSetupChannel = await client.channels.fetch(botSetupChannelId).then((channel) => channel);
+		for (const character of ignoreCharacters) {
+			if (storedCharacterNames.includes(character)) {
+				needToRemove.push(character);
+			}
+		}
 
-		if (needToRemove) {
-			await needToRemove.forEach(async (value) => {
+		const botSetupChannel = await client.channels.fetch(botSetupChannelId).then((channel) => channel);
+		let summaryMessage = '';
+
+		if (needToRemove.length > 0) {
+			summaryMessage += 'Removed raiders:\n';
+
+			for (const value of needToRemove) {
 				await removeRaider(value);
-				await botSetupChannel.send(`${value} removed from raider list`);
-			});
+				summaryMessage += `${value}\n`;
+			}
+
+			summaryMessage += '\n';
 		}
 
 		const needToAdd = guildRoster.map(r => r.character.name)
 			.filter((character) => !storedCharacterLowered.includes(character.toLowerCase()));
 
-		if (needToAdd) {
-			await needToAdd.forEach(async (value) => {
+		if (needToAdd.length > 0) {
+			summaryMessage += 'Added raiders:\n';
+
+			for (const value of needToAdd) {
 				await addRaider(value, null);
-				await botSetupChannel.send(`${value} added to raider list`);
-			});
+				summaryMessage += `${value}\n`;
+			}
+			summaryMessage += '\n';
 
 			await sendAlertForRaidersWithNoUser(client, needToAdd);
+		}
+
+		if (summaryMessage.length > 0) {
+			await botSetupChannel.send(summaryMessage);
 		}
 
 		const needToRemoveFromRealm = storedRaiderRealms
 			.filter(stored => !characterNamesLowered.includes(stored.name.toLowerCase()));
 
 
-		if (needToRemoveFromRealm) {
+		if (needToRemoveFromRealm.length > 0) {
 			needToRemoveFromRealm.forEach(async toBeRemoved => {
 				await removeRaiderRealm(toBeRemoved.name);
 			});
@@ -59,7 +81,7 @@ const syncRaiders = async (client) => {
 		const needToAddToRealm = guildRoster.map(r => { return { name: r.character.name, realm: r.character.realm.slug }; })
 			.filter((character) => !storedRaiderRealmsLowered.includes(character.name.toLowerCase()));
 
-		if (needToAddToRealm) {
+		if (needToAddToRealm.length > 0) {
 			needToAddToRealm.forEach(async (value) => {
 				await addRaiderRealm(value.name, value.realm);
 			});

@@ -41,10 +41,10 @@ async function updateSchedule(interaction) {
 }
 
 function buildSchedule(content) {
-	scheduleContent.raidDays.forEach(raidDay => {
+	for (const raidDay of scheduleContent.raidDays) {
 		content.day += raidDay + '\n';
 		content.time += scheduleContent.raidTimes + '\n';
-	});
+	}
 }
 
 exports.updateSchedule = updateSchedule;

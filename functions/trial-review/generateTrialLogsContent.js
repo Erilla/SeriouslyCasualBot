@@ -7,9 +7,9 @@ async function generateTrialLogsContent(trial) {
 
 	const logCodes = await getTrialLogs(trial.characterName);
 
-	logCodes.forEach(code => {
+	for (const code of logCodes) {
 		content += `${baseUrl}${code}\n`;
-	});
+	}
 
 	return content;
 }

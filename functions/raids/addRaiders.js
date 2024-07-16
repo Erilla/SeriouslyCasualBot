@@ -37,11 +37,11 @@ const addRaiders = async (override = false, useSeedData = false) => {
 			}
 		}
 
-		raidersJson.forEach(async raiderSeedData => {
+		for (const raiderSeedData of raidersJson) {
 			await raiders
 				.set(raiderSeedData.name, raiderSeedData.userId)
 				.catch(err => console.error(err));
-		});
+		}
 
 		await raiders
 			.set(seededKey, true)
