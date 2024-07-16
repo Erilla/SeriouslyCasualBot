@@ -18,45 +18,47 @@ const syncRaiders = async (client) => {
 	const storedRaiderRealmsLowered = storedRaiderRealms.map(s => s.name.toLowerCase());
 
 	const guildRoster = await getGuildRoster();
-	const characterNamesLowered = guildRoster.map(r => r.character.name.toLowerCase());
+	if (guildRoster) {
+		const characterNamesLowered = guildRoster.map(r => r.character.name.toLowerCase());
 
-	const needToRemove = storedCharacterNames
-		.filter(storedName => !characterNamesLowered.includes(storedName.toLowerCase()));
+		const needToRemove = storedCharacterNames
+			.filter(storedName => !characterNamesLowered.includes(storedName.toLowerCase()));
 
-	if (needToRemove) {
-		needToRemove.forEach(async (value) => {
-			await removeRaider(value);
-		});
-	}
+		if (needToRemove) {
+			needToRemove.forEach(async (value) => {
+				await removeRaider(value);
+			});
+		}
 
-	const needToAdd = guildRoster.map(r => r.character.name)
-		.filter((character) => !storedCharacterLowered.includes(character.toLowerCase()));
+		const needToAdd = guildRoster.map(r => r.character.name)
+			.filter((character) => !storedCharacterLowered.includes(character.toLowerCase()));
 
-	if (needToAdd) {
-		needToAdd.forEach(async (value) => {
-			await addRaider(value, null);
-		});
+		if (needToAdd) {
+			needToAdd.forEach(async (value) => {
+				await addRaider(value, null);
+			});
 
-		await sendAlertForRaidersWithNoUser(client, needToAdd);
-	}
+			await sendAlertForRaidersWithNoUser(client, needToAdd);
+		}
 
-	const needToRemoveFromRealm = storedRaiderRealms
-		.filter(stored => !characterNamesLowered.includes(stored.name.toLowerCase()));
+		const needToRemoveFromRealm = storedRaiderRealms
+			.filter(stored => !characterNamesLowered.includes(stored.name.toLowerCase()));
 
 
-	if (needToRemoveFromRealm) {
-		needToRemoveFromRealm.forEach(async toBeRemoved => {
-			await removeRaiderRealm(toBeRemoved.name);
-		});
-	}
+		if (needToRemoveFromRealm) {
+			needToRemoveFromRealm.forEach(async toBeRemoved => {
+				await removeRaiderRealm(toBeRemoved.name);
+			});
+		}
 
-	const needToAddToRealm = guildRoster.map(r => { return { name: r.character.name, realm: r.character.realm.slug }; })
-		.filter((character) => !storedRaiderRealmsLowered.includes(character.name.toLowerCase()));
+		const needToAddToRealm = guildRoster.map(r => { return { name: r.character.name, realm: r.character.realm.slug }; })
+			.filter((character) => !storedRaiderRealmsLowered.includes(character.name.toLowerCase()));
 
-	if (needToAddToRealm) {
-		needToAddToRealm.forEach(async (value) => {
-			await addRaiderRealm(value.name, value.realm);
-		});
+		if (needToAddToRealm) {
+			needToAddToRealm.forEach(async (value) => {
+				await addRaiderRealm(value.name, value.realm);
+			});
+		}
 	}
 };
 
