@@ -265,25 +265,23 @@ module.exports = {
 		}
 		else if (interaction.isUserSelectMenu()) {
 			if (interaction.customId === 'missing_user_select') {
-				console.log(interaction);
 				const characterName = interaction.message.content;
 				const user = interaction.values[0];
 
 				if (await updateRaiderDiscordUser(characterName, user)) {
 					await interaction
 						.reply({
-							content: 'Successfully updated raider',
+							content: `Successfully updated raider ${characterName} with <@${user}>`,
 						})
 						.catch((err) => console.error(err));
-					await wait(2000);
-					await interaction.deleteReply().catch((err) => console.error(err));
-
 					await interaction.message.delete();
+					await wait(5000);
+					await interaction.deleteReply().catch((err) => console.error(err));
 				}
 				else {
 					await interaction
 						.reply({
-							content: 'Could not update raider',
+							content: `Could not update raider ${characterName}`,
 						})
 						.catch((err) => console.error(err));
 					await wait(2000);

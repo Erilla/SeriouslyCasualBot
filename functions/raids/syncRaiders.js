@@ -1,3 +1,4 @@
+const { botSetupChannelId } = require('../../config.json');
 const { getGuildRoster } = require('../../services/battleNetService');
 const { getStoredRaiders } = require('../raids/getStoredRaiders');
 const { getStoredRaiderRealms } = require('../raids/getStoredRaiderRealms');
@@ -24,9 +25,12 @@ const syncRaiders = async (client) => {
 		const needToRemove = storedCharacterNames
 			.filter(storedName => !characterNamesLowered.includes(storedName.toLowerCase()));
 
+		const botSetupChannel = await client.channels.fetch(botSetupChannelId).then((channel) => channel);
+
 		if (needToRemove) {
-			needToRemove.forEach(async (value) => {
+			await needToRemove.forEach(async (value) => {
 				await removeRaider(value);
+				await botSetupChannel.send(`${value} removed from raider list`);
 			});
 		}
 
@@ -34,8 +38,9 @@ const syncRaiders = async (client) => {
 			.filter((character) => !storedCharacterLowered.includes(character.toLowerCase()));
 
 		if (needToAdd) {
-			needToAdd.forEach(async (value) => {
+			await needToAdd.forEach(async (value) => {
 				await addRaider(value, null);
+				await botSetupChannel.send(`${value} added to raider list`);
 			});
 
 			await sendAlertForRaidersWithNoUser(client, needToAdd);
