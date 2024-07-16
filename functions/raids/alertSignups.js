@@ -83,13 +83,12 @@ const alertSignups = async (client) => {
 			(signup) => signup.status === 'Unknown',
 		);
 
-		const notSignedUsers = await Promise.all(
-			await notSignedRaiders.map(
-				async (notSignedRaider) =>
-					await raiders
-						.get(notSignedRaider.name)
-						.catch((err) => console.error(err)),
-			),
+		const notSignedUsers = await Promise.all(await notSignedRaiders.map(async notSignedRaider => {
+			const userId = await raiders.get(notSignedRaider.name)
+				.catch((err) => console.error(err));
+			if (!userId) return notSignedRaider.name;
+			return userId;
+		}),
 		).catch((err) => console.error(err));
 
 		let foundUser = false;
@@ -105,7 +104,12 @@ const alertSignups = async (client) => {
 			notSignedUsers.forEach((user) => {
 				if (user && user !== 'undefined' && user !== null) {
 					foundUser = true;
-					message += `<@${user}>\n`;
+					if (isNaN(user)) {
+						message += `${user}\n`;
+					}
+					else {
+						message += `<@${user}>\n`;
+					}
 				}
 			});
 

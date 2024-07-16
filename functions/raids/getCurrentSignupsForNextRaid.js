@@ -1,5 +1,4 @@
-const { wowAuditApiSecret } = require('../../config.json');
-const fetch = require('node-fetch');
+const { getUpcomingRaids, getRaidDetails } = require('../../services/wowauditService');
 
 const getCurrentSignupsForNextRaid = async () => {
 	let upcomingRaids = await getUpcomingRaids();
@@ -31,36 +30,6 @@ const getCurrentSignupsForNextRaid = async () => {
 	}
 
 	return null;
-};
-
-const getUpcomingRaids = async () => {
-	return await fetch(
-		'https://wowaudit.com/v1/raids?include_past=false',
-		generateQueryOptions(),
-	)
-		.then((response) => response.json())
-		.then((response) => response.raids)
-		.catch((err) => console.error(err));
-};
-
-const getRaidDetails = async (id) => {
-	return await fetch(
-		`https://wowaudit.com/v1/raids/${id}}`,
-		generateQueryOptions(),
-	)
-		.then((response) => response.json())
-		.then((response) => response)
-		.catch((err) => console.error(err));
-};
-
-const generateQueryOptions = () => {
-	return {
-		method: 'GET',
-		headers: {
-			accept: 'application/json',
-			Authorization: `${wowAuditApiSecret}`,
-		},
-	};
 };
 
 exports.getCurrentSignupsForNextRaid = getCurrentSignupsForNextRaid;
