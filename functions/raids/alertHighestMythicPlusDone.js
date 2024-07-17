@@ -142,10 +142,10 @@ const getPreviousWeeklyGreatVaultMessage = async (historicData) => {
 		const delvesOptions = delves === null ? 'No Data' : `${formatColumn(delves.option_1 ?? '', 4)}/ ${formatColumn(delves.option_2 ?? '', 4)}/ ${formatColumn(delves.option_3 ?? '', 4)}`;
 
 		content += `${formatColumn(character.characterName, longestCharacter)}| `;
-		content += `${raidOptions} | `;
-		content += `${dungeonOptions} | `;
-		content += `${pvpOptions} | `;
-		content += `${delvesOptions}\n`;
+		content += `${formatColumn(raidOptions, 16)} | `;
+		content += `${formatColumn(dungeonOptions, 16)} | `;
+		content += `${formatColumn(pvpOptions, 16)} | `;
+		content += `${formatColumn(delvesOptions, 16)}\n`;
 	}
 
 	const buffer = Buffer.from(content, 'utf-8');
