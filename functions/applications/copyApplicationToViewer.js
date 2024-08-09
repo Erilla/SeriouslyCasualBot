@@ -52,11 +52,11 @@ async function retrieveApplication(newChannel) {
 		.then(messages => {
 			console.log(`${messages.length} messages found...`);
 
-			for (const message of messages.reverse()) {
+			messages.reverse().forEach(message => {
 				if (message.embeds.length) {
 					application += message.embeds[0].description + '\n';
 				}
-			}
+			});
 
 			return application;
 		})
