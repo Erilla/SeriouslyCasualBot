@@ -23,7 +23,7 @@ const generateVotersContent = (votes) => {
 		content.neutral += `<@${neutralVote}> `;
 	}
 
-	for (const againstVote of votes.againstVote) {
+	for (const againstVote of votes.againstVotes) {
 		content.against += `<@${againstVote}> `;
 	}
 
