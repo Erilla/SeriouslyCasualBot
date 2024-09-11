@@ -101,7 +101,9 @@ const alertSignups = async (client) => {
 				message += `[<t:${timer}:R>]\n\n`;
 			}
 
-			for (const user of notSignedUsers) {
+			const distinctNotSignedUsers = notSignedUsers.filter((value, index, self) => self.indexOf(value) === index);
+
+			for (const user of distinctNotSignedUsers) {
 				if (user && user !== 'undefined' && user !== null) {
 					foundUser = true;
 					if (isNaN(user)) {

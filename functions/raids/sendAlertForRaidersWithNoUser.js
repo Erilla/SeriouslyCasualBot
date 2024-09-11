@@ -21,7 +21,10 @@ async function sendAlertForRaidersWithNoUser(client, missingUser) {
 
 				const row = new ActionRowBuilder()
 					.addComponents(userSelect);
-				await channel.send({ content: missing, components: [row] });
+				await channel.send({ content: missing, components: [row] })
+					.then(message =>
+						message.pin(),
+					);
 			}
 		});
 	}

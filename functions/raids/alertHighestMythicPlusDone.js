@@ -58,10 +58,7 @@ const getHighestMythicPlusDoneMessage = async () => {
 };
 
 const getWowauditData = async () => {
-	const today = new Date();
-	const lastWeekDate = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
-	const previousWeek = lastWeekDate.getWeekNumber();
-	return await getHistoricalData(lastWeekDate.getUTCFullYear(), previousWeek);
+	return await getHistoricalData();
 };
 
 const getPreviousWeekMythicPlusMessage = async (historicData) => {
@@ -127,24 +124,21 @@ const getPreviousWeeklyGreatVaultMessage = async (historicData) => {
 
 	const longestCharacter = greatVault.reduce((a, b) => a.characterName.length > b.characterName.length ? a : b).characterName.length;
 
-	content += `${formatColumn('', longestCharacter)}| ${formatColumn('Raid', 16)} | ${formatColumn('Dungeon', 16)} | ${formatColumn('PVP', 16)} | ${formatColumn('Delves', 16)} \n`;
+	content += `${formatColumn('', longestCharacter)}| ${formatColumn('Raid', 16)} | ${formatColumn('Dungeon', 16)} | ${formatColumn('World', 16)} \n`;
 	content += '-'.repeat(content.length) + '\n';
 
 	for (const character of greatVault) {
 		const raids = character.greatVault?.raids ?? null;
 		const dungeons = character.greatVault?.dungeons ?? null;
-		const pvp = character.greatVault?.pvp ?? null;
-		const delves = character.greatVault?.delves ?? null;
+		const delves = character.greatVault?.world ?? null;
 
 		const raidOptions = raids === null ? 'No Data' : `${formatColumn(raids.option_1 ?? '', 4)}/ ${formatColumn(raids.option_2 ?? '', 4)}/ ${formatColumn(raids.option_3 ?? '', 4)}`;
 		const dungeonOptions = dungeons === null ? 'No Data' : `${formatColumn(dungeons.option_1 ?? '', 4)}/ ${formatColumn(dungeons.option_2 ?? '', 4)}/ ${formatColumn(dungeons.option_3 ?? '', 4)}`;
-		const pvpOptions = pvp === null ? 'No Data' : `${formatColumn(pvp.option_1 ?? '', 4)}/ ${formatColumn(pvp.option_2 ?? '', 4)}/ ${formatColumn(pvp.option_3 ?? '', 4)}`;
 		const delvesOptions = delves === null ? 'No Data' : `${formatColumn(delves.option_1 ?? '', 4)}/ ${formatColumn(delves.option_2 ?? '', 4)}/ ${formatColumn(delves.option_3 ?? '', 4)}`;
 
 		content += `${formatColumn(character.characterName, longestCharacter)}| `;
 		content += `${formatColumn(raidOptions, 16)} | `;
 		content += `${formatColumn(dungeonOptions, 16)} | `;
-		content += `${formatColumn(pvpOptions, 16)} | `;
 		content += `${formatColumn(delvesOptions, 16)}\n`;
 	}
 

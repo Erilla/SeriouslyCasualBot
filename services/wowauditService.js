@@ -21,13 +21,24 @@ const getRaidDetails = async (id) => {
 		.catch((err) => console.error(err));
 };
 
-const getHistoricalData = async (year, week) => {
+const getHistoricalData = async () => {
+	const previousPeriod = +(await getCurrentPeriod()) - 1;
 	return await fetch(
-		`https://wowaudit.com/v1/historical_data?year=${year}&week=${week}}`,
+		`https://wowaudit.com/v1/historical_data?period=${previousPeriod}`,
 		generateQueryOptions(),
 	)
 		.then((response) => response.json())
 		.then((response) => response.characters)
+		.catch((err) => console.error(err));
+};
+
+const getCurrentPeriod = async () => {
+	return await fetch(
+		'https://wowaudit.com/v1/period',
+		generateQueryOptions(),
+	)
+		.then((response) => response.json())
+		.then((response) => response.current_period)
 		.catch((err) => console.error(err));
 };
 
