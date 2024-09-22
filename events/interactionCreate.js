@@ -29,6 +29,7 @@ const { markToPromote } = require('../functions/trial-review/markToPromote');
 const wait = require('util').promisify(setTimeout);
 const { updateLootResponse } = require('../functions/loot/updateLootResponse');
 const { updateRaiderDiscordUser } = require('../functions/raids/updateRaiderDiscordUser');
+const { ignoreCharacter } = require('../functions/raids/ignoreCharacter');
 const adminRoleIds = ['255630010088423425', '170611904752910336'];
 
 function checkPermissions(member) {
@@ -195,6 +196,29 @@ module.exports = {
 					)
 					.catch((err) => console.error(err));
 			}
+			else if (interaction.customId === 'ignore_missing_character') {
+				const characterName = interaction.message.content;
+
+				await ignoreCharacter(characterName);
+
+				if (await ignoreCharacter(characterName)) {
+					await interaction.channel
+						.send({
+							content: `${characterName} ignored.`,
+						})
+						.catch((err) => console.error(err));
+					await interaction.message.delete();
+				}
+				else {
+					await interaction
+						.reply({
+							content: `Could not ignore character ${characterName}`,
+						})
+						.catch((err) => console.error(err));
+					await wait(2000);
+					await interaction.deleteReply().catch((err) => console.error(err));
+				}
+			}
 		}
 		else if (interaction.isModalSubmit()) {
 			if (interaction.customId === 'addNewTrialInfoModal') {
@@ -269,14 +293,12 @@ module.exports = {
 				const user = interaction.values[0];
 
 				if (await updateRaiderDiscordUser(characterName, user)) {
-					await interaction
-						.reply({
-							content: `Successfully updated raider ${characterName} with <@${user}>`,
+					await interaction.channel
+						.send({
+							content: `Updated ${characterName} with <@${user}>`,
 						})
 						.catch((err) => console.error(err));
 					await interaction.message.delete();
-					await wait(5000);
-					await interaction.deleteReply().catch((err) => console.error(err));
 				}
 				else {
 					await interaction
