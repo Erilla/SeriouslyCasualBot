@@ -199,8 +199,6 @@ module.exports = {
 			else if (interaction.customId === 'ignore_missing_character') {
 				const characterName = interaction.message.content;
 
-				await ignoreCharacter(characterName);
-
 				if (await ignoreCharacter(characterName)) {
 					await interaction.channel
 						.send({

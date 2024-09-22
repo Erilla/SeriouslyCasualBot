@@ -1,4 +1,5 @@
 const { databaseString } = require('../../config.json');
+const { removeRaider } = require('./removeRaider');
 
 const Keyv = require('keyv');
 
@@ -6,6 +7,8 @@ const ignoredCharacters = new Keyv(databaseString, { namespace: 'ignoredCharacte
 ignoredCharacters.on('error', err => console.error('Keyv connection error:', err));
 
 const ignoreCharacter = async (name) => {
+	await removeRaider(name);
+
 	return await ignoredCharacters.set(name)
 		.then(async () => {
 			return true;
