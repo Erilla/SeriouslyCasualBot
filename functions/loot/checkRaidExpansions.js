@@ -17,6 +17,8 @@ const checkRaidExpansions = async (client) => {
 
 		const raidStaticDataResponse = await getRaidStaticData(currentExpansion);
 
+		const currentDate = new Date();
+
 		if (
 			raidStaticDataResponse?.response?.status &&
 			raidStaticDataResponse?.response?.status === 400
@@ -28,12 +30,12 @@ const checkRaidExpansions = async (client) => {
 		}
 		else if (raidStaticDataResponse?.raids) {
 			raidStaticDataResponse?.raids?.sort((a, b) => {
-				if (a.ends.eu === null) return 1;
+				if (new Date(a.ends.eu) > currentDate) return 1;
 				return a.ends.eu > b.ends.eu ? 1 : -1;
 			});
 
 			for await (const raid of raidStaticDataResponse.raids) {
-				if (raid.ends.eu === null) {
+				if (new Date(raid.ends.eu) > currentDate) {
 					console.log('Found current raid');
 
 					await client.channels.fetch(lootChannelId).then(async (channel) => {
