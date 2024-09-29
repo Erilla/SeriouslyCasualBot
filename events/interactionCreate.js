@@ -32,6 +32,12 @@ const { updateRaiderDiscordUser } = require('../functions/raids/updateRaiderDisc
 const { ignoreCharacter } = require('../functions/raids/ignoreCharacter');
 const adminRoleIds = ['255630010088423425', '170611904752910336'];
 
+const { databaseString } = require('../config.json');
+const Keyv = require('keyv');
+
+const raiders = new Keyv(databaseString, { namespace: 'raiders' });
+raiders.on('error', (err) => console.error('Keyv connection error:', err));
+
 function checkPermissions(member) {
 	const roles = member.roles.cache;
 
@@ -185,6 +191,15 @@ module.exports = {
 			else if (interaction.customId.startsWith('updateLootResponse')) {
 				const [, response, bossId] = interaction.customId.split('|');
 
+				const raidersObject = await getRaiders();
+				const raiderObject = raidersObject.find((o) => o.value === interaction.user.id);
+				if (!raiderObject) {
+					await interaction.reply({
+						content: `<@${interaction.user.id}> Could not find a character name linked with your discord id. Please contact an officer!`,
+						ephemeral: true,
+					});
+				}
+
 				await interaction
 					.update(
 						await updateLootResponse(
@@ -310,4 +325,14 @@ module.exports = {
 			}
 		}
 	},
+};
+
+const getRaiders = async () => {
+	const raidersObject = [];
+
+	for await (const [key, value] of raiders.iterator()) {
+		raidersObject.push({ key, value });
+	}
+
+	return raidersObject;
 };

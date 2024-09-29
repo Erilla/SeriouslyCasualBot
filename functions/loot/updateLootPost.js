@@ -39,7 +39,6 @@ const updateLootPost = async (client, bossId) => {
 
 	const messageObject = await generateLootPost(
 		bossLootResponses.bossName,
-		bossLootResponses.bossUrl,
 		bossId,
 		playerResponses,
 	);

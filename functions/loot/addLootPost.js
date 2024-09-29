@@ -17,7 +17,6 @@ const addLootPost = async (channel, boss) => {
 
 	const messageObject = await generateLootPost(
 		boss.name,
-		boss.url,
 		boss.id,
 		playerResponses,
 	);

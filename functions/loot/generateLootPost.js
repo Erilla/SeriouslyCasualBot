@@ -5,10 +5,9 @@ const {
 	ButtonBuilder,
 } = require('discord.js');
 
-const generateLootPost = async (bossName, bossUrl, bossId, playerResponses) => {
+const generateLootPost = async (bossName, bossId, playerResponses) => {
 	const embed = new EmbedBuilder()
 		.setTitle(bossName)
-		.setURL(bossUrl)
 		.addFields(
 			{
 				name: 'Major',
