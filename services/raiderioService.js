@@ -40,7 +40,27 @@ const getPreviousWeeklyHighestMythicPlusRun = async (region, realm, name) => {
 	return dataPromise;
 };
 
+const getGuildRoster = async () => {
+	const region = 'eu';
+	const realm = 'silvermoon';
+	const guildName = 'seriouslycasual';
+
+
+	const baseUrl = 'https://raider.io/api/v1/guilds/profile';
+	const url = `${baseUrl}?region=${region}&realm=${realm}&name=${guildName}&fields=members`;
+
+	const promise = axios.get(url);
+	const dataPromise = await promise
+		.then((response) => response.data)
+		.catch((error) => error);
+
+	const filteredMembers = dataPromise.members.filter(m => [0, 1, 3, 4, 5, 7].includes(m.rank));
+
+	return filteredMembers;
+};
+
 exports.getRaidRankings = getRaidRankings;
 exports.getRaidStaticData = getRaidStaticData;
 exports.getPreviousWeeklyHighestMythicPlusRun =
 	getPreviousWeeklyHighestMythicPlusRun;
+exports.getGuildRoster = getGuildRoster;

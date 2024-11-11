@@ -1,5 +1,5 @@
 const { botSetupChannelId } = require('../../config.json');
-const { getGuildRoster } = require('../../services/battleNetService');
+const { getGuildRoster } = require('../../services/raiderioService');
 const { getStoredRaiders } = require('../raids/getStoredRaiders');
 const { getStoredRaiderRealms } = require('../raids/getStoredRaiderRealms');
 
@@ -78,7 +78,7 @@ const syncRaiders = async (client) => {
 			});
 		}
 
-		const needToAddToRealm = guildRoster.map(r => { return { name: r.character.name, realm: r.character.realm.slug }; })
+		const needToAddToRealm = guildRoster.map(r => { return { name: r.character.name, realm: r.character.realm }; })
 			.filter((character) => !storedRaiderRealmsLowered.includes(character.name.toLowerCase()));
 
 		if (needToAddToRealm.length > 0) {
