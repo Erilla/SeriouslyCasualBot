@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "WebSearch",
+      "WebFetch(domain:raider.io)",
+      "WebFetch(domain:www.postman.com)",
+      "WebFetch(domain:www.warcraftlogs.com)",
+      "WebFetch(domain:epgp-api.ryanwong.uk)",
+      "WebFetch(domain:wowaudit.com)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

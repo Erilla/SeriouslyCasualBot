@@ -50,3 +50,30 @@ Enforced via ESLint (`.eslintrc.json`):
 - Spaces inside object braces: `{ key: value }`
 - No space before function parens (except async arrow: `async () =>`)
 - CommonJS modules (`require`/`exports`), not ES modules
+
+---
+
+## Business Logic Domains
+
+Detailed documentation for each domain is in `.claude/skills/<domain>/SKILL.md`. Below is a quick reference.
+
+| Domain | Skill File | Summary |
+|--------|-----------|---------|
+| Applications | `.claude/skills/applications/SKILL.md` | Application pipeline: monitoring, voting, accept/reject |
+| Trial Review | `.claude/skills/trial-review/SKILL.md` | Probation tracking: threads, alerts, WarcraftLogs, promotions |
+| Raids | `.claude/skills/raids/SKILL.md` | Roster sync, signup alerts, M+/vault reports |
+| Loot | `.claude/skills/loot/SKILL.md` | Boss loot priority signups via buttons |
+| EPGP | `.claude/skills/epgp/SKILL.md` | Effort/Gear point ranking display |
+| Guild Info | `.claude/skills/guild-info/SKILL.md` | About Us, Schedule, Recruitment, Achievements embeds |
+| Settings | `.claude/skills/settings/SKILL.md` | Feature toggles (signup alert controls) |
+| Services (overview) | `.claude/skills/services/SKILL.md` | Overview, domain usage map, error handling patterns |
+| Raider.io Service | `.claude/skills/raiderio-service/SKILL.md` | Guild roster, raid rankings, M+ data (no auth) |
+| WoW Audit Service | `.claude/skills/wowaudit-service/SKILL.md` | Raid signups, historical M+/vault data (API secret) |
+| EPGP Service | `.claude/skills/epgp-service/SKILL.md` | Priority rankings by token/armour (no auth) |
+| Battle.net Service | `.claude/skills/battlenet-service/SKILL.md` | Deprecated — replaced by Raider.io |
+| Discord Commands | `.claude/skills/discord-commands/SKILL.md` | All slash commands, buttons, modals, selects, permissions |
+| Data Files | `.claude/skills/data-files/SKILL.md` | Static JSON content and auto-generated raider backup |
+
+### Shared Utility
+
+**`functions/addOverlordsToThread.js`** — Adds all users from `overlords` namespace to a Discord thread. Used by both applications and trial-review domains after thread creation.
