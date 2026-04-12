@@ -53,26 +53,27 @@ Enforced via ESLint (`.eslintrc.json`):
 
 ---
 
-## Business Logic Domains
+## Design Documentation
 
-Detailed documentation for each domain is in `.claude/skills/<domain>/SKILL.md`. Below is a quick reference.
+Comprehensive design documents live in `docs/design/`. These are specification-level documents detailed enough to rebuild the system from scratch.
 
-| Domain | Skill File | Summary |
-|--------|-----------|---------|
-| Applications | `.claude/skills/applications/SKILL.md` | Application pipeline: monitoring, voting, accept/reject |
-| Trial Review | `.claude/skills/trial-review/SKILL.md` | Probation tracking: threads, alerts, WarcraftLogs, promotions |
-| Raids | `.claude/skills/raids/SKILL.md` | Roster sync, signup alerts, M+/vault reports |
-| Loot | `.claude/skills/loot/SKILL.md` | Boss loot priority signups via buttons |
-| EPGP | `.claude/skills/epgp/SKILL.md` | Effort/Gear point ranking display |
-| Guild Info | `.claude/skills/guild-info/SKILL.md` | About Us, Schedule, Recruitment, Achievements embeds |
-| Settings | `.claude/skills/settings/SKILL.md` | Feature toggles (signup alert controls) |
-| Services (overview) | `.claude/skills/services/SKILL.md` | Overview, domain usage map, error handling patterns |
-| Raider.io Service | `.claude/skills/raiderio-service/SKILL.md` | Guild roster, raid rankings, M+ data (no auth) |
-| WoW Audit Service | `.claude/skills/wowaudit-service/SKILL.md` | Raid signups, historical M+/vault data (API secret) |
-| EPGP Service | `.claude/skills/epgp-service/SKILL.md` | Priority rankings by token/armour (no auth) |
-| Battle.net Service | `.claude/skills/battlenet-service/SKILL.md` | Deprecated — replaced by Raider.io |
-| Discord Commands | `.claude/skills/discord-commands/SKILL.md` | All slash commands, buttons, modals, selects, permissions |
-| Data Files | `.claude/skills/data-files/SKILL.md` | Static JSON content and auto-generated raider backup |
+| Document | Summary |
+|----------|---------|
+| `01-architecture-overview.md` | System architecture, tech stack, startup flow, config reference |
+| `02-interaction-routing.md` | Interaction dispatch hub, button/modal/select catalogs |
+| `03-domain-applications.md` | Application pipeline: monitoring, voting, accept/reject |
+| `04-domain-trial-review.md` | Probation tracking: threads, alerts, WarcraftLogs, promotions |
+| `05-domain-raids.md` | Roster sync, signup alerts, M+/vault reports |
+| `06-domain-loot.md` | Boss loot priority signups via buttons |
+| `07-domain-epgp.md` | Effort/Gear point ranking display |
+| `08-domain-guild-info.md` | About Us, Schedule, Recruitment, Achievements embeds |
+| `09-domain-settings.md` | Feature toggles (signup alert controls) |
+| `10-services-and-apis.md` | External API integrations (Raider.io, WoW Audit, EPGP, WarcraftLogs, Battle.net) |
+| `11-database-schema.md` | All 14 Keyv namespaces with shapes, readers, writers |
+| `12-scheduled-tasks.md` | All intervals and cron jobs |
+| `13-deployment-and-operations.md` | CI/CD, PM2, config management |
+| `14-command-reference.md` | Complete slash command catalog |
+| `15-data-files.md` | Static and generated JSON files |
 
 ### Shared Utility
 
